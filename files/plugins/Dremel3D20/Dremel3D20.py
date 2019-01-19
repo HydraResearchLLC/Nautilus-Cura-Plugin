@@ -42,7 +42,6 @@ from UM.Qt.Bindings.Theme import Theme
 from UM.PluginRegistry import PluginRegistry
 
 from cura.CuraApplication import CuraApplication
-from cura.Machines.QualityManager import getMachineDefinitionIDForQualitySearch
 
 from PyQt5.QtWidgets import QApplication, QFileDialog
 from PyQt5.QtGui import QPixmap, QScreen, QColor, qRgb, QImageReader, QImage, QDesktopServices
