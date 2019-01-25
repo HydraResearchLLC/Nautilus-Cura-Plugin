@@ -91,7 +91,7 @@ class HRNautilus(QObject, MeshWriter, Extension):
         self.local_variants_path = None
         Logger.log("i", "Nautilus Plugin setting up")
         self.local_meshes_path = os.path.join(Resources.getStoragePathForType(Resources.Resources), "meshes")
-        self.local_printer_def_path = Resources.getStoragePath(Resources.DefinitionContainers)
+        self.local_printer_def_path = Resources.getStoragePath(Resources.DefinitionContainers)#os.path.join(Resources.getStoragePath(Resources.Resources),"definitions")
         self.local_materials_path = os.path.join(Resources.getStoragePath(Resources.Resources), "materials")
         self.local_quality_path = os.path.join(Resources.getStoragePath(Resources.Resources), "quality")
         self.local_extruder_path = os.path.join(Resources.getStoragePath(Resources.Resources),"extruders")
@@ -142,6 +142,7 @@ class HRNautilus(QObject, MeshWriter, Extension):
     def showPreferences(self):
         if self._preferences_window is None:
             self.createPreferencesWindow()
+            statuss=self._application.getPreferences().getValue("HRNautilus/install_status")
         self._preferences_window.show()
 
     def hidePreferences(self):
@@ -161,6 +162,7 @@ class HRNautilus(QObject, MeshWriter, Extension):
     def showHelp(self):
         url = QUrl('https://www.hydraresearch3d.com/resources/', QUrl.TolerantMode)
         Logger.log("i", "Nautilus Plugin opening help document: "+url)
+
         try:
             if not QDesktopServices.openUrl(QUrl("file:///"+url, QUrl.TolerantMode)):
                 message = Message(catalog.i18nc("@info:status", "Nautilus plugin could not open help site.\n Please visit https://www.hydraresearch3d.com/resources/"))
@@ -229,7 +231,7 @@ class HRNautilus(QObject, MeshWriter, Extension):
         nautilusExtruderDefFile = os.path.join(self.local_extruder_path,"hydra_research_nautilus_extruder.def.json")
         nautilusMatDir = os.path.join(self.local_materials_path,"nautilusmat")
         nautilusQualityDir = os.path.join(self.local_quality_path,"hr_nautilus")
-        nautilusVariantsDir = os.path.join(self.local_quality_path,"nautilus")
+        nautilusVariantsDir = os.path.join(self.local_variants_path,"nautilus")
 
         # if some files are missing then return that this plugin as not installed
         if not os.path.isfile(HRNautilusDefFile):
@@ -238,18 +240,19 @@ class HRNautilus(QObject, MeshWriter, Extension):
         if not os.path.isfile(nautilusExtruderDefFile):
             Logger.log("i", "Nautilus extruder file is NOT installed ")
             return False
-        if not os.path.isfile(nautilusMatDir):
-            Logger.log("i", "Nautilus materials are NOT installed ")
+        if not os.path.isdir(nautilusMatDir):
+            Logger.log("i", "Nautilus material files are NOT installed ")
             return False
         if not os.path.isdir(nautilusQualityDir):
             Logger.log("i", "Nautilus quality files are NOT installed ")
             return False
         if not os.path.isdir(nautilusVariantsDir):
-            Logger.log("i", "Variant files are NOT installed ")
+            Logger.log("i", "Nautilus variant files are NOT installed ")
             return False
 
         # if everything is there, return True
         Logger.log("i", "Nautilus Plugin all files ARE installed")
+        self._application.getPreferences().setValue("HRNautilus/install_status", "installed")
         return True
 
     # install based on preference checkbox
@@ -301,10 +304,6 @@ class HRNautilus(QObject, MeshWriter, Extension):
                         restartRequired = True
 
             if restartRequired and self.isInstalled():
-                # only show the message if the user called this after having already uninstalled
-                if self._application.getPreferences().getValue("HRNautilus/install_status") is not "unknown":
-                    message = Message(catalog.i18nc("@info:status", "Nautilus files have been installed.  Please restart Cura to complete installation"))
-                    message.show()
                 # either way, the files are now installed, so set the prefrences value
                 self._application.getPreferences().setValue("HRNautilus/install_status", "installed")
                 self._application.getPreferences().setValue("HRNautilus/curr_version",HRNautilus.version)
@@ -343,12 +342,12 @@ class HRNautilus(QObject, MeshWriter, Extension):
         except: # Installing a new plug-in should never crash the application.
             Logger.logException("d", "An exception occurred in Nautilus Plugin while uninstalling files")
 
-        # remove the pla material file
+        # remove the material directory
         try:
-            nautilusmatfile = os.path.join(self.local_materials_path,"nautilusmat")
-            if os.path.isfile(nautilusmatfile):
-                Logger.log("i", "Nautilus Plugin removing materials files from " + nautilusmatfile)
-                shutil.rmtree(nautilusmatfile)
+            nautilusmatDir = os.path.join(self.local_materials_path,"nautilusmat")
+            if os.path.isdir(nautilusmatDir):
+                Logger.log("i", "Nautilus Plugin removing material files from " + nautilusmatDir)
+                shutil.rmtree(nautilusmatDir)
                 restartRequired = True
         except: # Installing a new plugin should never crash the application.
             Logger.logException("d", "An exception occurred in Nautilus Plugin while uninstalling files")
