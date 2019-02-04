@@ -57,7 +57,7 @@ class HRNautilus(QObject, MeshWriter, Extension):
     # 1) here
     # 2) plugin.json
     # 3) package.json
-    version = "0.5.3"
+    version = "0.1.0"
 
     ##  Dictionary that defines how characters are escaped when embedded in
     #   g-code.
@@ -160,15 +160,13 @@ class HRNautilus(QObject, MeshWriter, Extension):
 
     @pyqtSlot()
     def showHelp(self):
-        url = QUrl('https://www.hydraresearch3d.com/resources/', QUrl.TolerantMode)
-        Logger.log("i", "Nautilus Plugin opening help document: "+url)
-
+        Logger.log("i", "Nautilus Plugin opening help page: https://www.hydraresearch3d.com/resources/")
         try:
-            if not QDesktopServices.openUrl(QUrl("file:///"+url, QUrl.TolerantMode)):
-                message = Message(catalog.i18nc("@info:status", "Nautilus plugin could not open help site.\n Please visit https://www.hydraresearch3d.com/resources/"))
+            if not QDesktopServices.openUrl(QUrl("https://www.hydraresearch3d.com/resources/")):
+                message = Message(catalog.i18nc("@info:status", "Nautilus plugin could not open https://www.hydraresearch3d.com/resources/ please navigate to the page for assistance"))
                 message.show()
         except:
-            message = Message(catalog.i18nc("@info:status", "Nautilus plugin could not open help site.\n Please visit https://www.hydraresearch3d.com/resources/"))
+            message = Message(catalog.i18nc("@info:status", "Nautilus plugin could not open https://www.hydraresearch3d.com/resources/ please navigate to the page for assistance"))
             message.show()
         return
 

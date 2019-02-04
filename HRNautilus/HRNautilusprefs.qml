@@ -51,11 +51,11 @@ UM.Dialog
 
           Switch {
             id: installCB
-            text: "Are Nautilus Printer File Installed? "
+            text: "Are Nautilus Printer Files Installed? "
             ToolTip.timeout: 5000
             ToolTip.visible: hovered
-            ToolTip.text: "Deselect this to uninstall the Nautilus printer files\Select it to install the files."
-            checked: checkInstallStatus(UM.Preferences.getValue("Dremel3D20/install_status"))
+            ToolTip.text: "Deselect this to uninstall the Nautilus printer files \n Select it to install the files."
+            checked: checkInstallStatus(UM.Preferences.getValue("HRNautilus/install_status"))
             onClicked: manager.changePluginInstallStatus(checked)
           } //end Switch
         } // end columnlayout
