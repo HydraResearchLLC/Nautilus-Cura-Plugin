@@ -7,15 +7,15 @@ If you wish to manually install for any reason, a properly packaged release can 
 
 In order to generate a release manually the file structure should be set up as follows:
 
-HRNautilus.curapackage (This is just a zip file with the extension renamed to .curapackage)
- icon.png
- LICENSE
- package.json
- -files
-  -plugins
-   -HRNautilus
-    plugin.json
-    __init__.py
-    HRNautilus.py
-    HRNautilusprefs.qml
+HRNautilus.curapackage (This is just a zip file with the extension renamed to .curapackage)  
+ icon.png  
+ LICENSE  
+ package.json  
+ -files  
+  -plugins  
+   -HRNautilus  
+    plugin.json  
+    __init__.py  
+    HRNautilus.py  
+    HRNautilusprefs.qml  
     HRNautilus.zip (This is a zip archive that contains config files)
