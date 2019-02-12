@@ -78,7 +78,7 @@ class HRNautilus(QObject, MeshWriter, Extension):
         #def _onInitialized(self):
         self.this_plugin_path=os.path.join(Resources.getStoragePath(Resources.Resources), "plugins","HRNautilus","HRNautilus")
         if not self._application.getPluginRegistry().isActivePlugin("HRNautilus"):
-            Logger.log("i", "HRNautilus3D20 Plugin is disabled")
+            Logger.log("i", "HRNautilus Plugin is disabled")
             return #Plug-in is disabled.
 
         self._preferences_window = None
@@ -124,7 +124,6 @@ class HRNautilus(QObject, MeshWriter, Extension):
         if self._application.getPreferences().getValue("HRNautilus/install_status") is "unknown":
             # if the user never installed the files, then automatically install it
             self.installPluginFiles()
-
 
         self.addMenuItem(catalog.i18nc("@item:inmenu", "Preferences"), self.showPreferences)
         self.addMenuItem(catalog.i18nc("@item:inmenu", "Report Issue"), self.reportIssue)
@@ -269,6 +268,7 @@ class HRNautilus(QObject, MeshWriter, Extension):
         try:
             restartRequired = False
             zipdata = os.path.join(self.this_plugin_path,"HRNautilus.zip")
+            Logger.log("i","Nautilus Plugin installing from: " + zipdata)
 
             with zipfile.ZipFile(zipdata, "r") as zip_ref:
                 for info in zip_ref.infolist():

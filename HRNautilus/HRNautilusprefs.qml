@@ -6,6 +6,7 @@ import QtQuick.Controls.Styles 1.1
 
 import UM 1.1 as UM
 
+
 UM.Dialog
 {
     id: base
@@ -47,7 +48,7 @@ UM.Dialog
 
           width: parent.width
           height: parent.height
-          
+
 
           Switch {
             id: installCB
