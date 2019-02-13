@@ -40,14 +40,13 @@ from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Qt.Duration import DurationFormat
 from UM.Qt.Bindings.Theme import Theme
 from UM.PluginRegistry import PluginRegistry
-
+from . import DuetRRFPlugin
 from cura.CuraApplication import CuraApplication
 
 from PyQt5.QtWidgets import QApplication, QFileDialog
 from PyQt5.QtGui import QPixmap, QScreen, QColor, qRgb, QImageReader, QImage, QDesktopServices
 from PyQt5.QtCore import QByteArray, QBuffer, QIODevice, QRect, Qt, QSize, pyqtSlot, QObject, QUrl, pyqtSlot
 
-#from . import G3DremHeader
 
 catalog = i18nCatalog("cura")
 
@@ -57,7 +56,7 @@ class HRNautilus(QObject, MeshWriter, Extension):
     # 1) here
     # 2) plugin.json
     # 3) package.json
-    version = "0.1.0"
+    version = "0.1.1"
 
     ##  Dictionary that defines how characters are escaped when embedded in
     #   g-code.
@@ -124,12 +123,12 @@ class HRNautilus(QObject, MeshWriter, Extension):
         if self._application.getPreferences().getValue("HRNautilus/install_status") is "unknown":
             # if the user never installed the files, then automatically install it
             self.installPluginFiles()
-
+        DuetRRF=DuetRRFPlugin.DuetRRFPlugin()
         self.addMenuItem(catalog.i18nc("@item:inmenu", "Preferences"), self.showPreferences)
         self.addMenuItem(catalog.i18nc("@item:inmenu", "Report Issue"), self.reportIssue)
         self.addMenuItem(catalog.i18nc("@item:inmenu", "Help "), self.showHelp)
         self.addMenuItem(catalog.i18nc("@item:inmenu", "Nautilus Printer Plugin Version "+HRNautilus.version), self.openPluginWebsite)
-
+        self.addMenuItem(catalog.i18nc("@item:inmenu","DuetRRF Connections"), DuetRRF.showSettingsDialog)
         # finally save the cura.cfg file
         self._application.getPreferences().writeToFile(Resources.getStoragePath(Resources.Preferences, self._application.getApplicationName() + ".cfg"))
 
