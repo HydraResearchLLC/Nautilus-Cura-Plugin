@@ -5,8 +5,6 @@
 #
 # Written by Zach Rose
 # Based on the Dremel 3D20 plugin written by Tim Schoenmackers
-# Extra thanks to Tim Schoenmackers for his continued advice
-# and assistance throughout the development of this plugin
 #
 # the Dremel plugin source can be found here:
 # https://github.com/timmehtimmeh/Cura-Dremel-3D20-Plugin
@@ -278,7 +276,7 @@ class HRNautilus(QObject, MeshWriter, Extension):
                     folder = None
                     if info.filename == "hydra_research_nautilus.def.json":
                         folder = self.local_printer_def_path
-                    if info.filename == "hydra_research_nautilus_extruder.def.json":
+                    elif info.filename == "hydra_research_nautilus_extruder.def.json":
                         folder = self.local_extruder_path
                     elif info.filename.endswith("fdm_material"):
                         folder = self.local_materials_path
