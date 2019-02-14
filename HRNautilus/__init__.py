@@ -2,7 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from . import HRNautilus
-from . import DuetRRFPlugin
+from . import NautilusDuet
 
 
 from UM.i18n import i18nCatalog
@@ -16,8 +16,8 @@ def getMetaData():
 def register(app):
     return {"extension": [
         HRNautilus.HRNautilus(),
-        DuetRRFPlugin.DuetRRFPlugin()
+        NautilusDuet.NautilusDuet()
         ],
         "output_device":
-        DuetRRFPlugin.DuetRRFPlugin()
+        NautilusDuet.NautilusDuet()
     }

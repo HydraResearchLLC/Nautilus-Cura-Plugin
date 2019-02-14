@@ -40,7 +40,7 @@ from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Qt.Duration import DurationFormat
 from UM.Qt.Bindings.Theme import Theme
 from UM.PluginRegistry import PluginRegistry
-from . import DuetRRFPlugin
+from . import NautilusDuet
 from cura.CuraApplication import CuraApplication
 
 from PyQt5.QtWidgets import QApplication, QFileDialog
@@ -123,12 +123,13 @@ class HRNautilus(QObject, MeshWriter, Extension):
         if self._application.getPreferences().getValue("HRNautilus/install_status") is "unknown":
             # if the user never installed the files, then automatically install it
             self.installPluginFiles()
-        DuetRRF=DuetRRFPlugin.DuetRRFPlugin()
+        Duet=NautilusDuet.NautilusDuet()
+        self.addMenuItem(catalog.i18nc("@item:inmenu","Nautilus Connections"), Duet.showSettingsDialog)
         self.addMenuItem(catalog.i18nc("@item:inmenu", "Preferences"), self.showPreferences)
         self.addMenuItem(catalog.i18nc("@item:inmenu", "Report Issue"), self.reportIssue)
         self.addMenuItem(catalog.i18nc("@item:inmenu", "Help "), self.showHelp)
         self.addMenuItem(catalog.i18nc("@item:inmenu", "Nautilus Printer Plugin Version "+HRNautilus.version), self.openPluginWebsite)
-        self.addMenuItem(catalog.i18nc("@item:inmenu","DuetRRF Connections"), DuetRRF.showSettingsDialog)
+
         # finally save the cura.cfg file
         self._application.getPreferences().writeToFile(Resources.getStoragePath(Resources.Preferences, self._application.getApplicationName() + ".cfg"))
 
