@@ -5,6 +5,8 @@
 #
 # Written by Zach Rose
 # Based on the Dremel 3D20 plugin written by Tim Schoenmackers
+# Extra thanks to Tim Schoenmackers for his continued advice
+# and assistance throughout the development of this plugin
 #
 # the Dremel plugin source can be found here:
 # https://github.com/timmehtimmeh/Cura-Dremel-3D20-Plugin
