@@ -3,6 +3,6 @@
     "author": "Zach Rose",
     "version": "0.1.0",
     "description": "Enables the user to add the Hyda Research Nautilus Printer and connect over WiFi.",
-    "api": 5,
+    "api": 6,
     "i18n-catalog": "cura"
 }

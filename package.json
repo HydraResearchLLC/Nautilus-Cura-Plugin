@@ -10,7 +10,7 @@
     "package_id": "HRNautilus",
     "package_type": "plugin",
     "package_version": "0.1.0",
-    "sdk_version": 4,
+    "sdk_version": 6,
     "tags": [
         "Hydra",
         "plugin",
