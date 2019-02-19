@@ -257,6 +257,8 @@ class HRNautilus(QObject, MeshWriter, Extension):
     def changePluginInstallStatus(self, bInstallFiles):
         if bInstallFiles and not self.isInstalled():
             self.installPluginFiles()
+            message = Message(catalog.i18nc("@info:status", "Nautilus config files have been installed. Restart cura to complete installation"))
+            message.show()
         elif not bInstallFiles and self.isInstalled():
             self.uninstallPluginFiles()
 
