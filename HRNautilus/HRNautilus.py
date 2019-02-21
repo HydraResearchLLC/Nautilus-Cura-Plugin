@@ -5,18 +5,9 @@
 #
 # Written by Zach Rose
 # Based on the Dremel 3D20 plugin written by Tim Schoenmackers
-# Also based on the DuetRRF plugin written by Thomas Kriechbaumer
-# Also includes code from the GCodeWriter Plugin by Ultimaker
 #
 # the Dremel plugin source can be found here:
 # https://github.com/timmehtimmeh/Cura-Dremel-3D20-Plugin
-#
-# the Duet plugin source can be found here:
-# https://github.com/Kriechi/Cura-DuetRRFPlugin
-#
-# the GCodeWriter plugin source can be found here:
-# https://github.com/Ultimaker/Cura/tree/master/plugins/GCodeWriter
-#
 #
 # This plugin is released under the terms of the LGPLv3 or higher.
 # The full text of the LGPLv3 License can be found here:
@@ -65,7 +56,7 @@ class HRNautilus(QObject, MeshWriter, Extension):
     # 1) here
     # 2) plugin.json
     # 3) package.json
-    version = "0.2.0"
+    version = "0.2.1"
 
     ##  Dictionary that defines how characters are escaped when embedded in
     #   g-code.
