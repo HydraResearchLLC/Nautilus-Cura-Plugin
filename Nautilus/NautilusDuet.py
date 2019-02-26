@@ -11,7 +11,7 @@
 #
 # This plugin is released under the terms of the LGPLv3 or higher.
 # The full text of the LGPLv3 License can be found here:
-# https://github.com/HydraResearchLLC/HRNautilus3.6/blob/master/LICENSE
+# https://github.com/HydraResearchLLC/Nautilus/blob/master/LICENSE
 ####################################################################
 
 import re

@@ -9,9 +9,15 @@
 # the Dremel plugin source can be found here:
 # https://github.com/timmehtimmeh/Cura-Dremel-3D20-Plugin
 #
+# the GCodeWriter plugin source can be found here:
+# https://github.com/Ultimaker/Cura/tree/master/plugins/GCodeWriter
+#
+# the DuetRRFPlugin source can be found here:
+# https://github.com/Kriechi/Cura-DuetRRFPlugin
+#
 # This plugin is released under the terms of the LGPLv3 or higher.
 # The full text of the LGPLv3 License can be found here:
-# https://github.com/HydraResearchLLC/HRNautilus3.6/blob/master/LICENSE
+# https://github.com/HydraResearchLLC/Nautilus/blob/master/LICENSE
 ####################################################################
 
 import os # for listdir
@@ -151,9 +157,9 @@ class Nautilus(QObject, MeshWriter, Extension):
     # function so that the preferences menu can open website the version
     @pyqtSlot()
     def openPluginWebsite(self):
-        url = QUrl('https://github.com/HydraResearchLLC/HRNatilus3.6/releases', QUrl.TolerantMode)
+        url = QUrl('https://github.com/HydraResearchLLC/Nautilus/releases', QUrl.TolerantMode)
         if not QDesktopServices.openUrl(url):
-            message = Message(catalog.i18nc("@info:status", "Nautilus plugin could not navigate to https://github.com/HydraResearchLLC/HRNatilus3.6/releases"))
+            message = Message(catalog.i18nc("@info:status", "Nautilus plugin could not navigate to https://github.com/HydraResearchLLC/Nautilus.6/releases"))
             message.show()
         return
 
@@ -171,13 +177,13 @@ class Nautilus(QObject, MeshWriter, Extension):
 
     @pyqtSlot()
     def reportIssue(self):
-        Logger.log("i", "Nautilus Plugin opening issue page: https://github.com/HydraResearchLLC/HRNatilus3.6/issues/new")
+        Logger.log("i", "Nautilus Plugin opening issue page: https://github.com/HydraResearchLLC/Nautilus/issues/new")
         try:
-            if not QDesktopServices.openUrl(QUrl("https://github.com/HydraResearchLLC/HRNatilus3.6/issues/new")):
-                message = Message(catalog.i18nc("@info:status", "Nautilus plugin could not open https://github.com/HydraResearchLLC/HRNatilus3.6/issues/new please navigate to the page and report an issue"))
+            if not QDesktopServices.openUrl(QUrl("https://github.com/HydraResearchLLC/Nautilus/issues/new")):
+                message = Message(catalog.i18nc("@info:status", "Nautilus plugin could not open https://github.com/HydraResearchLLC/Nautilus/issues/new please navigate to the page and report an issue"))
                 message.show()
         except:
-            message = Message(catalog.i18nc("@info:status", "Nautilus plugin could not open https://github.com/HydraResearchLLC/HRNatilus3.6/issues/new please navigate to the page and report an issue"))
+            message = Message(catalog.i18nc("@info:status", "Nautilus plugin could not open https://github.com/HydraResearchLLC/Nautilus/issues/new please navigate to the page and report an issue"))
             message.show()
         return
 
