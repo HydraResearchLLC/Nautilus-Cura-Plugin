@@ -1,7 +1,7 @@
 {
     "name": "Hydra Research Nautilus Plugin",
     "author": "Zach Rose",
-    "version": "0.2.1",
+    "version": "0.2.2",
     "description": "Enables the user to add the Hyda Research Nautilus Printer and connect over WiFi.",
     "api": 5,
     "supported_sdk_versions": ["5.0.0", "6.0.0"],
