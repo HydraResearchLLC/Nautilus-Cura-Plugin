@@ -29,14 +29,14 @@ Generic TPU 95A profile. The data in this file may not be correct for your speci
 		<setting key="print cooling">30</setting>
         <machine>
             <machine_identifier manufacturer="Hydra Research" product="Hydra Research Nautilus"/>
-			<hotend id="X 0.25">
+			<hotend id="X 250">
                 <setting key="hardware compatible">no</setting>
             </hotend>
-            <hotend id="X 0.40">
+            <hotend id="X 400">
                 <setting key="hardware compatible">yes</setting>
 				<setting key="retraction amount">1.2</setting>
             </hotend>
-            <hotend id="X 0.80">
+            <hotend id="X 800">
                 <setting key="hardware compatible">yes</setting>
             </hotend>
         </machine>
