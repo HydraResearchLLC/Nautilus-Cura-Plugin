@@ -55,7 +55,7 @@ UM.Dialog
             text: "Are Nautilus Printer Files Installed? "
             ToolTip.timeout: 5000
             ToolTip.visible: hovered
-            ToolTip.text: "Deselect this to uninstall the Nautilus printer files \n Select it to install the files."
+            ToolTip.text: "Deselect this to uninstall the Nautilus printer files \nSelect it to install the files."
             checked: checkInstallStatus(UM.Preferences.getValue("Nautilus/install_status"))
             onClicked: manager.changePluginInstallStatus(checked)
           } //end Switch

@@ -402,5 +402,5 @@ class Nautilus(QObject, MeshWriter, Extension):
         if restartRequired:
             self._application.getPreferences().setValue("Nautilus/install_status", "uninstalled")
             self._application.getPreferences().writeToFile(Resources.getStoragePath(Resources.Preferences, self._application.getApplicationName() + ".cfg"))
-            message = Message(catalog.i18nc("@info:status", "Nautilus files have been uninstalled.  Please restart Cura to complete uninstallation"))
+            message = Message(catalog.i18nc("@info:status", "Nautilus files have been uninstalled, please restart Cura to complete uninstallation. To avoid an error message, remove your Nautilus from your active printers in the 'Manage Printers' menu."))
             message.show()

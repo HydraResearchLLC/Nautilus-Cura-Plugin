@@ -33,8 +33,8 @@ UM.Dialog
             iconName: "list-add";
             onClicked: {
                 instanceDialog.oldName = "";
-                instanceDialog.name = "My Nautilus";
-                instanceDialog.url = "http://192.168.1.42";
+                instanceDialog.name = "Nautilus";
+                instanceDialog.url = "http://";
                 instanceDialog.duet_password = "";
                 instanceDialog.http_user = "";
                 instanceDialog.http_password = "";
@@ -148,7 +148,7 @@ UM.Dialog
                     elide: Text.ElideRight
                 }
 
-                Label { text: catalog.i18nc("@label", "Server Address (url)"); }
+                Label { text: catalog.i18nc("@label", "Nautilus IP Address (url)"); }
                 Text { font.bold: true; text: manager.instanceUrl(dialog.currentName); }
 
                 Label { text: catalog.i18nc("@label", "Nautilus Password"); }
@@ -212,7 +212,7 @@ UM.Dialog
                 }
 
                 Item { width: parent.width; height: displayNameLabel.height; }
-                Label { text: catalog.i18nc("@label", "Server Address (URL)"); }
+                Label { text: catalog.i18nc("@label", "Nautilus IP Address (URL)"); }
                 TextField {
                     id: urlField;
                     text: "";
