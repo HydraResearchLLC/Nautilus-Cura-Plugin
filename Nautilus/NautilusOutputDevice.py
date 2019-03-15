@@ -112,12 +112,23 @@ class NautilusOutputDevice(OutputDevice):
             self._reply.finished.connect(next_stage)
         self._reply.error.connect(self._onNetworkError)
 
+    def nameMaker(self):
+        base = Application.getInstance().getPrintInformation().baseName
+
+        mat = str(Application.getInstance().getPrintInformation().materialNames)[2:-2]
+        if mat.find('-') != -1:
+            cut = mat.find('-')-1
+            mat = mat[0:cut]
+        noz = str(Application.getInstance().getMachineManager().activeVariantName)
+        fileName = base + "_" +  mat + "_" + noz
+        return fileName
+
     def requestWrite(self, node, fileName=None, *args, **kwargs):
         if self._stage != OutputStage.ready:
             raise OutputDeviceError.DeviceBusyError()
 
         if fileName:
-            fileName = os.path.splitext(fileName)[0] + '.gcode'
+            fileName = self.nameMaker() + '.gcode'
         else:
             fileName = "%s.gcode" % Application.getInstance().getPrintInformation().jobName
         self._fileName = fileName
