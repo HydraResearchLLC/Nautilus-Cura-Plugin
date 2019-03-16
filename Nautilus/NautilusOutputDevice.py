@@ -120,7 +120,8 @@ class NautilusOutputDevice(OutputDevice):
             cut = mat.find('-')-1
             mat = mat[0:cut]
         noz = str(Application.getInstance().getMachineManager().activeVariantName)
-        fileName = base + "_" +  mat + "_" + noz
+        layerheight = str(int(Application.getInstance().getMachineManager().activeQualityLayerHeight*1000)) + 'um'
+        fileName = base + " - " +  mat + " - " + noz + " - " + layerheight
         return fileName
 
     def requestWrite(self, node, fileName=None, *args, **kwargs):
