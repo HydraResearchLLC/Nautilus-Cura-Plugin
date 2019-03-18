@@ -35,6 +35,7 @@
             </hotend>
             <hotend id="X 800">
                 <setting key="hardware compatible">yes</setting>
+				<setting key="print temperature">300</setting>
             </hotend>
         </machine>
 

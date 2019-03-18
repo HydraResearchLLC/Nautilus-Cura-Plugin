@@ -3,7 +3,7 @@
     <metadata>
         <name>
             <brand>Hydra Research</brand>
-            <material>Composite</material>
+            <material>Nylon</material>
             <color>Generic</color>
 			<label>PA-CF - ColorFabb</label>
         </name>
@@ -15,7 +15,7 @@
     </metadata>
     <properties>
         <density>1.24</density>
-        <diameter>1.75</diameter>
+        <diameter>1.77</diameter>
     </properties>
     <settings>
         <setting key="print temperature">270</setting>
