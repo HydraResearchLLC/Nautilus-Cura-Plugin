@@ -6,22 +6,21 @@
         "visible": true,
         "author": "Hydra Research",
         "manufacturer": "Hydra Research",
-		"category": "Hydra Research",
+        "category": "Hydra Research",
         "file_formats": "text/x-gcode",
         "icon": "icon_ultimaker2",
         "platform": "hydra_research_nautilus_platform.stl",
-		"has_machine_quality": true,
+        "has_machine_quality": true,
         "has_materials": true,
         "has_machine_materials": true,
-		"has_variant_materials": true,
-		"has_variants": true,
+        "has_variant_materials": true,
+        "has_variants": true,
         "variants_name": "Tool Cartridge",
         "preferred_variant_name": "X 400",
-		"preferred_quality_type": "Normal",
+        "preferred_quality_type": "Normal",
         "machine_extruder_trains":
         {
             "0": "hydra_research_nautilus_extruder"
-
         }
     },
 
@@ -41,7 +40,7 @@
         "adhesion_type": { "default_value": "skirt" },
         "machine_head_with_fans_polygon": { "default_value": [[-31,31],[34,31],[34,-40],[-31,-40]] },
         "gantry_height": { "default_value": 28 },
-		"machine_max_feedrate_x": { "default_value": 600 },
+        "machine_max_feedrate_x": { "default_value": 600 },
         "machine_max_feedrate_y": { "default_value": 600 },
         "machine_max_feedrate_z": { "default_value": 40},
         "machine_max_feedrate_e": { "default_value": 4000 },
@@ -51,7 +50,7 @@
         "machine_max_jerk_z": { "default_value": 8.3 },
         "machine_max_jerk_e": { "default_value": 13.3 },
         "machine_gcode_flavor": { "default_value": "RepRap (RepRap)" },
-		"machine_extruder_count": { "default_value": 1 },
+        "machine_extruder_count": { "default_value": 1 },
         "machine_start_gcode": {
             "default_value": "M291 P\"Tool Cartridge: {varient_name}, Material: {material_name}, and Print Surface: {material_print_surface}\" R\"This Job Uses\" S3\nM104 S{material_print_temperature_layer_0} T0 ; set extruder temp\nM140 S{material_bed_temperature_layer_0} ; set bed temp\nM98 P/sys/probeauto.g ; conduct auto bed level compensation\nG1 X-8 Y20 F6000 ; position over purge bucket\nM190 S{material_bed_temperature_layer_0} ; wait for bed temp\nM109 S{material_print_temperature_layer_0} T0; wait for extruder temp\nM83\nM572 D0 S{pressure_advance_value} ; set material pressure advance value\nT0\n;M221 S95\nM116 ; Wait for temperatures\nG1 E20 F80 ; Prime\nM98 P/sys/wipe.g ; wipe"
 			},
@@ -85,7 +84,7 @@
 		"z_seam_corner": { "value": "'z_seam_corner_inner'"},
 		"skin_no_small_gaps_heuristic": { "value": "False" },
 
-        "infill_sparse_density": {
+    "infill_sparse_density": {
 			"description": "Adjusts the density of infill of the print. WARNING: Printing with 100% infill is not recommended as it is quite sensitive to filament diameter/extrusion inconsistency.",
 			"maximum_value_warning": "90",
 			"maximum_value": "96",
@@ -113,13 +112,13 @@
 
 		"speed_print": {
 			"maximum_value_warning": "205",
-			"default_value": 200,
-			"value": "math.ceil((speed_volumetric / (line_width * layer_height)) if (speed_volumetric / (line_width * layer_height)) < 200 else 200) "
+			"default_value": 125,
+			"value": "math.ceil((speed_volumetric / (line_width * layer_height)) if (speed_volumetric / (line_width * layer_height)) < 125 else 125) "
 		},
 		"speed_infill": {
 			"maximum_value_warning": "205",
-			"default_value": 200,
-			"value": "speed_print if speed_print < 200 else 200"
+			"default_value": 125,
+			"value": "speed_print if speed_print < 125 else 125"
 		},
 		"speed_wall": {
 			"maximum_value_warning": "205",
@@ -128,28 +127,28 @@
 		},
 		"speed_wall_0": {
 			"maximum_value_warning": "205",
-			"default_value": 30,
-			"value": "math.ceil(speed_print if speed_print < 30 else speed_wall)"
+			"default_value": 25,
+			"value": "math.ceil(speed_print if speed_print < 25 else speed_wall)"
 		},
 		"speed_wall_x": {
 			"maximum_value_warning": "205",
-			"default_value": 60,
+			"default_value": 50,
 			"value": "speed_print if speed_print < speed_wall * 2 else speed_wall * 2"
 		},
 		"speed_roofing": {
 			"maximum_value_warning": "205",
-			"default_value": 60,
-			"value": "speed_print if speed_print < 60 else 60"
+			"default_value": 50,
+			"value": "speed_print if speed_print < 50 else 50"
 		},
 		"speed_topbottom": {
 			"maximum_value_warning": "205",
-			"default_value": 200,
-			"value": "speed_print if speed_print < 200 else 200"
+			"default_value": 125,
+			"value": "speed_print if speed_print < 125 else 125"
 		},
 		"speed_support": {
 			"maximum_value_warning": "205",
-			"default_value": 100,
-			"value": "speed_print if speed_print < 100 else 100"
+			"default_value": 80,
+			"value": "speed_print if speed_print < 80 else 80"
 		},
 		"speed_travel": {
 			"maximum_value_warning": "305",
@@ -315,7 +314,7 @@
                     "default_value": "Unknown",
                     "settable_per_mesh": false
 				}
-            }
+      }
 		}
 	}
 }
