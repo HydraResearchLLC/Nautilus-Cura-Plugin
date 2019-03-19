@@ -32,23 +32,13 @@ class OutputStage(Enum):
     writing = 1
 
 class DeviceType(Enum):
-    print = 0
-    simulate = 1
+
     upload = 2
 
 
 class NautilusOutputDevice(OutputDevice):
     def __init__(self, name, url, duet_password, http_user, http_password, device_type):
         self._device_type = device_type
-        """if device_type == DeviceType.print:
-            description = catalog.i18nc("@action:button", "Print on {0}").format(name)
-            name_id = name + "-print"
-            priority = 30
-        elif device_type == DeviceType.simulate:
-            description = catalog.i18nc("@action:button", "Simulate on {0}").format(name)
-            name_id = name + "-simulate"
-            priority = 20
-        elif"""
         if device_type == DeviceType.upload:
             description = catalog.i18nc("@action:button", "Upload to {0}").format(name)
             name_id = name + "-upload"
@@ -197,17 +187,6 @@ class NautilusOutputDevice(OutputDevice):
         self._stream.close()
         self.stream = None
 
-        """if self._device_type == DeviceType.simulate:
-            Logger.log("d", self._name_id + " | Simulating...")
-            if self._message:
-                self._message.hide()
-            self._message = Message(catalog.i18nc("@info:progress", "Simulating print on {}...\nPLEASE CLOSE DWC AND DO NOT INTERACT WITH THE PRINTER!").format(self._name), 0, False, -1)
-            self._message.show()
-
-            self._send('gcode', [("gcode", 'M37 P"0:/gcodes/' + self._fileName + '"')], self.onSimulationPrintStarted)
-        elif self._device_type == DeviceType.print:
-            self.onReadyToPrint()
-        el"""
         if self._device_type == DeviceType.upload:
             self._send('disconnect')
             if self._message:

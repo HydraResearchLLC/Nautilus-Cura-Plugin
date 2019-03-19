@@ -5,6 +5,8 @@
 #
 # Written by Zach Rose
 # Based on the Dremel 3D20 plugin written by Tim Schoenmackers
+# and the DuetRRF Plugin by Thomas Kriechbaumer
+# contains code from the GCodeWriter Plugin by Ultimaker
 #
 # the Dremel plugin source can be found here:
 # https://github.com/timmehtimmeh/Cura-Dremel-3D20-Plugin
@@ -62,7 +64,7 @@ class Nautilus(QObject, MeshWriter, Extension):
     # 1) here
     # 2) plugin.json
     # 3) package.json
-    version = "0.2.2"
+    version = "0.5.3"
 
     ##  Dictionary that defines how characters are escaped when embedded in
     #   g-code.
@@ -82,6 +84,7 @@ class Nautilus(QObject, MeshWriter, Extension):
         #self._application.initializationFinished.connect(self._onInitialized)
         #def _onInitialized(self):
         self.this_plugin_path=os.path.join(Resources.getStoragePath(Resources.Resources), "plugins","Nautilus","Nautilus")
+
         if not self._application.getPluginRegistry().isActivePlugin("Nautilus"):
             Logger.log("i", "Nautilus Plugin is disabled")
             return #Plug-in is disabled.
@@ -104,31 +107,41 @@ class Nautilus(QObject, MeshWriter, Extension):
         # Check to see if the user had installed the plugin in the main directory
         for fil in self.oldVersionInstalled():
             Logger.log("i", "Nautilus Plugin found files from previous install: " + fil)
-            message = Message(catalog.i18nc("@info:status", "Old Nautilus files detected.  Please delete "+ fil))
-            message.show()
-            return False
-
+            #message = Message(catalog.i18nc("@info:status", "Old Nautilus files detected.  Please delete "+ fil))
+            #message.show()
+"""
+        if self.isInstalled():
+            Logger.log("i","A previous version is installed")
+        if self.versionsMatch():
+            Logger.log("i","For some reason the versions match")
+"""
         # if the plugin was never installed, then force installation
         if self._application.getPreferences().getValue("Nautilus/install_status") is None:
             self._application.getPreferences().addPreference("Nautilus/install_status", "unknown")
+
 
         # if something got messed up, force installation
         if not self.isInstalled() and self._application.getPreferences().getValue("Nautilus/install_status") is "installed":
             self._application.getPreferences().setValue("Nautilus/install_status", "unknown")
 
+
         # if it's installed, and it's listed as uninstalled, then change that to reflect the truth
         if self.isInstalled() and self._application.getPreferences().getValue("Nautilus/install_status") is "uninstalled":
             self._application.getPreferences().setValue("Nautilus/install_status", "installed")
 
+
         # if the version isn't the same, then force installation
-        if self.isInstalled() and not self.versionsMatch():
+        if not self.versionsMatch():
             self._application.getPreferences().setValue("Nautilus/install_status", "unknown")
+
 
         # Check the preferences to see if the user uninstalled the files -
         # if so don't automatically install them
         if self._application.getPreferences().getValue("Nautilus/install_status") is "unknown":
             # if the user never installed the files, then automatically install it
             self.installPluginFiles()
+
+
         Duet=NautilusDuet.NautilusDuet()
         self.addMenuItem(catalog.i18nc("@item:inmenu","Nautilus Connections"), Duet.showSettingsDialog)
         self.addMenuItem(catalog.i18nc("@item:inmenu", "Preferences"), self.showPreferences)
@@ -189,13 +202,14 @@ class Nautilus(QObject, MeshWriter, Extension):
 
 
     def oldVersionInstalled(self):
-        cura_dir=os.path.dirname(os.path.realpath(sys.argv[0]))
-        nautilusDefinitionFile=os.path.join(cura_dir,"resources","definitions","hydra_research_nautilus.def.json")
-        nautilusExtruderFile=os.path.join(cura_dir,"resources","definitions","hydra_research_nautilus_extruder.def.json")
-        oldPluginPath=os.path.join(cura_dir,"resources","plugins","Nautilus")
-        nautilusMaterialFolder=os.path.join(cura_dir,"resources","materials","nautilusmat")
-        nautilusQualityFolder=os.path.join(cura_dir,"resources","quality","hr_nautilus")
-        nautilusVariantsFolder=os.path.join(cura_dir,"resources","variants","nautilus")
+        cura_dir=Resources.getStoragePathForType(Resources.Resources)
+        Logger.log("i", "The Nautilus plugin for cura_dir is: " +str(cura_dir))
+        nautilusDefinitionFile=os.path.join(cura_dir,"definitions","hydra_research_nautilus.def.json")
+        nautilusExtruderFile=os.path.join(cura_dir,"extruders","hydra_research_nautilus_extruder.def.json")
+        oldPluginPath=os.path.join(cura_dir,"plugins","Nautilus")
+        nautilusMaterialFolder=os.path.join(cura_dir,"materials","nautilusmat")
+        nautilusQualityFolder=os.path.join(cura_dir,"quality","hr_nautilus")
+        nautilusVariantsFolder=os.path.join(cura_dir,"variants","nautilus")
         ret = []
         if os.path.isfile(nautilusDefinitionFile):
             ret.append(nautilusDefinitionFile)
@@ -209,6 +223,7 @@ class Nautilus(QObject, MeshWriter, Extension):
             ret.append(oldPluginPath)
         if os.path.isdir(nautilusVariantsFolder):
             ret.append(nautilusVariantsFolder)
+        Logger.log("i", "Nautilus Plugin found files from previous install: " + str(ret))
         return ret
 
     # returns true if the versions match and false if they don't
@@ -235,28 +250,34 @@ class Nautilus(QObject, MeshWriter, Extension):
         nautilusMatDir = os.path.join(self.local_materials_path,"nautilusmat")
         nautilusQualityDir = os.path.join(self.local_quality_path,"hr_nautilus")
         nautilusVariantsDir = os.path.join(self.local_variants_path,"nautilus")
-
+        sstatus = 0
         # if some files are missing then return that this plugin as not installed
         if not os.path.isfile(HRNautilusDefFile):
             Logger.log("i", "Nautilus definition file is NOT installed ")
+            sstatus += 1
             return False
         if not os.path.isfile(nautilusExtruderDefFile):
             Logger.log("i", "Nautilus extruder file is NOT installed ")
+            sstatus += 1
             return False
         if not os.path.isdir(nautilusMatDir):
             Logger.log("i", "Nautilus material files are NOT installed ")
+            sstatus += 1
             return False
         if not os.path.isdir(nautilusQualityDir):
             Logger.log("i", "Nautilus quality files are NOT installed ")
+            sstatus += 1
             return False
         if not os.path.isdir(nautilusVariantsDir):
             Logger.log("i", "Nautilus variant files are NOT installed ")
+            sstatus += 1
             return False
 
         # if everything is there, return True
-        Logger.log("i", "Nautilus Plugin all files ARE installed")
-        self._application.getPreferences().setValue("Nautilus/install_status", "installed")
-        return True
+        if sstatus < 1:
+            Logger.log("i", "Nautilus Plugin all files ARE installed")
+            self._application.getPreferences().setValue("Nautilus/install_status", "installed")
+            return True
 
     # install based on preference checkbox
     @pyqtSlot(bool)
@@ -272,7 +293,6 @@ class Nautilus(QObject, MeshWriter, Extension):
     # Install the plugin files.
     def installPluginFiles(self):
         Logger.log("i", "Nautilus Plugin installing printer files")
-
         try:
             restartRequired = False
             zipdata = os.path.join(self.this_plugin_path,"Nautilus.zip")
@@ -288,12 +308,9 @@ class Nautilus(QObject, MeshWriter, Extension):
                         folder = self.local_extruder_path
                     elif info.filename.endswith("fdm_material"):
                         folder = self.local_materials_path
-                    elif info.filename.endswith("5.inst.cfg"):
-                        folder = self.local_variants_path
-                        Logger.log("i", "Finding Variants 1")
                     elif info.filename.endswith("0.inst.cfg"):
                         folder = self.local_variants_path
-                        Logger.log("i", "Finding Variants 2")
+                        Logger.log("i", "Finding Variants")
                     elif info.filename.endswith(".cfg"):
                         folder = self.local_quality_path
                         Logger.log("i", "Finding Quality")

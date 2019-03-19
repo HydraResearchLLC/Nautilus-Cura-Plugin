@@ -49,15 +49,11 @@ class NautilusDuet(QObject, Extension, OutputDevicePlugin):
     def start(self):
         manager = self.getOutputDeviceManager()
         for name, instance in self._instances.items():
-            #manager.addOutputDevice(NautilusOutputDevice.NautilusOutputDevice(name, instance["url"], instance["duet_password"], instance["http_user"], instance["http_password"], device_type=NautilusOutputDevice.DeviceType.print))
-            #manager.addOutputDevice(NautilusOutputDevice.NautilusOutputDevice(name, instance["url"], instance["duet_password"], instance["http_user"], instance["http_password"], device_type=NautilusOutputDevice.DeviceType.simulate))
             manager.addOutputDevice(NautilusOutputDevice.NautilusOutputDevice(name, instance["url"], instance["duet_password"], instance["http_user"], instance["http_password"], device_type=NautilusOutputDevice.DeviceType.upload))
 
     def stop(self):
         manager = self.getOutputDeviceManager()
         for name in self._instances.keys():
-            #manager.removeOutputDevice(name + "-print")
-            #manager.removeOutputDevice(name + "-simulate")
             manager.removeOutputDevice(name + "-upload")
 
     def _createDialog(self, qml):
@@ -118,8 +114,6 @@ class NautilusDuet(QObject, Extension, OutputDevicePlugin):
             "http_password": http_password
         }
         manager = self.getOutputDeviceManager()
-        #manager.addOutputDevice(NautilusOutputDevice.NautilusOutputDevice(name, url, duet_password, http_user, http_password, device_type=NautilusOutputDevice.DeviceType.print))
-        #manager.addOutputDevice(NautilusOutputDevice.NautilusOutputDevice(name, url, duet_password, http_user, http_password, device_type=NautilusOutputDevice.DeviceType.simulate))
         manager.addOutputDevice(NautilusOutputDevice.NautilusOutputDevice(name, url, duet_password, http_user, http_password, device_type=NautilusOutputDevice.DeviceType.upload))
         CuraApplication.getInstance().getPreferences().setValue("Nautilus/instances", json.dumps(self._instances))
         self.serverListChanged.emit()
@@ -128,8 +122,6 @@ class NautilusDuet(QObject, Extension, OutputDevicePlugin):
     @pyqtSlot(str)
     def removeInstance(self, name):
         manager = self.getOutputDeviceManager()
-        #manager.removeOutputDevice(name + "-print")
-        #manager.removeOutputDevice(name + "-simulate")
         manager.removeOutputDevice(name + "-upload")
         del self._instances[name]
         CuraApplication.getInstance().getPreferences().setValue("Nautilus/instances", json.dumps(self._instances))
