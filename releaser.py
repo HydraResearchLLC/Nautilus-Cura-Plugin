@@ -38,7 +38,8 @@ with tempfile.TemporaryDirectory() as configDirectory:
             # sort through resources: definitions, extruders, meshes,
             # materials, quality, and variants
             file = os.path.join(resourcePath, folder)
-            if os.path.basename(file) == 'definitions' or os.path.basename(file) == 'extruders' or os.path.basename(file) == 'meshes':
+            singletons = ['definitions', 'extruders', 'meshes']
+            if os.path.basename(file) in singletons:
                 copy_tree(file, configDirectory)
             elif os.path.basename(file) == 'materials':
                 filer(os.path.join(configDirectory, matContainer))
