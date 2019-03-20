@@ -30,12 +30,13 @@ def filer(filepath):
     except OSError:
         print("error creating folders for path ", str(filepath))
 
-#Create the resources zipfile in the appropriate structure for the plugin
+# Create the resources zipfile in the appropriate structure for the plugin
 with tempfile.TemporaryDirectory() as configDirectory:
     with tempfile.TemporaryDirectory() as pluginDirectory:
         filer(os.path.join(pluginDirectory, pluginPath))
         for folder in resourceList:
-            #sort through resources
+            # sort through resources: definitions, extruders, meshes,
+            # materials, quality, and variants
             file = os.path.join(resourcePath, folder)
             if os.path.basename(file) == 'definitions' or os.path.basename(file) == 'extruders' or os.path.basename(file) == 'meshes':
                 copy_tree(file, configDirectory)
@@ -49,8 +50,8 @@ with tempfile.TemporaryDirectory() as configDirectory:
                 filer(os.path.join(configDirectory, varContainer))
                 copy_tree(file, os.path.join(configDirectory, varContainer))
 
-        #Zip the resources excluding useless OSX files, this could be adapted to
-        #exclude useless files from other operating systems
+        # Zip the resources excluding useless OSX files, this could be adapted to
+        # exclude useless files from other operating systems
         with zipfile.ZipFile(resourceContainer, 'w') as zipper:
             finres = os.listdir(configDirectory)
             for res in finres:
@@ -60,13 +61,13 @@ with tempfile.TemporaryDirectory() as configDirectory:
         shutil.copy(resourceContainer, os.path.join(pluginDirectory,pluginPath))
 
 
-        #include the necessary files from the root path
+        # include the necessary files from the root path
         copy_tree(sourcePath, os.path.join(pluginDirectory,pluginPath))
         utils = ['icon.png', 'LICENSE', 'package.json']
         for util in utils:
             shutil.copy(os.path.join(path, util), pluginDirectory)
 
-        #zip the file as a .curapackage so it's ready to go
+        # zip the file as a .curapackage so it's ready to go
         with zipfile.ZipFile(pluginName, 'w') as zf:
             pluginFiles = list()
             for (dirpath, dirnames, filenames) in os.walk(pluginDirectory):
