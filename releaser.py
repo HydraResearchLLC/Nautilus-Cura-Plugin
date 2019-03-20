@@ -17,7 +17,7 @@ resourceList = os.listdir(resourcePath)
 try:
     resourceList.remove('.DS_Store')
 except:
-    print('No useless files')
+    pass
 resourceContainer = 'Nautilus.zip'
 pluginName = 'Nautilus.curapackage'
 matContainer = 'nautilusmat'
@@ -30,6 +30,22 @@ def filer(filepath):
     except OSError:
         print("error creating folders for path ", str(filepath))
 
+def getListOfFiles(dirName):
+    # create a list of file and sub directories
+    # names in the given directory
+    listOfFile = os.listdir(dirName)
+    allFiles = list()
+    # Iterate over all the entries
+    for entry in listOfFile:
+        # Create full path
+        fullPath = os.path.join(dirName, entry)
+        # If entry is a directory then get the list of files in this directory
+        if os.path.isdir(fullPath):
+            allFiles = allFiles + getListOfFiles(fullPath)
+        else:
+            allFiles.append(fullPath)
+
+    return allFiles
 
 #Create the resources zipfile in the appropriate structure for the plugin
 with tempfile.TemporaryDirectory() as configDirectory:
@@ -58,19 +74,19 @@ with tempfile.TemporaryDirectory() as configDirectory:
                 if res != '.DS_Store' and res != 'Icon\r':
                     zipper.write(os.path.join(configDirectory, res), res)
         zipper.close()
-        shutil.copy(resourceContainer, os.path.join(pluginDirectory, pluginPath))
-        #os.remove(os.path.join(path, resourceContainer))
+        shutil.copy(resourceContainer, os.path.join(pluginDirectory,pluginPath))
+
 
         #include the necessary files from the root path
-        copy_tree(sourcePath, pluginPath)
+        copy_tree(sourcePath, os.path.join(pluginDirectory,pluginPath))
         utils = ['icon.png', 'LICENSE', 'package.json']
         for util in utils:
             shutil.copy(os.path.join(path, util), pluginDirectory)
 
         #zip the file as a .curapackage so it's ready to go
-        with zipfile.ZipFile(pluginName, 'w') as zf:
-            pluginFiles = os.listdir(pluginDirectory)
+        with zipfile.ZipFile(pluginName+'.zip', 'w') as zf:
+            pluginFiles = getListOfFiles(pluginDirectory)
             for item in pluginFiles:
-                if item != '.DS_Store':
-                    zf.write(os.path.join(pluginDirectory, item), item)
+                if '.DS_Store' not in item:
+                    zf.write(os.path.join(pluginDirectory, item), os.path.relpath(item, pluginDirectory))
         zf.close()
