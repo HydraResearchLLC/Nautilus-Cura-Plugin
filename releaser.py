@@ -30,10 +30,12 @@ def filer(filepath):
     except OSError:
         print("error creating folders for path ", str(filepath))
 
-# Create the resources zipfile in the appropriate structure for the plugin
+# Create the resources temp directory in the appropriate structure for the plugin
 with tempfile.TemporaryDirectory() as configDirectory:
+    # Create the plugin temp directory
     with tempfile.TemporaryDirectory() as pluginDirectory:
         filer(os.path.join(pluginDirectory, pluginPath))
+        # Build Resources zip
         for folder in resourceList:
             # sort through resources: definitions, extruders, meshes,
             # materials, quality, and variants
@@ -70,10 +72,11 @@ with tempfile.TemporaryDirectory() as configDirectory:
 
         # zip the file as a .curapackage so it's ready to go
         with zipfile.ZipFile(pluginName, 'w') as zf:
+            #list all subdirectories
             pluginFiles = list()
             for (dirpath, dirnames, filenames) in os.walk(pluginDirectory):
                 pluginFiles += [os.path.join(dirpath, file) for file in filenames]
-
+            # add everything relevant 
             for item in pluginFiles:
                 if '.DS_Store' not in item:
                     zf.write(os.path.join(pluginDirectory, item), os.path.relpath(item, pluginDirectory))
