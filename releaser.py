@@ -86,7 +86,7 @@ with tempfile.TemporaryDirectory() as configDirectory:
             shutil.copy(os.path.join(path, util), pluginDirectory)
 
         # zip the file as a .curapackage so it's ready to go
-        with zipfile.ZipFile(pluginName+'.curapackage.zip', 'w') as zf:
+        with zipfile.ZipFile(pluginName+'.curapackage', 'w') as zf:
             pluginFiles = fileList(pluginDirectory)
             # add everything relevant
             for item in pluginFiles:
