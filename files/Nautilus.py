@@ -105,16 +105,11 @@ class Nautilus(QObject, MeshWriter, Extension):
         self.local_extruder_path = os.path.join(Resources.getStoragePath(Resources.Resources),"extruders")
         self.local_variants_path = os.path.join(Resources.getStoragePath(Resources.Resources), "variants")
         # Check to see if the user had installed the plugin in the main directory
-        for fil in self.oldVersionInstalled():
+        """for fil in self.oldVersionInstalled():
             Logger.log("i", "Nautilus Plugin found files from previous install: " + fil)
-            #message = Message(catalog.i18nc("@info:status", "Old Nautilus files detected.  Please delete "+ fil))
-            #message.show()
-"""
-        if self.isInstalled():
-            Logger.log("i","A previous version is installed")
-        if self.versionsMatch():
-            Logger.log("i","For some reason the versions match")
-"""
+            message = Message(catalog.i18nc("@info:status", "Old Nautilus files detected.  Please delete "+ fil))
+            message.show()"""
+
         # if the plugin was never installed, then force installation
         if self._application.getPreferences().getValue("Nautilus/install_status") is None:
             self._application.getPreferences().addPreference("Nautilus/install_status", "unknown")

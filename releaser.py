@@ -11,7 +11,7 @@ import shutil
 
 path = os.getcwd()
 pluginPath = os.path.join('files','plugins','Nautilus')
-sourcePath = os.path.join(path,'Nautilus')
+sourcePath = os.path.join(path,'files')
 resourcePath = os.path.join(path,'resources')
 resourceList = os.listdir(resourcePath)
 try:
@@ -19,16 +19,22 @@ try:
 except:
     pass
 resourceContainer = 'Nautilus.zip'
-pluginName = 'Nautilus.curapackage'
+pluginName = 'Nautilus'
 matContainer = 'nautilusmat'
 qualContainer = 'hr_nautilus'
 varContainer = 'nautilus'
 
-def filer(filepath):
+def filer(filePath):
     try:
-        os.makedirs(filepath)
+        os.makedirs(filePath)
     except OSError:
-        print("error creating folders for path ", str(filepath))
+        print("error creating folders for path ", str(filePath))
+
+def fileList(fileName):
+    files = list()
+    for (dirpath, dirnames, filenames) in os.walk(fileName):
+        files += [os.path.join(dirpath, file) for file in filenames]
+    return files
 
 # Create the resources temp directory in the appropriate structure for the plugin
 with tempfile.TemporaryDirectory() as configDirectory:
@@ -45,21 +51,30 @@ with tempfile.TemporaryDirectory() as configDirectory:
                 copy_tree(file, configDirectory)
             elif os.path.basename(file) == 'materials':
                 filer(os.path.join(configDirectory, matContainer))
-                copy_tree(file,os.path.join(configDirectory, matContainer))
+                matList = fileList(file)
+                mats = (mat for mat in matList if mat.endswith('.fdm_material'))
+                for mat in mats:
+                    shutil.copy(mat, os.path.join(configDirectory, matContainer))
             elif os.path.basename(file) == 'quality':
                 filer(os.path.join(configDirectory, qualContainer))
-                copy_tree(file,os.path.join(configDirectory, qualContainer))
+                qualList = fileList(file)
+                quals = (qual for qual in qualList if qual.endswith('.inst.cfg'))
+                for qual in quals:
+                    shutil.copy(qual, os.path.join(configDirectory, qualContainer))
             elif os.path.basename(file) == 'variants':
                 filer(os.path.join(configDirectory, varContainer))
-                copy_tree(file, os.path.join(configDirectory, varContainer))
+                varList = fileList(file)
+                vars = (var for var in varList if var.endswith('.inst.cfg'))
+                for var in vars:
+                    shutil.copy(var, os.path.join(configDirectory, varContainer))
 
         # Zip the resources excluding useless OSX files, this could be adapted to
         # exclude useless files from other operating systems
         with zipfile.ZipFile(resourceContainer, 'w') as zipper:
-            finres = os.listdir(configDirectory)
-            for res in finres:
+            finalResources = fileList(configDirectory)
+            for res in finalResources:
                 if res != '.DS_Store' and res != 'Icon\r':
-                    zipper.write(os.path.join(configDirectory, res), res)
+                    zipper.write(os.path.join(configDirectory, res), os.path.relpath(res,configDirectory))
         zipper.close()
         shutil.copy(resourceContainer, os.path.join(pluginDirectory,pluginPath))
 
@@ -71,12 +86,9 @@ with tempfile.TemporaryDirectory() as configDirectory:
             shutil.copy(os.path.join(path, util), pluginDirectory)
 
         # zip the file as a .curapackage so it's ready to go
-        with zipfile.ZipFile(pluginName, 'w') as zf:
-            #list all subdirectories
-            pluginFiles = list()
-            for (dirpath, dirnames, filenames) in os.walk(pluginDirectory):
-                pluginFiles += [os.path.join(dirpath, file) for file in filenames]
-            # add everything relevant 
+        with zipfile.ZipFile(pluginName+'.curapackage.zip', 'w') as zf:
+            pluginFiles = fileList(pluginDirectory)
+            # add everything relevant
             for item in pluginFiles:
                 if '.DS_Store' not in item:
                     zf.write(os.path.join(pluginDirectory, item), os.path.relpath(item, pluginDirectory))
