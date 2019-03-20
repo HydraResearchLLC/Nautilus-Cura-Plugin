@@ -30,23 +30,6 @@ def filer(filepath):
     except OSError:
         print("error creating folders for path ", str(filepath))
 
-def getListOfFiles(dirName):
-    # create a list of file and sub directories
-    # names in the given directory
-    listOfFile = os.listdir(dirName)
-    allFiles = list()
-    # Iterate over all the entries
-    for entry in listOfFile:
-        # Create full path
-        fullPath = os.path.join(dirName, entry)
-        # If entry is a directory then get the list of files in this directory
-        if os.path.isdir(fullPath):
-            allFiles = allFiles + getListOfFiles(fullPath)
-        else:
-            allFiles.append(fullPath)
-
-    return allFiles
-
 #Create the resources zipfile in the appropriate structure for the plugin
 with tempfile.TemporaryDirectory() as configDirectory:
     with tempfile.TemporaryDirectory() as pluginDirectory:
@@ -84,8 +67,11 @@ with tempfile.TemporaryDirectory() as configDirectory:
             shutil.copy(os.path.join(path, util), pluginDirectory)
 
         #zip the file as a .curapackage so it's ready to go
-        with zipfile.ZipFile(pluginName+'.zip', 'w') as zf:
-            pluginFiles = getListOfFiles(pluginDirectory)
+        with zipfile.ZipFile(pluginName, 'w') as zf:
+            pluginFiles = list()
+            for (dirpath, dirnames, filenames) in os.walk(pluginDirectory):
+                pluginFiles += [os.path.join(dirpath, file) for file in filenames]
+
             for item in pluginFiles:
                 if '.DS_Store' not in item:
                     zf.write(os.path.join(pluginDirectory, item), os.path.relpath(item, pluginDirectory))
