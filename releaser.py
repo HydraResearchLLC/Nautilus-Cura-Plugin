@@ -12,6 +12,7 @@ sourcepath = os.path.join(path,'Nautilus')
 configpath = os.path.join(path,'resources')
 resources = os.listdir(configpath)
 resources.remove('.DS_Store')
+filer(plugpath)
 
 def filer(filepath):
     try:
@@ -19,11 +20,10 @@ def filer(filepath):
     except OSError:
         print("error creating folders for path ", str(filepath))
 
-
-filer(plugpath)
-
+#Create the resources zipfile in the appropriate structure for the plugin
 with tempfile.TemporaryDirectory() as directory:
     for folder in resources:
+        #sort through resources
         file = os.path.join(configpath,folder)
         if os.path.basename(file) == 'definitions' or os.path.basename(file) == 'extruders' or os.path.basename(file) == 'meshes':
             copy_tree(file,directory)
@@ -36,6 +36,8 @@ with tempfile.TemporaryDirectory() as directory:
         elif os.path.basename(file) == 'variants':
             filer(os.path.join(directory,'nautilus'))
             copy_tree(file,os.path.join(directory,'nautilus'))
+    #Zip the resources excluding useless OSX files, this could be adapted to
+    #exclude useless files from other operating systems
     with zipfile.ZipFile('Nautilus.zip','w') as zipper:
         finres = os.listdir(directory)
         for res in finres:
@@ -45,11 +47,13 @@ with tempfile.TemporaryDirectory() as directory:
     shutil.copy2(os.path.join(path,'Nautilus.zip'),plugpath)
     os.remove(os.path.join(path,'Nautilus.zip'))
 
+#include the necessary files from the root path
 copy_tree(sourcepath,plugpath)
 utils = ['icon.png','LICENSE','package.json']
 for util in utils:
     shutil.copy2(os.path.join(path,util),basepath)
 
+#zip the file as a .curapackage so it's ready to go
 with zipfile.ZipFile('Nautilus.curapackage','w') as zf:
     pluginfiles = os.listdir(basepath)
     for item in pluginfiles:
