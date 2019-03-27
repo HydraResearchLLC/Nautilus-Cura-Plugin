@@ -18,7 +18,7 @@
         <diameter>1.75</diameter>
     </properties>
     <settings>
-        <setting key="print temperature">275</setting>
+        <setting key="print temperature">280</setting>
         <setting key="heated bed temperature">125</setting>
         <setting key="standby temperature">0</setting>
         <setting key="adhesion tendency">0</setting>

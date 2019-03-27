@@ -21,13 +21,13 @@ Generic Nylon 1.75mm profile. The data in this file may not be correct for your 
         <diameter>1.75</diameter>
     </properties>
     <settings>
-        <setting key="print temperature">240</setting>
+        <setting key="print temperature">245</setting>
         <setting key="heated bed temperature">70</setting>
         <setting key="standby temperature">175</setting>
 		<setting key="print cooling">0</setting>
         <setting key="adhesion tendency">2</setting>
         <setting key="surface energy">100</setting>
-		
+
 		<machine>
             <machine_identifier manufacturer="Hydra Research" product="Hydra Research Nautilus"/>
 			<hotend id="X 250">

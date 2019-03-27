@@ -19,7 +19,7 @@
     </properties>
     <settings>
         <setting key="print temperature">255</setting>
-        <setting key="heated bed temperature">100</setting>
+        <setting key="heated bed temperature">60</setting>
         <setting key="standby temperature">0</setting>
         <setting key="adhesion tendency">0</setting>
         <setting key="surface energy">100</setting>

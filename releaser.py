@@ -73,7 +73,7 @@ with tempfile.TemporaryDirectory() as configDirectory:
         with zipfile.ZipFile(resourceContainer, 'w') as zipper:
             finalResources = fileList(configDirectory)
             for res in finalResources:
-                if res != '.DS_Store' and res != 'Icon\r':
+                if res != '.DS_Store' and 'Icon' not in res:
                     zipper.write(os.path.join(configDirectory, res), os.path.relpath(res,configDirectory))
         zipper.close()
         shutil.copy(resourceContainer, os.path.join(pluginDirectory,pluginPath))

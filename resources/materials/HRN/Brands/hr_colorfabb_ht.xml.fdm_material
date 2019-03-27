@@ -32,10 +32,12 @@
             </hotend>
             <hotend id="X 400">
                 <setting key="hardware compatible">yes</setting>
-				<setting key="retraction amount">1.2</setting>
+			        	<setting key="retraction amount">1.2</setting>
+                <setting key="print temperature">275</setting>
             </hotend>
             <hotend id="X 800">
                 <setting key="hardware compatible">yes</setting>
+                <setting key="print temperature">275</setting>
             </hotend>
         </machine>
 
