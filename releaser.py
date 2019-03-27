@@ -8,9 +8,14 @@ from distutils.dir_util import copy_tree
 import zipfile
 import shutil
 
-
+resourceContainer = 'Nautilus.zip'
+pluginName = 'Nautilus'
+matContainer = 'nautilusmat'
+qualContainer = 'hr_nautilus'
+varContainer = 'nautilus'
 path = os.getcwd()
-pluginPath = os.path.join('files','plugins','Nautilus')
+pluginPath = os.path.join('files','plugins',pluginName)
+ultimakerReleasePath = os.path.join(path, pluginName)
 sourcePath = os.path.join(path,'files')
 resourcePath = os.path.join(path,'resources')
 resourceList = os.listdir(resourcePath)
@@ -18,11 +23,6 @@ try:
     resourceList.remove('.DS_Store')
 except:
     pass
-resourceContainer = 'Nautilus.zip'
-pluginName = 'Nautilus'
-matContainer = 'nautilusmat'
-qualContainer = 'hr_nautilus'
-varContainer = 'nautilus'
 
 def filer(filePath):
     try:
@@ -77,10 +77,12 @@ with tempfile.TemporaryDirectory() as configDirectory:
                     zipper.write(os.path.join(configDirectory, res), os.path.relpath(res,configDirectory))
         zipper.close()
         shutil.copy(resourceContainer, os.path.join(pluginDirectory,pluginPath))
-
+        filer(ultimakerReleasePath)
+        shutil.copy(resourceContainer, ultimakerReleasePath)
 
         # include the necessary files from the root path
         copy_tree(sourcePath, os.path.join(pluginDirectory,pluginPath))
+        copy_tree(sourcePath, ultimakerReleasePath)
         utils = ['icon.png', 'LICENSE', 'package.json']
         for util in utils:
             shutil.copy(os.path.join(path, util), pluginDirectory)
@@ -92,4 +94,5 @@ with tempfile.TemporaryDirectory() as configDirectory:
             for item in pluginFiles:
                 if '.DS_Store' not in item:
                     zf.write(os.path.join(pluginDirectory, item), os.path.relpath(item, pluginDirectory))
+                    shutil.copy(item,ultimakerReleasePath)
         zf.close()
