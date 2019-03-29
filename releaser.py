@@ -35,7 +35,7 @@ def fileList(fileName):
     for (dirpath, dirnames, filenames) in os.walk(fileName):
         files += [os.path.join(dirpath, file) for file in filenames]
     return files
-
+print("Update version numbers before release!")
 # Create the resources temp directory in the appropriate structure for the plugin
 with tempfile.TemporaryDirectory() as configDirectory:
     # Create the plugin temp directory
