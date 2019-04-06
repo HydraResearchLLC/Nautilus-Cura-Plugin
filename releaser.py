@@ -8,12 +8,12 @@ from distutils.dir_util import copy_tree
 import zipfile
 import shutil
 
-resourceContainer = 'Nautilus.zip'
+path = os.path.dirname(os.path.realpath(__file__))
+resourceContainer = os.path.join(path,'Nautilus.zip')
 pluginName = 'Nautilus'
 matContainer = 'nautilusmat'
 qualContainer = 'hr_nautilus'
 varContainer = 'nautilus'
-path = os.getcwd()
 pluginPath = os.path.join('files','plugins',pluginName)
 ultimakerReleasePath = os.path.join(path, pluginName)
 sourcePath = os.path.join(path,'files')
@@ -88,7 +88,7 @@ with tempfile.TemporaryDirectory() as configDirectory:
             shutil.copy(os.path.join(path, util), pluginDirectory)
 
         # zip the file as a .curapackage so it's ready to go
-        with zipfile.ZipFile(pluginName+'.curapackage', 'w') as zf:
+        with zipfile.ZipFile(os.path.join(path, pluginName+'.curapackage'), 'w') as zf:
             pluginFiles = fileList(pluginDirectory)
             # add everything relevant
             for item in pluginFiles:

@@ -16,8 +16,15 @@
         "has_variant_materials": true,
         "has_variants": true,
         "variants_name": "Tool Cartridge",
+        "preferred_material": "hr_fillamentum_pla",
         "preferred_variant_name": "X 400",
         "preferred_quality_type": "Normal",
+        "exclude_materials": ["ultimaker_abs_red", "ultimaker_abs_blue", "ultimaker_pla_white", "polymax_pla", "ultimaker_cpe_plus_white", "filo3d_pla_red", "generic_petg_175", "fabtotum_pla", "zyyx_pro_flex", "fabtotum_nylon", "ultimaker_pla_pearl-white", "ultimaker_abs_white", "ultimaker_cpe_plus_transparent", "ultimaker_abs_silver-metallic", "ultimaker_cpe_green", "imade3d_petg_pink", "imade3d_pla_pink", "ultimaker_pla_magenta",
+          "ultimaker_pp_transparent", "imade3d_petg_green", "ultimaker_cpe_transparent", "Vertex_Delta_PET", "ultimaker_tough_pla_red", "ultimaker_pla_green", "ultimaker_pla_orange", "generic_nylon_175", "ultimaker_abs_pearl-gold", "ultimaker_abs_yellow", "fiberlogy_hd_pla", "ultimaker_pla_red", "generic_pc", "generic_tpu", "fabtotum_abs", "ultimaker_pla_transparent", "polyplus_pla", "filo3d_pla", "generic_cpe", "ultimaker_cpe_white",
+          "ultimaker_tpu_white", "ultimaker_tough_pla_black", "ultimaker_abs_green", "generic_cpe_plus", "ultimaker_pc_white", "Vertex_Delta_TPU", "tizyx_pla_bois", "generic_pva_175", "generic_hips", "verbatim_bvoh_175", "dsm_novamid1070_175", "polywood_pla", "dsm_arnitel2045_175", "ultimaker_cpe_red", "Vertex_Delta_PLA", "generic_abs_175", "ultimaker_cpe_light-grey", "ultimaker_pla_blue", "ultimaker_tpu_red", "generic_cffpa",
+          "ultimaker_pla_black", "generic_pva", "ultimaker_cpe_plus_black", "ultimaker_pla_silver-metallic", "ultimaker_tpu_blue", "octofiber_pla", "ultimaker_tough_pla_green", "ultimaker_abs_black", "imade3d_pla_green", "ultimaker_cpe_yellow", "generic_tough_pla", "ultimaker_pla_yellow", "generic_pla", "generic_cffcpe", "generic_pp", "tizyx_pla", "generic_pc_175", "ultimaker_bam", "ultimaker_abs_orange", "chromatik_pla",
+          "generic_bam", "generic_nylon", "generic_abs", "tizyx_abs", "filo3d_pla_green", "generic_pla_175", "generic_gffpa", "innofill_innoflex60_175", "ultimaker_pc_transparent", "ultimaker_nylon_black", "generic_gffcpe", "ultimaker_abs_grey", "ultimaker_cpe_black", "ultimaker_tough_pla_white", "ultimaker_tpu_black", "ultimaker_pc_black", "zyyx_pro_pla", "ultimaker_nylon_transparent", "ultimaker_pva", "ultimaker_cpe_dark-grey",
+          "polyflex_pla", "generic_petg", "Vertex_Delta_ABS", "fabtotum_tpu", "generic_hips_175", "generic_cpe_175", "ultimaker_cpe_blue"],
         "machine_extruder_trains":
         {
             "0": "hydra_research_nautilus_extruder"
@@ -34,7 +41,7 @@
 		    "machine_nozzle_temp_enabled": { "value": true },
         "material_bed_temperature": { "default_value": 50 },
         "retraction_amount": { "default_value": 1 },
-        "retraction_speed": { "default_value": 25 },
+        "retraction_speed": { "default_value": 35 },
         "retraction_retract_speed": { "default_value": 35 },
         "retraction_prime_speed": { "default_value": 35 },
         "adhesion_type": { "default_value": "skirt" },
@@ -45,14 +52,14 @@
         "machine_max_feedrate_z": { "default_value": 40},
         "machine_max_feedrate_e": { "default_value": 4000 },
         "machine_max_acceleration_z": { "default_value": 800 },
-        "machine_acceleration": { "default_value": 1300},
+        "machine_acceleration": { "default_value": 2000},
         "machine_max_jerk_xy": { "default_value": 8 },
         "machine_max_jerk_z": { "default_value": 8.3 },
         "machine_max_jerk_e": { "default_value": 13.3 },
         "machine_gcode_flavor": { "default_value": "RepRap (RepRap)" },
         "machine_extruder_count": { "default_value": 1 },
         "machine_start_gcode": {
-            "default_value": "M291 P\"Tool Cartridge: {variant_name}, Material: {material_name}, and Print Surface: {material_print_surface}\" R\"This Job Uses\" S3\nM104 S{material_print_temperature_layer_0} T0 ; set extruder temp\nM140 S{material_bed_temperature_layer_0} ; set bed temp\nM98 P/sys/{variant_name} Offset.g ; Call tool offset\nM98 P/sys/probeauto.g ; conduct auto bed level compensation\nG1 X-8 Y20 F6000 ; position over purge bucket\nM190 S{material_bed_temperature_layer_0} ; wait for bed temp\nM109 S{material_print_temperature_layer_0} T0; wait for extruder temp\nM83\nM572 D0 S{pressure_advance_value} ; set material pressure advance value\nT0\n;M221 S95\nM116 ; Wait for temperatures\nG1 E20 F80 ; Prime\nM98 P/sys/wipe.g ; wipe"
+            "default_value": "M291 P\"Tool Cartridge: {variant_name}, Material: {material_name}, and Print Surface: {material_print_surface}\" R\"This Job Uses\" S3\nM104 S{material_print_temperature_layer_0} T0 ; set extruder temp\nM140 S{material_bed_temperature_layer_0} ; set bed temp\nM98 P/sys/Z-offset {variant_name}.g ; Call tool offset\nM98 P/sys/probeauto.g ; conduct auto bed level compensation\nG1 X-8 Y20 F6000 ; position over purge bucket\nM190 S{material_bed_temperature_layer_0} ; wait for bed temp\nM109 S{material_print_temperature_layer_0} T0; wait for extruder temp\nM83\nM572 D0 S{pressure_advance_value} ; set material pressure advance value\nT0\n;M221 S95\nM116 ; Wait for temperatures\nG1 E20 F80 ; Prime\nM98 P/sys/wipe.g ; wipe"
 			},
         "machine_end_gcode": {
             "default_value": "G1 E-2 F2000 ; retract filament\nM107 ; turn off fan\nG28 Z ; home z\nG1 X200 Y200 F3000 ; move to cooling position\nM140 S50 ; turn off bed\nM104 S0 ; turn off extruder\nG90 ; absolute positioning\nM291 P\"Please wait. Cooling to part removal temperature of {material_part_removal_temperature}C. Open door to speed up cooldown.\" R\"Heatbed Cooling\" S1 T0\nM190 R{material_part_removal_temperature} ; Wait to reach removal temp\nM300 S250 P1000 ; Play notification beep\nM291 P\"You may now remove your part. CAUTION! Print Surface may still be HOT!\" R\"Print Finished.\" S2\nM140 S0; Turn off bed"
@@ -61,18 +68,18 @@
 
 
 		"layer_height_0": { "value": "round(machine_nozzle_size / 1.6, 2)" },
-		"line_width": { "value": "round(machine_nozzle_size * 1.125, 3)" },
+		"line_width": { "value": "round(machine_nozzle_size * 1.125, 2)" },
 		"wall_line_width_0": { "value": "machine_nozzle_size" },
 		"wall_line_width_x": { "value": "round(line_width, 2)" },
 		"infill_line_width": { "value": "round(line_width, 2)" },
 		"roofing_line_width": { "value": "machine_nozzle_size" },
-		"initial_layer_line_width_factor": { "value": "93" },
+		"initial_layer_line_width_factor": { "value": "100" },
 
 		"wall_0_wipe_dist": { "value": "machine_nozzle_size / 2"},
 		"infill_wipe_dist": { "value": "machine_nozzle_size * .75"},
 		"wall_thickness": { "value": "wall_line_width_0 + wall_line_width_x"},
 		"roofing_layer_count": { "value": "1"},
-		"top_bottom_thickness": { "value": "wall_line_width_0 + wall_line_width_x" },
+		"top_bottom_thickness": { "value": "wall_thickness" },
 		"top_thickness": { "value": "top_bottom_thickness + layer_height" },
 		"optimize_wall_printing_order": { "value": "True" },
 		"travel_compensate_overlapping_walls_enabled": { "value": "True" },
@@ -108,7 +115,7 @@
 		"retraction_min_travel": { "value": "machine_nozzle_size * 4" },
 		"retraction_count_max": { "value": "10" },
 		"retraction_extrusion_window": { "value": "1"},
-		"retraction_extra_prime_amount": { "value": "coasting_volume" },
+		"retraction_extra_prime_amount": { "value": "0 if not coasting_enable else coasting_volume" },
 
 		"speed_print": {
 			"maximum_value_warning": "205",
@@ -128,7 +135,7 @@
 		"speed_wall_0": {
 			"maximum_value_warning": "205",
 			"default_value": 25,
-			"value": "math.ceil(speed_print if speed_print < 25 else speed_wall)"
+			"value": "math.ceil(speed_print if speed_print < speed_wall else speed_wall)"
 		},
 		"speed_wall_x": {
 			"maximum_value_warning": "205",
@@ -169,15 +176,15 @@
 
 		"speed_slowdown_layers": { "value": "1" },
 		"acceleration_enabled": { "value": "True" },
-		"acceleration_print": { "value": "1200" },
+		"acceleration_print": { "value": "3000" },
 		"acceleration_wall": { "value": "700" },
 		"acceleration_wall_0": { "value": "500" },
-		"acceleration_travel": { "value": "1200"},
+		"acceleration_travel": { "value": "3000"},
 		"jerk_enabled": { "value": "True" },
-		"jerk_print": { "value": "8" },
+		"jerk_print": { "value": "10" },
 		"jerk_wall": { "value": "7" },
 		"jerk_wall_0": { "value": "7" },
-		"jerk_travel": { "value": "8" },
+		"jerk_travel": { "value": "10" },
 
 
 		"retraction_combing": { "value": "'off'" },
@@ -218,7 +225,7 @@
 
 		"slicing_tolorance": { "value": "'middle'" },
 		"minimum_polygon_circumference": { "value": "machine_nozzle_size * 2 " },
-		"coasting_enable": { "value": "True" },
+		"coasting_enable": { "value": "False" },
 		"coasting_volume": { "value": "(machine_nozzle_size ** 3) / 2" },
 		"coasting_min_volume": { "value": "(machine_nozzle_size ** 3) * 2" },
 		"coasting_speed": { "value": "speed_wall_0" },

@@ -2,10 +2,10 @@
 <fdmmaterial xmlns="http://www.ultimaker.com/material" version="1.3">
     <metadata>
         <name>
-            <brand>Hydra Research</brand>
+            <brand>ColorFabb</brand>
             <material>Co-polyester</material>
             <color>Generic</color>
-			<label>XT-CF20 - ColorFabb</label>
+			<label>XT-CF20</label>
         </name>
         <GUID>506c9f0d-e3aa-4bd4-b2d2-23e2425b1aa9</GUID>
         <version>9</version>
@@ -40,6 +40,9 @@
             <hotend id="X 800">
                 <setting key="hardware compatible">yes</setting>
                 <setting key="print temperature">265</setting>
+            </hotend>
+            <hotend id="BR 250">
+                <setting key="hardware compatible">no</setting>
             </hotend>
         </machine>
 
