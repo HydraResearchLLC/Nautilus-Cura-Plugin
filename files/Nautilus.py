@@ -49,6 +49,7 @@ from UM.Qt.Duration import DurationFormat
 from UM.Qt.Bindings.Theme import Theme
 from UM.PluginRegistry import PluginRegistry
 from . import NautilusDuet
+from . import Upgrader
 from cura.CuraApplication import CuraApplication
 
 from PyQt5.QtWidgets import QApplication, QFileDialog
@@ -113,28 +114,30 @@ class Nautilus(QObject, MeshWriter, Extension):
         # if the plugin was never installed, then force installation
         if self._application.getPreferences().getValue("Nautilus/install_status") is None:
             self._application.getPreferences().addPreference("Nautilus/install_status", "unknown")
-
+            Logger.log("i","1")
 
         # if something got messed up, force installation
         if not self.isInstalled() and self._application.getPreferences().getValue("Nautilus/install_status") is "installed":
             self._application.getPreferences().setValue("Nautilus/install_status", "unknown")
-
+            Logger.log("i","2")
 
         # if it's installed, and it's listed as uninstalled, then change that to reflect the truth
         if self.isInstalled() and self._application.getPreferences().getValue("Nautilus/install_status") is "uninstalled":
             self._application.getPreferences().setValue("Nautilus/install_status", "installed")
-
+            Logger.log("i","3")
 
         # if the version isn't the same, then force installation
         if not self.versionsMatch():
             self._application.getPreferences().setValue("Nautilus/install_status", "unknown")
-
+            Logger.log("i","4")
 
         # Check the preferences to see if the user uninstalled the files -
         # if so don't automatically install them
         if self._application.getPreferences().getValue("Nautilus/install_status") is "unknown":
             # if the user never installed the files, then automatically install it
+            Logger.log("i","5")
             self.installPluginFiles()
+
 
 
         Duet=NautilusDuet.NautilusDuet()
@@ -282,12 +285,16 @@ class Nautilus(QObject, MeshWriter, Extension):
             message = Message(catalog.i18nc("@info:status", "Nautilus config files have been installed. Restart cura to complete installation"))
             message.show()
         elif not bInstallFiles and self.isInstalled():
-            self.uninstallPluginFiles()
+            self.uninstallPluginFiles(False)
 
 
     # Install the plugin files.
     def installPluginFiles(self):
         Logger.log("i", "Nautilus Plugin installing printer files")
+        upper = Upgrader.Upgrader()
+        value = upper.configFixer()
+        if value:
+            self.uninstallPluginFiles(value)
         try:
             restartRequired = False
             zipdata = os.path.join(self.this_plugin_path,"Nautilus.zip")
@@ -337,7 +344,7 @@ class Nautilus(QObject, MeshWriter, Extension):
 
 
     # Uninstall the plugin files.
-    def uninstallPluginFiles(self):
+    def uninstallPluginFiles(self, quiet):
         Logger.log("i", "Nautilus Plugin uninstalling plugin files")
         restartRequired = False
         # remove the printer definition file
@@ -411,7 +418,7 @@ class Nautilus(QObject, MeshWriter, Extension):
             Logger.logException("d", "An exception occurred in Nautilus Plugin while uninstalling files")
 
         # prompt the user to restart
-        if restartRequired:
+        if restartRequired and quiet == False:
             self._application.getPreferences().setValue("Nautilus/install_status", "uninstalled")
             self._application.getPreferences().writeToFile(Resources.getStoragePath(Resources.Preferences, self._application.getApplicationName() + ".cfg"))
             message = Message(catalog.i18nc("@info:status", "Nautilus files have been uninstalled, please restart Cura to complete uninstallation. To avoid an error message, remove your Nautilus from your active printers in the 'Manage Printers' menu."))
