@@ -63,7 +63,7 @@ class Upgrader:
         Logger.log("i","Number of changed variants: "+str(len(oldVars)))
         return oldMats, oldVars, oldQuals
 
-    def comparison(self,removedFiles,configCache):
+    def cachePatch(self,removedFiles,configCache):
         #this function takes in cached config files and looks for deprecated Resources
         #if one is found, it replaces it with the relevant empty value for that resource
         parser = configparser.ConfigParser()
@@ -90,6 +90,8 @@ class Upgrader:
                             emptyval = 'hrn_X_400'
                         else:
                             emptyval = 'huh?'
+                            Logger.log("i","We've replaced a setting we shouldn't've!")
+                            Logger.log("i","It's "+str(val)+" in "+str(key))
                         parser[section][key]=emptyval
                         #Logger.log("i","Replacing with: "+emptyval)
                     else:
@@ -112,7 +114,7 @@ class Upgrader:
                 if "autilus" in file and "autilus" not in dirpath and file.endswith(".cfg"):
                     #Logger.log("i","!!!@"+os.path.join(dirpath,file))
                     files.append(os.path.join(dirpath,file))
-        self.comparison(dMats,files)
-        self.comparison(dQuals,files)
-        self.comparison(dVars,files)
+        self.cachePatch(dMats,files)
+        self.cachePatch(dQuals,files)
+        self.cachePatch(dVars,files)
         return truth
