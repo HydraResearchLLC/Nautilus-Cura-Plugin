@@ -92,7 +92,6 @@ UM.Dialog
                     id: catalog1
                     name: "cura"
                 }
-                anchors.left: versionNO.left
                 text: catalog1.i18nc("@action:button", "Report Issue")
                 onClicked: manager.reportIssue()
             }
@@ -105,7 +104,6 @@ UM.Dialog
                     id: catalog
                     name: "cura"
                 }
-                anchors.right: versionNO.right
                 text: catalog.i18nc("@action:button", "Help")
                 onClicked: manager.showHelp()
             }
