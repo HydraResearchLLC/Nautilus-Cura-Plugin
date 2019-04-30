@@ -114,6 +114,7 @@ class Upgrader:
                 if "autilus" in file and "autilus" not in dirpath and file.endswith(".cfg"):
                     #Logger.log("i","!!!@"+os.path.join(dirpath,file))
                     files.append(os.path.join(dirpath,file))
+        Logger.log("i","There are "+str(len(files))+" cache files to mess with")
         self.cachePatch(dMats,files)
         self.cachePatch(dQuals,files)
         self.cachePatch(dVars,files)

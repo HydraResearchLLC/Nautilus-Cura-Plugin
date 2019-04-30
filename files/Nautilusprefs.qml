@@ -12,7 +12,7 @@ UM.Dialog
     id: base
     property string installStatusText
 
-    minimumWidth: 380 * screenScaleFactor
+    minimumWidth: 275 * screenScaleFactor
     minimumHeight: 200 * screenScaleFactor
     title: catalog.i18nc("@label", "Nautilus Plugin Preferences")
 
@@ -28,49 +28,61 @@ UM.Dialog
 
     function checkInstallStatus(prefVal) {
         if(prefVal == "installed") {
-            return true
-        } else if(val == "uninstalled" || val == undefined ) {
-            return false
-        } else {
-            return val
+            return "Nautilus files ARE installed"
+        } else  {
+            return "Nautilus files are NOT installed"
         }
     }
 
+    function buttonStatus(prefVal) {
+        if(prefVal == "installed") {
+            return "Uninstall plugin files"
+        } else {
+            return "Install plugin files"
+        }
+    }
 
-    ColumnLayout {
+    function checkedStatus(prefVal) {
+        if(prefVal == "installed") {
+            return "checked"
+        } else {
+            return
+        }
+    }
+
+    GridLayout {
       id: col1
+      rows: 4
+      columns: 2
+      flow: GridLayout.ToptoBottom
       anchors.fill: parent
-      anchors.margins: margin
+          Label{
+            id: versionNO
+            text: "Nautilus Plugin Version "+ manager.getVersion
+            font.bold: true
+            font.pointSize: 18
+            Layout.columnSpan: 2
+          }
 
-        ColumnLayout {
-          id: rowLayout
-          Layout.fillWidth: true
-
-          width: parent.width
-          height: parent.height
-
-
-          Switch {
+          Label {
             id: installCB
-            text: "Are Nautilus Printer Files Installed? "
-            ToolTip.timeout: 5000
-            ToolTip.visible: hovered
-            ToolTip.text: "Deselect this to uninstall the Nautilus printer files \nSelect it to install the files."
-            checked: checkInstallStatus(UM.Preferences.getValue("Nautilus/install_status"))
-            onClicked: manager.changePluginInstallStatus(checked)
-          } //end Switch
-        } // end columnlayout
+            anchors.horizontalCenter: parent.horizontalCenter
+            text: checkInstallStatus(UM.Preferences.getValue("Nautilus/install_status"))
+            Layout.columnSpan: 2
+            //setEnabled(false)
+            //checked:
 
-        RowLayout {
-            id: buttonRow
-            width: parent.width
-            anchors.bottom: parent.bottom
-            Button
-            {
-                id: button1
-                text: qsTr("Open plugin website")
-                onClicked: manager.openPluginWebsite()
-            }
+          } //end Switch
+          Button
+          {
+            id: button1
+            anchors.horizontalCenter: parent.horizontalCenter
+            text: qsTr(buttonStatus(UM.Preferences.getValue("Nautilus/install_status")))
+            onClicked: manager.changePluginInstallStatus("checked")
+            Layout.columnSpan:2
+          }
+
+        // end columnlayout
 
             Button
             {
@@ -98,4 +110,3 @@ UM.Dialog
         } // end RowLayout
 
     } // end ColumnLayout
-}

@@ -54,7 +54,7 @@ from cura.CuraApplication import CuraApplication
 
 from PyQt5.QtWidgets import QApplication, QFileDialog
 from PyQt5.QtGui import QPixmap, QScreen, QColor, qRgb, QImageReader, QImage, QDesktopServices
-from PyQt5.QtCore import QByteArray, QBuffer, QIODevice, QRect, Qt, QSize, pyqtSlot, QObject, QUrl, pyqtSlot
+from PyQt5.QtCore import QByteArray, QBuffer, QIODevice, QRect, Qt, QSize, pyqtSlot, QObject, QUrl, pyqtProperty
 
 
 catalog = i18nCatalog("cura")
@@ -65,7 +65,7 @@ class Nautilus(QObject, MeshWriter, Extension):
     # 1) here
     # 2) plugin.json
     # 3) package.json
-    version = "0.7.0"
+    version = "0.7.1"
 
     ##  Dictionary that defines how characters are escaped when embedded in
     #   g-code.
@@ -143,10 +143,7 @@ class Nautilus(QObject, MeshWriter, Extension):
         Duet=NautilusDuet.NautilusDuet()
         self.addMenuItem(catalog.i18nc("@item:inmenu","Nautilus Connections"), Duet.showSettingsDialog)
         self.addMenuItem(catalog.i18nc("@item:inmenu", "Preferences"), self.showPreferences)
-        self.addMenuItem(catalog.i18nc("@item:inmenu", "Report Issue"), self.reportIssue)
-        self.addMenuItem(catalog.i18nc("@item:inmenu", "Help "), self.showHelp)
-        self.addMenuItem(catalog.i18nc("@item:inmenu", "Nautilus Printer Plugin Version "+Nautilus.version), self.openPluginWebsite)
-
+        
         # finally save the cura.cfg file
         self._application.getPreferences().writeToFile(Resources.getStoragePath(Resources.Preferences, self._application.getApplicationName() + ".cfg"))
 
@@ -198,6 +195,11 @@ class Nautilus(QObject, MeshWriter, Extension):
             message.show()
         return
 
+    @pyqtProperty(str)
+    def getVersion(self):
+        numba = Nautilus.version
+        Logger.log("i","Nailed it!"+numba)
+        return str(numba)
 
     def oldVersionInstalled(self):
         cura_dir=Resources.getStoragePathForType(Resources.Resources)
@@ -284,7 +286,8 @@ class Nautilus(QObject, MeshWriter, Extension):
             self.installPluginFiles()
             message = Message(catalog.i18nc("@info:status", "Nautilus config files have been installed. Restart cura to complete installation"))
             message.show()
-        elif not bInstallFiles and self.isInstalled():
+        elif self.isInstalled():
+            Logger.log("i","Uninstalling")
             self.uninstallPluginFiles(False)
 
 
@@ -421,5 +424,5 @@ class Nautilus(QObject, MeshWriter, Extension):
         if restartRequired and quiet == False:
             self._application.getPreferences().setValue("Nautilus/install_status", "uninstalled")
             self._application.getPreferences().writeToFile(Resources.getStoragePath(Resources.Preferences, self._application.getApplicationName() + ".cfg"))
-            message = Message(catalog.i18nc("@info:status", "Nautilus files have been uninstalled, please restart Cura to complete uninstallation. To avoid an error message, remove your Nautilus from your active printers in the 'Manage Printers' menu."))
+            message = Message(catalog.i18nc("@info:status", "Nautilus files have been uninstalled, please restart Cura to complete uninstallation."))
             message.show()

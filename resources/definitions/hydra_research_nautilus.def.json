@@ -340,7 +340,7 @@
                     "description": "Minimum volumetric speed allowed for this material. Limits the minimum printing speed to the minimum material volumetric speed.",
                     "unit": "mm³/s",
                     "type": "float",
-                    "minimum_value": "0.1",
+                    "minimum_value": "0",
                     "maximum_value_warning": "25",
                     "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
                     "default_value": 0.1,
