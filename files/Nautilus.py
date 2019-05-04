@@ -143,7 +143,7 @@ class Nautilus(QObject, MeshWriter, Extension):
         Duet=NautilusDuet.NautilusDuet()
         self.addMenuItem(catalog.i18nc("@item:inmenu","Nautilus Connections"), Duet.showSettingsDialog)
         self.addMenuItem(catalog.i18nc("@item:inmenu", "Preferences"), self.showPreferences)
-        
+
         # finally save the cura.cfg file
         self._application.getPreferences().writeToFile(Resources.getStoragePath(Resources.Preferences, self._application.getApplicationName() + ".cfg"))
 
@@ -424,5 +424,5 @@ class Nautilus(QObject, MeshWriter, Extension):
         if restartRequired and quiet == False:
             self._application.getPreferences().setValue("Nautilus/install_status", "uninstalled")
             self._application.getPreferences().writeToFile(Resources.getStoragePath(Resources.Preferences, self._application.getApplicationName() + ".cfg"))
-            message = Message(catalog.i18nc("@info:status", "Nautilus files have been uninstalled, please restart Cura to complete uninstallation."))
+            message = Message(catalog.i18nc("@info:status", "Nautilus files have been uninstalled, please restart Cura to complete uninstallation. If you have a Nautilus in your active printers, remove it to avoid an error message."))
             message.show()

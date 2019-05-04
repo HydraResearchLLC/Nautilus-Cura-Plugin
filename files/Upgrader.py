@@ -68,36 +68,39 @@ class Upgrader:
         #if one is found, it replaces it with the relevant empty value for that resource
         parser = configparser.ConfigParser()
         for config in configCache:
-            parser.read(config)
-            #Logger.log("i","the file is: "+str(config))
-            section = 'containers'
-            for key,val in parser.items(section):
-                #Logger.log("i","Checking value: "+str(val))
-                for removedFile in removedFiles:
-                    #Logger.log("i","Looking for: '"+removedFile+"'!")
-                    #Logger.log("i", "In: "+str(val)+"!")
-                    #Logger.log("i", "And: "+str(key)+"!")
-                    if str(removedFile) in str(val) or str(removedFile) is str(val):
-                        #Logger.log("i","Removing: "+str(val))
-                        #Logger.log("i", "From key: "+str(key))
-                        if key == '1':
-                            emptyval = 'empty_quality_changes'
-                        elif key == '2':
-                            emptyval = 'empty_quality'
-                        elif key == '3':
-                            emptyval = 'empty_material'
-                        elif key == '4':
-                            emptyval = 'hrn_X_400'
+            try:
+                parser.read(config)
+                Logger.log("i","the file is: "+str(config))
+                section = 'containers'
+                for key,val in parser.items(section):
+                    #Logger.log("i","Checking value: "+str(val))
+                    for removedFile in removedFiles:
+                        #Logger.log("i","Looking for: '"+removedFile+"'!")
+                        #Logger.log("i", "In: "+str(val)+"!")
+                        #Logger.log("i", "And: "+str(key)+"!")
+                        if str(removedFile) in str(val) or str(removedFile) is str(val):
+                            #Logger.log("i","Removing: "+str(val))
+                            #Logger.log("i", "From key: "+str(key))
+                            if key == '1':
+                                emptyval = 'empty_quality_changes'
+                            elif key == '2':
+                                emptyval = 'empty_quality'
+                            elif key == '3':
+                                emptyval = 'empty_material'
+                            elif key == '4':
+                                emptyval = 'hrn_X_400'
+                            else:
+                                emptyval = 'huh?'
+                                Logger.log("i","We've replaced a setting we shouldn't've!")
+                                Logger.log("i","It's "+str(val)+" in "+str(key))
+                            parser[section][key]=emptyval
+                            #Logger.log("i","Replacing with: "+emptyval)
                         else:
-                            emptyval = 'huh?'
-                            Logger.log("i","We've replaced a setting we shouldn't've!")
-                            Logger.log("i","It's "+str(val)+" in "+str(key))
-                        parser[section][key]=emptyval
-                        #Logger.log("i","Replacing with: "+emptyval)
-                    else:
-                        continue
-            with open(config, 'w') as configfile:
-                parser.write(configfile)
+                            continue
+            except:
+                Logger.log("i","That file was useless")
+        with open(config, 'w') as configfile:
+            parser.write(configfile)
         return
 
 

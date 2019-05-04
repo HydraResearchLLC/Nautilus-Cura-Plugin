@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Generic PETG 1.75mm profile. The data in this file may not be correct for your specific machine.
+-->
+<fdmmaterial xmlns="http://www.ultimaker.com/material" version="1.3" xmlns:cura="http://www.ultimaker.com/cura">>
+    <metadata>
+        <name>
+            <brand>Generic</brand>
+            <material>Co-polyester</material>
+            <color>Generic</color>
+			<label>CPE HG100</label>
+        </name>
+        <GUID>69386c85-5b6c-421a-bec5-aeb1fb33f060</GUID>
+        <version>2</version>
+        <color_code>#f3a112</color_code>
+        <description>CPE(co-polyester)is simular to PETG is chemically resistant and good for mechanical and end use parts..</description>
+        <adhesion_info>The PEI print Surface is reccomended</adhesion_info>
+    </metadata>
+    <properties>
+        <density>1.38</density>
+        <diameter>1.75</diameter>
+    </properties>
+    <settings>
+        <setting key="print temperature">265</setting>
+        <setting key="heated bed temperature">85</setting>
+        <setting key="standby temperature">0</setting>
+		    <setting key="print cooling">40</setting>
+        <cura:setting key="pressure_advance_value">0.09</cura:setting>
+        <cura:setting key="speed_volumetric_max">8</cura:setting>
+        <cura:setting key="speed_volumetric_min">0.01</cura:setting>
+        <cura:setting key="material_flow">100</cura:setting>
+        <cura:setting key="material_name">CPE - Generic</cura:setting>
+        <cura:setting key="material_print_surface">PEI</cura:setting>
+
+		<machine>
+            <machine_identifier manufacturer="Hydra Research" product="Hydra Research Nautilus"/>
+            <hotend id="X 400">
+                <setting key="hardware compatible">yes</setting>
+            </hotend>
+            <hotend id="X 800">
+                <setting key="hardware compatible">yes</setting>
+            </hotend>
+            <hotend id="B 250">
+                <setting key="hardware compatible">yes</setting>
+                <setting key="print temperature">250</setting>
+            </hotend>
+        </machine>
+    </settings>
+</fdmmaterial>
