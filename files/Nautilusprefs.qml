@@ -12,8 +12,8 @@ UM.Dialog
     id: base
     property string installStatusText
 
-    minimumWidth: 275 * screenScaleFactor
-    minimumHeight: 200 * screenScaleFactor
+    minimumWidth: 450 * screenScaleFactor
+    minimumHeight: 400 * screenScaleFactor
     title: catalog.i18nc("@label", "Nautilus Plugin Preferences")
 
     function checkBooleanVals(val) {
@@ -58,6 +58,7 @@ UM.Dialog
       anchors.fill: parent
           Label{
             id: versionNO
+            anchors.horizontalCenter: parent.horizontalCenter
             text: "Nautilus Plugin Version "+ manager.getVersion
             font.bold: true
             font.pointSize: 18

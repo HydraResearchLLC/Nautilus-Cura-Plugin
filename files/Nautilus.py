@@ -65,7 +65,7 @@ class Nautilus(QObject, MeshWriter, Extension):
     # 1) here
     # 2) plugin.json
     # 3) package.json
-    version = "0.7.1"
+    version = "0.7.5"
 
     ##  Dictionary that defines how characters are escaped when embedded in
     #   g-code.
@@ -98,6 +98,7 @@ class Nautilus(QObject, MeshWriter, Extension):
         self.local_quality_path = None
         self.local_extruder_path = None
         self.local_variants_path = None
+        self.local_setvis_path = None
         Logger.log("i", "Nautilus Plugin setting up")
         self.local_meshes_path = os.path.join(Resources.getStoragePathForType(Resources.Resources), "meshes")
         self.local_printer_def_path = Resources.getStoragePath(Resources.DefinitionContainers)#os.path.join(Resources.getStoragePath(Resources.Resources),"definitions")
@@ -105,6 +106,7 @@ class Nautilus(QObject, MeshWriter, Extension):
         self.local_quality_path = os.path.join(Resources.getStoragePath(Resources.Resources), "quality")
         self.local_extruder_path = os.path.join(Resources.getStoragePath(Resources.Resources),"extruders")
         self.local_variants_path = os.path.join(Resources.getStoragePath(Resources.Resources), "variants")
+        self.local_setvis_path = os.path.join(Resources.getStoragePath(Resources.Resources), "setting_visibility")
         # Check to see if the user had installed the plugin in the main directory
         """for fil in self.oldVersionInstalled():
             Logger.log("i", "Nautilus Plugin found files from previous install: " + fil)
@@ -210,6 +212,7 @@ class Nautilus(QObject, MeshWriter, Extension):
         nautilusMaterialFolder=os.path.join(cura_dir,"materials","nautilusmat")
         nautilusQualityFolder=os.path.join(cura_dir,"quality","hr_nautilus")
         nautilusVariantsFolder=os.path.join(cura_dir,"variants","nautilus")
+        nautilusSetVisFile=os.path.join(cura_dir,"setting_visibility")
         ret = []
         if os.path.isfile(nautilusDefinitionFile):
             ret.append(nautilusDefinitionFile)
@@ -223,6 +226,8 @@ class Nautilus(QObject, MeshWriter, Extension):
             ret.append(oldPluginPath)
         if os.path.isdir(nautilusVariantsFolder):
             ret.append(nautilusVariantsFolder)
+        if os.path.isfile(nautilusSetVisFile):
+            ret.append(nautilusSetVisFile)
         Logger.log("i", "Nautilus Plugin found files from previous install: " + str(ret))
         return ret
 
@@ -250,6 +255,7 @@ class Nautilus(QObject, MeshWriter, Extension):
         nautilusMatDir = os.path.join(self.local_materials_path,"nautilusmat")
         nautilusQualityDir = os.path.join(self.local_quality_path,"hr_nautilus")
         nautilusVariantsDir = os.path.join(self.local_variants_path,"nautilus")
+        nautilusSettingVisFile = os.path.join(self.local_setvis_path,'nautilus.cfg')
         sstatus = 0
         # if some files are missing then return that this plugin as not installed
         if not os.path.isfile(HRNautilusDefFile):
@@ -270,6 +276,10 @@ class Nautilus(QObject, MeshWriter, Extension):
             return False
         if not os.path.isdir(nautilusVariantsDir):
             Logger.log("i", "Nautilus variant files are NOT installed ")
+            sstatus += 1
+            return False
+        if not os.path.isfile(nautilusSettingVisFile):
+            Logger.log("i","Nautilus setting visibility file is NOT installed")
             sstatus += 1
             return False
 
@@ -311,6 +321,8 @@ class Nautilus(QObject, MeshWriter, Extension):
                         folder = self.local_printer_def_path
                     elif info.filename == "hydra_research_nautilus_extruder.def.json":
                         folder = self.local_extruder_path
+                    elif info.filename == "nautilus.cfg":
+                        folder = self.local_setvis_path
                     elif info.filename.endswith("fdm_material"):
                         folder = self.local_materials_path
                     elif info.filename.endswith("0.inst.cfg"):
@@ -419,6 +431,16 @@ class Nautilus(QObject, MeshWriter, Extension):
                 restartRequired = True
         except: # Installing a new plugin should never crash the application.
             Logger.logException("d", "An exception occurred in Nautilus Plugin while uninstalling files")
+
+        #remove the setting visibility file
+        try:
+            nautilusSettingVisFile = os.path.join(self.local_setvis_path,"nautilus.cfg")
+            if os.path.isfile(naut):
+                Logger.log("i", "Nautilus Plugin removing setting visibility file from" +nautilusSettingVisFile)
+                os.remove(nautilusSettingVisFile)
+                restartRequired = True
+        except: # Installing a new plugin should never crash the application.
+            Logger.logException("d","An exception occurred in Nautilus Plugin while uninstalling files")
 
         # prompt the user to restart
         if restartRequired and quiet == False:

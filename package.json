@@ -9,8 +9,8 @@
     "display_name": "Hydra Research Nautilus",
     "package_id": "Nautilus",
     "package_type": "plugin",
-    "package_version": "0.7.1",
-    "sdk_version": 5,
+    "package_version": "0.7.5",
+    "sdk_version": 6,
     "tags": [
         "Hydra",
         "plugin",

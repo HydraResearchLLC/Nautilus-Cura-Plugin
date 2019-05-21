@@ -8,6 +8,8 @@ from distutils.dir_util import copy_tree
 import zipfile
 import shutil
 
+excludedMaterials = ['xtcf20','pacf','htpla']
+excludedMats = []
 path = os.path.dirname(os.path.realpath(__file__))
 resourceContainer = os.path.join(path,'Nautilus.zip')
 pluginName = 'Nautilus'
@@ -35,7 +37,7 @@ def fileList(fileName):
     for (dirpath, dirnames, filenames) in os.walk(fileName):
         files += [os.path.join(dirpath, file) for file in filenames]
     return files
-print("Update version numbers before release!")
+
 # Create the resources temp directory in the appropriate structure for the plugin
 with tempfile.TemporaryDirectory() as configDirectory:
     # Create the plugin temp directory
@@ -46,7 +48,7 @@ with tempfile.TemporaryDirectory() as configDirectory:
             # sort through resources: definitions, extruders, meshes,
             # materials, quality, and variants
             file = os.path.join(resourcePath, folder)
-            singletons = ['definitions', 'extruders', 'meshes']
+            singletons = ['definitions', 'extruders', 'meshes','setting_visibility']
             if os.path.basename(file) in singletons:
                 copy_tree(file, configDirectory)
             elif os.path.basename(file) == 'materials':
@@ -54,19 +56,24 @@ with tempfile.TemporaryDirectory() as configDirectory:
                 matList = fileList(file)
                 mats = (mat for mat in matList if mat.endswith('.fdm_material'))
                 for mat in mats:
-                    shutil.copy(mat, os.path.join(configDirectory, matContainer))
+                    if not any(noWay in mat for noWay in excludedMaterials):
+                            shutil.copy(mat, os.path.join(configDirectory, matContainer))
+                    else:
+                        excludedMats.append(os.path.basename(mat))
             elif os.path.basename(file) == 'quality':
                 filer(os.path.join(configDirectory, qualContainer))
                 qualList = fileList(file)
                 quals = (qual for qual in qualList if qual.endswith('.inst.cfg'))
                 for qual in quals:
-                    shutil.copy(qual, os.path.join(configDirectory, qualContainer))
+                    if not any(noWay in qual for noWay in excludedMaterials):
+                            shutil.copy(qual, os.path.join(configDirectory, qualContainer))
             elif os.path.basename(file) == 'variants':
                 filer(os.path.join(configDirectory, varContainer))
                 varList = fileList(file)
                 vars = (var for var in varList if var.endswith('.inst.cfg'))
                 for var in vars:
                     shutil.copy(var, os.path.join(configDirectory, varContainer))
+
 
         # Zip the resources excluding useless OSX files, this could be adapted to
         # exclude useless files from other operating systems
@@ -96,3 +103,6 @@ with tempfile.TemporaryDirectory() as configDirectory:
                     zf.write(os.path.join(pluginDirectory, item), os.path.relpath(item, pluginDirectory))
                     shutil.copy(item,ultimakerReleasePath)
         zf.close()
+        print("Update version numbers before release!")
+        print("Double Check Excluded Materials!")
+        print("Right now, they are: ", excludedMats)

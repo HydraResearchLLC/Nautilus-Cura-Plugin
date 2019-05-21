@@ -97,10 +97,11 @@ class Upgrader:
                             #Logger.log("i","Replacing with: "+emptyval)
                         else:
                             continue
+                with open(config, 'w') as configfile:
+                    parser.write(configfile)
             except:
                 Logger.log("i","That file was useless")
-        with open(config, 'w') as configfile:
-            parser.write(configfile)
+
         return
 
 
