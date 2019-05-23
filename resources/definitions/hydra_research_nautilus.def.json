@@ -93,10 +93,10 @@
 		"skin_no_small_gaps_heuristic": { "value": "False" },
 
     "infill_sparse_density": {
-			"description": "Adjusts the density of infill of the print. WARNING: Printing with 100% infill is not recommended as it is quite sensitive to filament diameter/extrusion inconsistency.",
+			"description": "Adjusts the density of infill of the print. WARNING: Printing with 100% infill is not recommended as it is quite sensitive to filament diameter/extrusion inconsistency.IF you want a solid part use 95% infill.",
 			"maximum_value_warning": "90",
 			"maximum_value": "96",
-			"value": "20"
+			"default_value": 20
 		},
 
 		"infill_pattern": { "value": "'cubic' if infill_sparse_density < 95 else 'lines'" },

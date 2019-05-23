@@ -65,7 +65,7 @@ class Nautilus(QObject, MeshWriter, Extension):
     # 1) here
     # 2) plugin.json
     # 3) package.json
-    version = "0.7.5"
+    version = "0.8.0"
 
     ##  Dictionary that defines how characters are escaped when embedded in
     #   g-code.
@@ -255,7 +255,7 @@ class Nautilus(QObject, MeshWriter, Extension):
         nautilusMatDir = os.path.join(self.local_materials_path,"nautilusmat")
         nautilusQualityDir = os.path.join(self.local_quality_path,"hr_nautilus")
         nautilusVariantsDir = os.path.join(self.local_variants_path,"nautilus")
-        nautilusSettingVisFile = os.path.join(self.local_setvis_path,'nautilus.cfg')
+        nautilusSettingVisFile = os.path.join(self.local_setvis_path,'hydra_research_nautilus.cfg')
         sstatus = 0
         # if some files are missing then return that this plugin as not installed
         if not os.path.isfile(HRNautilusDefFile):
@@ -321,7 +321,7 @@ class Nautilus(QObject, MeshWriter, Extension):
                         folder = self.local_printer_def_path
                     elif info.filename == "hydra_research_nautilus_extruder.def.json":
                         folder = self.local_extruder_path
-                    elif info.filename == "nautilus.cfg":
+                    elif info.filename.endswith("nautilus.cfg"):
                         folder = self.local_setvis_path
                     elif info.filename.endswith("fdm_material"):
                         folder = self.local_materials_path
@@ -435,7 +435,7 @@ class Nautilus(QObject, MeshWriter, Extension):
         #remove the setting visibility file
         try:
             nautilusSettingVisFile = os.path.join(self.local_setvis_path,"nautilus.cfg")
-            if os.path.isfile(naut):
+            if os.path.isfile(nautilusSettingVisFile):
                 Logger.log("i", "Nautilus Plugin removing setting visibility file from" +nautilusSettingVisFile)
                 os.remove(nautilusSettingVisFile)
                 restartRequired = True

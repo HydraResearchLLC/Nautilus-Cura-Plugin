@@ -3,19 +3,21 @@
   <metadata>
     <name>
       <brand>Fillamentum</brand>
-      <material>ASA / ABS</material>
+      <material>Co-polyester</material>
       <color>Generic</color>
-      <label>ABS</label>
+      <label>CPE HG100</label>
     </name>
-    <GUID>506c9f0d-e3aa-4bd4-b2d2-23e242hr004</GUID>
+    <GUID>506c9f0d-e3aa-4bd4-b2d2-23e242hr005</GUID>
     <version>3</version>
-    <color_code>#8cb219</color_code>
-    <description>Tough and durable. ABS is good for mechanical parts. It is impact resistant dimensionally stable and handle temperatures up to 8</description>
+    <color_code>#f3a112</color_code>
+    <description>CPE HG100 (co-polyester) is a technical material engineered for high-quality and easy printing with features that are superior t</description>
     <adhesion_info>PEI</adhesion_info>
   </metadata>
   <properties>
-    <density>1.1</density>
+    <density>1.25</density>
     <diameter>1.75</diameter>
+    <cost>48.00</cost>
+    <weight>750</weight>
   </properties>
   <settings>
     <machine>
@@ -28,20 +30,18 @@
       </hotend>
       <hotend id="B 250">
         <setting key="hardware compatible">yes</setting>
-        <setting key="print temperature">250</setting>
       </hotend>
     </machine>
-    <setting key="print temperature">240</setting>
-    <setting key="heated bed temperature">110</setting>
+    <setting key="print temperature">265</setting>
+    <setting key="heated bed temperature">85</setting>
     <setting key="standby temperature">0</setting>
-    <setting key="adhesion tendency">0</setting>
-    <setting key="surface energy">70</setting>
-    <setting key="print cooling">0</setting>
-    <setting key="material_flow">100</setting>
-    <cura:setting key="material_name">ABS - Fillamentum</cura:setting>
+    <setting key="print cooling">40</setting>
+    <cura:setting key="material_flow">100</cura:setting>
+    <cura:setting key="material_name">CPE HG100 - Fillamentum</cura:setting>
     <cura:setting key="material_print_surface">PEI</cura:setting>
-    <cura:setting key="pressure_advance_value">0.04</cura:setting>
-    <cura:setting key="speed_volumetric_max">11</cura:setting>
+    <cura:setting key="pressure_advance_value">0.09</cura:setting>
+    <cura:setting key="speed_volumetric_max">8</cura:setting>
     <cura:setting key="speed_volumetric_min">0.01</cura:setting>
+    <cura:setting key="coasting_enable">False</cura:setting>
   </settings>
 </fdmmaterial>

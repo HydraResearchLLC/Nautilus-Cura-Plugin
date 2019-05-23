@@ -7,8 +7,8 @@
       <color>Generic</color>
       <label>PLA Extrafill</label>
     </name>
-    <GUID>506c9f0d-e3aa-4bd4-b2d2-23e242hr009</GUID>
-    <version>9</version>
+    <GUID>506c9f0d-e3aa-4bd4-b2d2-23e242hr017</GUID>
+    <version>3</version>
     <color_code>#ffc924</color_code>
     <description>Fast safe and reliable printing. PLA is ideal for the fast and reliable printing of parts and prototypes with a great surface qu</description>
     <adhesion_info>PEI</adhesion_info>
@@ -16,6 +16,8 @@
   <properties>
     <density>1.24</density>
     <diameter>1.75</diameter>
+    <cost>34.00</cost>
+    <weight>750</weight>
   </properties>
   <settings>
     <machine>
@@ -33,15 +35,16 @@
     </machine>
     <setting key="print temperature">210</setting>
     <setting key="heated bed temperature">60</setting>
-    <setting key="standby temperature">100</setting>
+    <setting key="standby temperature">0</setting>
     <setting key="adhesion tendency">0</setting>
     <setting key="surface energy">100</setting>
     <setting key="print cooling">100</setting>
-    <setting key="material_flow">100</setting>
+    <cura:setting key="material_flow">100</cura:setting>
     <cura:setting key="material_name">PLA - Fillamentum</cura:setting>
     <cura:setting key="material_print_surface">PEI</cura:setting>
     <cura:setting key="pressure_advance_value">0.047</cura:setting>
     <cura:setting key="speed_volumetric_max">15</cura:setting>
     <cura:setting key="speed_volumetric_min">0.01</cura:setting>
+    <cura:setting key="coasting_enable">False</cura:setting>
   </settings>
 </fdmmaterial>
