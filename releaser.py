@@ -16,6 +16,7 @@ pluginName = 'Nautilus'
 matContainer = 'nautilusmat'
 qualContainer = 'hr_nautilus'
 varContainer = 'nautilus'
+setvisContainer = 'hrn_settings'
 pluginPath = os.path.join('files','plugins',pluginName)
 ultimakerReleasePath = os.path.join(path, pluginName)
 sourcePath = os.path.join(path,'files')
@@ -48,7 +49,7 @@ with tempfile.TemporaryDirectory() as configDirectory:
             # sort through resources: definitions, extruders, meshes,
             # materials, quality, and variants
             file = os.path.join(resourcePath, folder)
-            singletons = ['definitions', 'extruders', 'meshes','setting_visibility']
+            singletons = ['definitions', 'extruders', 'meshes']
             if os.path.basename(file) in singletons:
                 copy_tree(file, configDirectory)
             elif os.path.basename(file) == 'materials':
@@ -73,6 +74,13 @@ with tempfile.TemporaryDirectory() as configDirectory:
                 vars = (var for var in varList if var.endswith('.inst.cfg'))
                 for var in vars:
                     shutil.copy(var, os.path.join(configDirectory, varContainer))
+            elif os.path.basename(file) == 'setting_visibility':
+                filer(os.path.join(configDirectory, setvisContainer))
+                setvisList = fileList(file)
+                settings = (set for set in setvisList if set.endswith('.cfg'))
+                for set in settings:
+                    shutil.copy(set,os.path.join(configDirectory, setvisContainer))
+
 
 
         # Zip the resources excluding useless OSX files, this could be adapted to

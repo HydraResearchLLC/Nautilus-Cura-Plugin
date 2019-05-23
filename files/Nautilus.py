@@ -212,7 +212,7 @@ class Nautilus(QObject, MeshWriter, Extension):
         nautilusMaterialFolder=os.path.join(cura_dir,"materials","nautilusmat")
         nautilusQualityFolder=os.path.join(cura_dir,"quality","hr_nautilus")
         nautilusVariantsFolder=os.path.join(cura_dir,"variants","nautilus")
-        nautilusSetVisFile=os.path.join(cura_dir,"setting_visibility")
+        nautilusSetVisFolder=os.path.join(cura_dir,"setting_visibility")
         ret = []
         if os.path.isfile(nautilusDefinitionFile):
             ret.append(nautilusDefinitionFile)
@@ -226,7 +226,7 @@ class Nautilus(QObject, MeshWriter, Extension):
             ret.append(oldPluginPath)
         if os.path.isdir(nautilusVariantsFolder):
             ret.append(nautilusVariantsFolder)
-        if os.path.isfile(nautilusSetVisFile):
+        if os.path.isfile(nautilusSetVisFolder):
             ret.append(nautilusSetVisFile)
         Logger.log("i", "Nautilus Plugin found files from previous install: " + str(ret))
         return ret
@@ -255,7 +255,7 @@ class Nautilus(QObject, MeshWriter, Extension):
         nautilusMatDir = os.path.join(self.local_materials_path,"nautilusmat")
         nautilusQualityDir = os.path.join(self.local_quality_path,"hr_nautilus")
         nautilusVariantsDir = os.path.join(self.local_variants_path,"nautilus")
-        nautilusSettingVisFile = os.path.join(self.local_setvis_path,'hydra_research_nautilus.cfg')
+        nautilusSettingVisDir = os.path.join(self.local_setvis_path,'hrn_settings')
         sstatus = 0
         # if some files are missing then return that this plugin as not installed
         if not os.path.isfile(HRNautilusDefFile):
@@ -278,7 +278,7 @@ class Nautilus(QObject, MeshWriter, Extension):
             Logger.log("i", "Nautilus variant files are NOT installed ")
             sstatus += 1
             return False
-        if not os.path.isfile(nautilusSettingVisFile):
+        if not os.path.isfile(nautilusSettingVisDir):
             Logger.log("i","Nautilus setting visibility file is NOT installed")
             sstatus += 1
             return False
@@ -434,10 +434,10 @@ class Nautilus(QObject, MeshWriter, Extension):
 
         #remove the setting visibility file
         try:
-            nautilusSettingVisFile = os.path.join(self.local_setvis_path,"nautilus.cfg")
-            if os.path.isfile(nautilusSettingVisFile):
-                Logger.log("i", "Nautilus Plugin removing setting visibility file from" +nautilusSettingVisFile)
-                os.remove(nautilusSettingVisFile)
+            nautilusSettingVisDir = os.path.join(self.local_setvis_path,"hrn_settings")
+            if os.path.isfile(nautilusSettingVisDir):
+                Logger.log("i", "Nautilus Plugin removing setting visibility files from" +nautilusSettingVisDir)
+                shutil.rmtree(nautilusSettingVisDir)
                 restartRequired = True
         except: # Installing a new plugin should never crash the application.
             Logger.logException("d","An exception occurred in Nautilus Plugin while uninstalling files")
