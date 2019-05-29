@@ -106,9 +106,7 @@ class NautilusOutputDevice(OutputDevice):
         base = Application.getInstance().getPrintInformation().baseName
 
         mat = str(Application.getInstance().getPrintInformation().materialNames)[2:-2]
-        if mat.find('-') != -1:
-            cut = mat.find('-')-1
-            mat = mat[0:cut]
+
         noz = str(Application.getInstance().getMachineManager().activeVariantName)
         layerheight = str(int(Application.getInstance().getMachineManager().activeQualityLayerHeight*1000)) + 'um'
         fileName = base + " - " +  mat + " - " + noz + " - " + layerheight

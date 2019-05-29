@@ -10,7 +10,7 @@
     "package_id": "Nautilus",
     "package_type": "plugin",
     "package_version": "0.8.0",
-    "sdk_version": 6,
+    "sdk_version": 6.1,
     "tags": [
         "Hydra",
         "plugin",

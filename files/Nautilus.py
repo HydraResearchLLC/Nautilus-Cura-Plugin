@@ -86,9 +86,6 @@ class Nautilus(QObject, MeshWriter, Extension):
         #def _onInitialized(self):
         self.this_plugin_path=os.path.join(Resources.getStoragePath(Resources.Resources), "plugins","Nautilus","Nautilus")
 
-        if not self._application.getPluginRegistry().isActivePlugin("Nautilus"):
-            Logger.log("i", "Nautilus Plugin is disabled")
-            return #Plug-in is disabled.
 
         self._preferences_window = None
 
