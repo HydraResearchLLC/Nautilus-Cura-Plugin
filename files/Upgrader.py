@@ -108,8 +108,10 @@ class Upgrader:
     def configFixer(self):
         #This finds all the config cache files and runs the previous two functions
         dMats, dVars, dQuals = self.diffMaker()
-        if len(dMats)>0 or len(dVars)>0 or len(dQuals)>0:
+        if len(dMats)>0 or len(dQuals)>0:
             truth = True
+        else:
+            truth = False
         path = Resources.getStoragePathForType(Resources.Resources)
         Logger.log("i","Cleaning cache")
         files = []

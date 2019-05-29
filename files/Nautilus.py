@@ -275,7 +275,7 @@ class Nautilus(QObject, MeshWriter, Extension):
             Logger.log("i", "Nautilus variant files are NOT installed ")
             sstatus += 1
             return False
-        if not os.path.isfile(nautilusSettingVisDir):
+        if not os.path.isdir(nautilusSettingVisDir):
             Logger.log("i","Nautilus setting visibility file is NOT installed")
             sstatus += 1
             return False
