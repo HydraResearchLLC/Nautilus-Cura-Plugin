@@ -7,7 +7,7 @@
 # This section is based on the DuetRRF Plugin by Thomas Kriechbaumer
 #
 # the DuetRRF plugin source can be found here:
-# https://github.com/Kriechi/Cura-DuetRRFPluginn
+# https://github.com/Kriechi/Cura-DuetRRFPlugin
 #
 # This plugin is released under the terms of the LGPLv3 or higher.
 # The full text of the LGPLv3 License can be found here:
