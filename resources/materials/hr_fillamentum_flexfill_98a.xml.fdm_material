@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fdmmaterial xmlns="http://www.ultimaker.com/material" version="1.3" xmlns:cura="http://www.ultimaker.com/cura">
+  <metadata>
+    <name>
+      <brand>Fillamentum</brand>
+      <material>Flexible</material>
+      <color>Generic</color>
+      <label>Flexfill 98A</label>
+    </name>
+    <GUID>506c9f0d-e3aa-4bd4-b2d2-23e242hr010</GUID>
+    <version>3</version>
+    <color_code>#b22744</color_code>
+    <description>Flexible materials are wear and abrasion resistant and have exceptional inter-layer adhesion. Common applications include grips, anti-slip parts, vibration dampening, wheels, and much more. Flexible filaments are rated on the Shore A-type Hardness scale; the higher the rating, the stiffer the filament</description>
+    <adhesion_info>Use bed adhesive</adhesion_info>
+  </metadata>
+  <properties>
+    <density>1.23</density>
+    <diameter>1.75</diameter>
+    <cost>44.00</cost>
+    <weight>500</weight>
+  </properties>
+  <settings>
+    <machine>
+      <machine_identifier manufacturer="Hydra Research" product="Hydra Research Nautilus" />
+      <hotend id="X 400">
+        <setting key="hardware compatible">yes</setting>
+      </hotend>
+      <hotend id="X 800">
+        <setting key="hardware compatible">yes</setting>
+      </hotend>
+      <hotend id="B 250">
+        <setting key="hardware compatible">no</setting>
+      </hotend>
+    </machine>
+    <setting key="print temperature">220</setting>
+    <setting key="heated bed temperature">50</setting>
+    <setting key="standby temperature">0</setting>
+    <setting key="adhesion tendency">3</setting>
+    <setting key="surface energy">100</setting>
+    <setting key="print cooling">30</setting>
+    <setting key="retraction speed">35</setting>
+    <cura:setting key="material_flow">120</cura:setting>
+    <cura:setting key="material_name">Flexfill 98A - Fillamentum</cura:setting>
+    <cura:setting key="material_print_surface">Use bed adhesive</cura:setting>
+    <cura:setting key="pressure_advance_value">0.15</cura:setting>
+    <cura:setting key="speed_volumetric_max">1.5</cura:setting>
+    <cura:setting key="speed_volumetric_min">0.01</cura:setting>
+    <cura:setting key="retraction_extra_prime_amount">0.032</cura:setting>
+    <cura:setting key="retraction_combing">noskin</cura:setting>
+    <cura:setting key="coasting_enable">False</cura:setting>
+    <cura:setting key="adhesion_type">skirt</cura:setting>
+  </settings>
+</fdmmaterial>

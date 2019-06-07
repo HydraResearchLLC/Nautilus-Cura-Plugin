@@ -65,7 +65,7 @@ class Nautilus(QObject, MeshWriter, Extension):
     # 1) here
     # 2) plugin.json
     # 3) package.json
-    version = "0.8.0"
+    version = "0.8.1"
 
     ##  Dictionary that defines how characters are escaped when embedded in
     #   g-code.
@@ -96,6 +96,7 @@ class Nautilus(QObject, MeshWriter, Extension):
         self.local_extruder_path = None
         self.local_variants_path = None
         self.local_setvis_path = None
+        self.local_global_dir = None
         Logger.log("i", "Nautilus Plugin setting up")
         self.local_meshes_path = os.path.join(Resources.getStoragePathForType(Resources.Resources), "meshes")
         self.local_printer_def_path = Resources.getStoragePath(Resources.DefinitionContainers)#os.path.join(Resources.getStoragePath(Resources.Resources),"definitions")
@@ -104,6 +105,7 @@ class Nautilus(QObject, MeshWriter, Extension):
         self.local_extruder_path = os.path.join(Resources.getStoragePath(Resources.Resources),"extruders")
         self.local_variants_path = os.path.join(Resources.getStoragePath(Resources.Resources), "variants")
         self.local_setvis_path = os.path.join(Resources.getStoragePath(Resources.Resources), "setting_visibility")
+        self.local_global_dir = os.path.join(Resources.getStoragePath(Resources.Resources),"machine_instances")
         # Check to see if the user had installed the plugin in the main directory
         """for fil in self.oldVersionInstalled():
             Logger.log("i", "Nautilus Plugin found files from previous install: " + fil)
@@ -207,9 +209,9 @@ class Nautilus(QObject, MeshWriter, Extension):
         nautilusExtruderFile=os.path.join(cura_dir,"extruders","hydra_research_nautilus_extruder.def.json")
         oldPluginPath=os.path.join(cura_dir,"plugins","Nautilus")
         nautilusMaterialFolder=os.path.join(cura_dir,"materials","nautilusmat")
-        nautilusQualityFolder=os.path.join(cura_dir,"quality","hr_nautilus")
-        nautilusVariantsFolder=os.path.join(cura_dir,"variants","nautilus")
-        nautilusSetVisFolder=os.path.join(cura_dir,"setting_visibility")
+        nautilusQualityFolder=os.path.join(cura_dir,"quality","nautilusquals")
+        nautilusVariantsFolder=os.path.join(cura_dir,"variants","nautilusvars")
+        nautilusSetVisFolder=os.path.join(cura_dir,"setting_visibility","hrn_settings")
         ret = []
         if os.path.isfile(nautilusDefinitionFile):
             ret.append(nautilusDefinitionFile)
@@ -250,8 +252,8 @@ class Nautilus(QObject, MeshWriter, Extension):
         HRNautilusDefFile = os.path.join(self.local_printer_def_path,"hydra_research_nautilus.def.json")
         nautilusExtruderDefFile = os.path.join(self.local_extruder_path,"hydra_research_nautilus_extruder.def.json")
         nautilusMatDir = os.path.join(self.local_materials_path,"nautilusmat")
-        nautilusQualityDir = os.path.join(self.local_quality_path,"hr_nautilus")
-        nautilusVariantsDir = os.path.join(self.local_variants_path,"nautilus")
+        nautilusQualityDir = os.path.join(self.local_quality_path,"nautilusquals")
+        nautilusVariantsDir = os.path.join(self.local_variants_path,"nautilusvars")
         nautilusSettingVisDir = os.path.join(self.local_setvis_path,'hrn_settings')
         sstatus = 0
         # if some files are missing then return that this plugin as not installed
@@ -441,7 +443,10 @@ class Nautilus(QObject, MeshWriter, Extension):
 
         # prompt the user to restart
         if restartRequired and quiet == False:
+            if os.path.isfile(os.path.join(self.local_global_dir,"Hydra+Research+Nautilus.global.cfg")):
+                message = Message(catalog.i18nc("@info:status","You have at least one Nautilus added into Cura. Remove it from your Preferences menu before restarting to avoid an error!"))
+                message.show()
             self._application.getPreferences().setValue("Nautilus/install_status", "uninstalled")
             self._application.getPreferences().writeToFile(Resources.getStoragePath(Resources.Preferences, self._application.getApplicationName() + ".cfg"))
-            message = Message(catalog.i18nc("@info:status", "Nautilus files have been uninstalled, please restart Cura to complete uninstallation. If you have a Nautilus in your active printers, remove it to avoid an error message."))
+            message = Message(catalog.i18nc("@info:status", "Nautilus files have been uninstalled, please restart Cura to complete uninstallation."))
             message.show()
