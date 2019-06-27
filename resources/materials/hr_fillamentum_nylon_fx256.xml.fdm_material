@@ -41,6 +41,7 @@
     <cura:setting key="material_flow">100</cura:setting>
     <cura:setting key="material_name">Nylon FX256 - Fillamentum</cura:setting>
     <cura:setting key="material_print_surface">Use bed adhesive</cura:setting>
+    <cura:setting key="cool_fan_enabled">False</cura:setting>
     <cura:setting key="pressure_advance_value">0.07</cura:setting>
     <cura:setting key="speed_volumetric_max">8</cura:setting>
     <cura:setting key="speed_volumetric_min">0.01</cura:setting>

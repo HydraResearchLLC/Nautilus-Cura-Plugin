@@ -42,6 +42,7 @@
     <cura:setting key="material_flow">120</cura:setting>
     <cura:setting key="material_name">Flex 90-98A - Generic</cura:setting>
     <cura:setting key="material_print_surface">Use bed adhesive</cura:setting>
+    <cura:setting key="cool_fan_enabled">True</cura:setting>
     <cura:setting key="pressure_advance_value">0.15</cura:setting>
     <cura:setting key="speed_volumetric_max">1.5</cura:setting>
     <cura:setting key="speed_volumetric_min">0.01</cura:setting>

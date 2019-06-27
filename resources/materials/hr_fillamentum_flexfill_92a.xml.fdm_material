@@ -42,6 +42,7 @@
     <cura:setting key="material_flow">130</cura:setting>
     <cura:setting key="material_name">Flexfill 92A - Fillamentum</cura:setting>
     <cura:setting key="material_print_surface">Use bed adhesive</cura:setting>
+    <cura:setting key="cool_fan_enabled">True</cura:setting>
     <cura:setting key="pressure_advance_value">0.2</cura:setting>
     <cura:setting key="speed_volumetric_max">1.25</cura:setting>
     <cura:setting key="speed_volumetric_min">0.01</cura:setting>

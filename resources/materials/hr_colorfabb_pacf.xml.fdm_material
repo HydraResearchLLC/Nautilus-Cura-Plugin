@@ -39,6 +39,7 @@
     <cura:setting key="material_flow">90</cura:setting>
     <cura:setting key="material_name">PA-CF  - ColorFabb</cura:setting>
     <cura:setting key="material_print_surface">Use bed adhesive</cura:setting>
+    <cura:setting key="cool_fan_enabled">True</cura:setting>
     <cura:setting key="pressure_advance_value">0.04</cura:setting>
     <cura:setting key="speed_volumetric_max">2.5</cura:setting>
     <cura:setting key="speed_volumetric_min">0.01</cura:setting>
