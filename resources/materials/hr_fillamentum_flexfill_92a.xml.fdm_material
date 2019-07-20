@@ -24,31 +24,34 @@
       <machine_identifier manufacturer="Hydra Research" product="Hydra Research Nautilus" />
       <hotend id="X 400">
         <setting key="hardware compatible">yes</setting>
+        <cura:setting key="line_width">0.4</cura:setting>
       </hotend>
       <hotend id="X 800">
         <setting key="hardware compatible">yes</setting>
+        <cura:setting key="line_width">0.8</cura:setting>
       </hotend>
       <hotend id="B 250">
         <setting key="hardware compatible">no</setting>
       </hotend>
     </machine>
-    <setting key="print temperature">220</setting>
+    <setting key="print temperature">240</setting>
     <setting key="heated bed temperature">50</setting>
     <setting key="standby temperature">0</setting>
     <setting key="adhesion tendency">3</setting>
     <setting key="surface energy">100</setting>
     <setting key="print cooling">30</setting>
     <setting key="retraction speed">35</setting>
-    <cura:setting key="material_flow">130</cura:setting>
+    <cura:setting key="material_flow">115</cura:setting>
     <cura:setting key="material_name">Flexfill 92A - Fillamentum</cura:setting>
     <cura:setting key="material_print_surface">Use bed adhesive</cura:setting>
-    <cura:setting key="cool_fan_enabled">True</cura:setting>
+    <cura:setting key="coasting_enable">True</cura:setting>
     <cura:setting key="pressure_advance_value">0.2</cura:setting>
     <cura:setting key="speed_volumetric_max">1.25</cura:setting>
     <cura:setting key="speed_volumetric_min">0.01</cura:setting>
-    <cura:setting key="retraction_extra_prime_amount">0.032</cura:setting>
+    <cura:setting key="retraction_extra_prime_amount">0.016</cura:setting>
     <cura:setting key="retraction_combing">noskin</cura:setting>
     <cura:setting key="coasting_enable">False</cura:setting>
     <cura:setting key="adhesion_type">skirt</cura:setting>
+    <cura:setting key="infill_pattern">gyroid</cura:setting>
   </settings>
 </fdmmaterial>

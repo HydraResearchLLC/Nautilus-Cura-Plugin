@@ -30,18 +30,18 @@
         <setting key="hardware compatible">no</setting>
       </hotend>
     </machine>
-    <setting key="print temperature">215</setting>
-    <setting key="heated bed temperature">60</setting>
+    <setting key="print temperature">225</setting>
+    <setting key="heated bed temperature">55</setting>
     <setting key="standby temperature">0</setting>
     <setting key="adhesion tendency">0</setting>
     <setting key="surface energy">100</setting>
-    <setting key="print cooling">60</setting>
-    <cura:setting key="material_flow">100</cura:setting>
+    <setting key="print cooling">100</setting>
+    <cura:setting key="material_flow">90</cura:setting>
     <cura:setting key="material_name">HTPLA - Proto-pasta</cura:setting>
     <cura:setting key="material_print_surface">PEI</cura:setting>
-    <cura:setting key="cool_fan_enabled">True</cura:setting>
+    <cura:setting key="coasting_enable">True</cura:setting>
     <cura:setting key="pressure_advance_value">0.047</cura:setting>
-    <cura:setting key="speed_volumetric_max">11</cura:setting>
+    <cura:setting key="speed_volumetric_max">6</cura:setting>
     <cura:setting key="speed_volumetric_min">0.01</cura:setting>
     <cura:setting key="coasting_enable">False</cura:setting>
   </settings>

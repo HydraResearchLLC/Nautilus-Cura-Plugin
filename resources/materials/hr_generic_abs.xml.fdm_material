@@ -41,7 +41,7 @@
     <cura:setting key="material_flow">95</cura:setting>
     <cura:setting key="material_name">ABS - Generic</cura:setting>
     <cura:setting key="material_print_surface">PEI</cura:setting>
-    <cura:setting key="cool_fan_enabled">True</cura:setting>
+    <cura:setting key="coasting_enable">False</cura:setting>
     <cura:setting key="pressure_advance_value">0.04</cura:setting>
     <cura:setting key="speed_volumetric_max">11</cura:setting>
     <cura:setting key="speed_volumetric_min">0.01</cura:setting>
