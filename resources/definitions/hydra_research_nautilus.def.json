@@ -40,7 +40,7 @@
         "machine_center_is_zero": { "default_value": false },
 		    "machine_nozzle_temp_enabled": { "value": true },
         "material_bed_temperature": { "default_value": 50 },
-        "retraction_amount": { "default_value": 1.5 },
+        "retraction_amount": { "default_value": 1 },
         "retraction_speed": { "default_value": 35 },
         "retraction_retract_speed": { "default_value": 35 },
         "retraction_prime_speed": { "default_value": 35 },
