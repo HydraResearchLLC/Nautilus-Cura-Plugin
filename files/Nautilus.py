@@ -34,6 +34,7 @@ import json
 import copy
 import struct
 import time
+import configparser
 
 from distutils.version import StrictVersion # for upgrade installations
 
@@ -65,7 +66,7 @@ class Nautilus(QObject, MeshWriter, Extension):
     # 1) here
     # 2) plugin.json
     # 3) package.json
-    version = "1.0.1"
+    version = "1.0.2"
 
     ##  Dictionary that defines how characters are escaped when embedded in
     #   g-code.
@@ -106,6 +107,7 @@ class Nautilus(QObject, MeshWriter, Extension):
         self.local_variants_path = os.path.join(Resources.getStoragePath(Resources.Resources), "variants")
         self.local_setvis_path = os.path.join(Resources.getStoragePath(Resources.Resources), "setting_visibility")
         self.local_global_dir = os.path.join(Resources.getStoragePath(Resources.Resources),"machine_instances")
+        self.setvers = self._application.getPreferences().getValue("metadata/setting_version")
         # Check to see if the user had installed the plugin in the main directory
         """for fil in self.oldVersionInstalled():
             Logger.log("i", "Nautilus Plugin found files from previous install: " + fil)
@@ -340,6 +342,16 @@ class Nautilus(QObject, MeshWriter, Extension):
                         permissions = os.stat(extracted_path).st_mode
                         os.chmod(extracted_path, permissions | stat.S_IEXEC) #Make these files executable.
                         Logger.log("i", "Nautilus Plugin installing " + info.filename + " to " + extracted_path)
+                        if folder is self.local_variants_path:
+                            Logger.log("i", "The variant is " + extracted_path)
+                            config = configparser.ConfigParser()
+                            config.read(extracted_path)
+                            Logger.log("i", "The sections are " + str(config.sections()))
+                            config['metadata']['setting_version']=self.setvers
+                            with open(extracted_path,'w') as configfile:
+                                config.write(configfile)
+
+
                         restartRequired = True
 
             if restartRequired and self.isInstalled():
