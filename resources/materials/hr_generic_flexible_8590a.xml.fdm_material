@@ -24,11 +24,11 @@
       <machine_identifier manufacturer="Hydra Research" product="Hydra Research Nautilus" />
       <hotend id="X 400">
         <setting key="hardware compatible">yes</setting>
-        <cura:setting key="line_width">0.4</cura:setting>
+        <setting key="line_width">0.4</setting>
       </hotend>
       <hotend id="X 800">
         <setting key="hardware compatible">yes</setting>
-        <cura:setting key="line_width">0.8</cura:setting>
+        <setting key="line_width">0.8</setting>
       </hotend>
       <hotend id="B 250">
         <setting key="hardware compatible">no</setting>
@@ -44,13 +44,12 @@
     <cura:setting key="material_flow">115</cura:setting>
     <cura:setting key="material_name">Flex 85-90A - Generic</cura:setting>
     <cura:setting key="material_print_surface">Use bed adhesive</cura:setting>
-    <cura:setting key="coasting_enable">True</cura:setting>
     <cura:setting key="pressure_advance_value">0.2</cura:setting>
     <cura:setting key="speed_volumetric_max">1.25</cura:setting>
     <cura:setting key="speed_volumetric_min">0.01</cura:setting>
     <cura:setting key="retraction_extra_prime_amount">0.016</cura:setting>
     <cura:setting key="retraction_combing">noskin</cura:setting>
-    <cura:setting key="coasting_enable">False</cura:setting>
+    <cura:setting key="retraction_enable">False</cura:setting>
     <cura:setting key="adhesion_type">skirt</cura:setting>
     <cura:setting key="infill_pattern">gyroid</cura:setting>
   </settings>

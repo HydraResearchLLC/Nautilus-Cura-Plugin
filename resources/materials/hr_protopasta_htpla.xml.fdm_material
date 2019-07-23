@@ -39,10 +39,8 @@
     <cura:setting key="material_flow">90</cura:setting>
     <cura:setting key="material_name">HTPLA - Proto-pasta</cura:setting>
     <cura:setting key="material_print_surface">PEI</cura:setting>
-    <cura:setting key="coasting_enable">True</cura:setting>
     <cura:setting key="pressure_advance_value">0.047</cura:setting>
     <cura:setting key="speed_volumetric_max">6</cura:setting>
     <cura:setting key="speed_volumetric_min">0.01</cura:setting>
-    <cura:setting key="coasting_enable">False</cura:setting>
   </settings>
 </fdmmaterial>
