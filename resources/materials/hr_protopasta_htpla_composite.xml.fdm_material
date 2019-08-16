@@ -31,14 +31,16 @@
       </hotend>
     </machine>
     <setting key="print temperature">215</setting>
-    <setting key="heated bed temperature">60</setting>
+    <setting key="heated bed temperature">55</setting>
     <setting key="standby temperature">0</setting>
     <setting key="adhesion tendency">0</setting>
     <setting key="surface energy">100</setting>
     <setting key="print cooling">60</setting>
+    <setting key="retraction amount">1</setting>
     <cura:setting key="material_flow">100</cura:setting>
     <cura:setting key="material_name">HTPLA Composite - Proto-pasta</cura:setting>
     <cura:setting key="material_print_surface">PEI</cura:setting>
+    <cura:setting key="material_door_status"> </cura:setting>
     <cura:setting key="pressure_advance_value">0.047</cura:setting>
     <cura:setting key="speed_volumetric_max">9</cura:setting>
     <cura:setting key="speed_volumetric_min">0.01</cura:setting>

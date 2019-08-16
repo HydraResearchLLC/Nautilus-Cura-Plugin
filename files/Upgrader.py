@@ -29,7 +29,7 @@ class Upgrader:
         oldVars = set(['hrn_X_250','hrn_X_400','hrn_X_800'])#set(self.fileList(os.path.join(Resources.getStoragePath(Resources.Resources),"variants","nautilus")))
         #Logger.log("i","Number of old variants: "+str(len(oldVars)))
         oldMats = set(self.fileList(os.path.join(Resources.getStoragePath(Resources.Resources), "materials","nautilusmat")))
-        oldQuals = set(self.fileList(os.path.join(Resources.getStoragePath(Resources.Resources),"quality","hr_nautilus")))
+        oldQuals = set(self.fileList(os.path.join(Resources.getStoragePath(Resources.Resources),"quality","nautilusquals")))
 
         newMats = set()
         newQuals = set()

@@ -66,7 +66,7 @@ class Nautilus(QObject, MeshWriter, Extension):
     # 1) here
     # 2) plugin.json
     # 3) package.json
-    version = "1.0.2"
+    version = "1.0.3"
 
     ##  Dictionary that defines how characters are escaped when embedded in
     #   g-code.
@@ -86,8 +86,6 @@ class Nautilus(QObject, MeshWriter, Extension):
         #self._application.initializationFinished.connect(self._onInitialized)
         #def _onInitialized(self):
         self.this_plugin_path=os.path.join(Resources.getStoragePath(Resources.Resources), "plugins","Nautilus","Nautilus")
-
-
         self._preferences_window = None
 
         self.local_meshes_path = None
@@ -108,11 +106,6 @@ class Nautilus(QObject, MeshWriter, Extension):
         self.local_setvis_path = os.path.join(Resources.getStoragePath(Resources.Resources), "setting_visibility")
         self.local_global_dir = os.path.join(Resources.getStoragePath(Resources.Resources),"machine_instances")
         self.setvers = self._application.getPreferences().getValue("metadata/setting_version")
-        # Check to see if the user had installed the plugin in the main directory
-        """for fil in self.oldVersionInstalled():
-            Logger.log("i", "Nautilus Plugin found files from previous install: " + fil)
-            message = Message(catalog.i18nc("@info:status", "Old Nautilus files detected.  Please delete "+ fil))
-            message.show()"""
 
         # if the plugin was never installed, then force installation
         if self._application.getPreferences().getValue("Nautilus/install_status") is None:
@@ -204,34 +197,6 @@ class Nautilus(QObject, MeshWriter, Extension):
         Logger.log("i","Nailed it!"+numba)
         return str(numba)
 
-    def oldVersionInstalled(self):
-        cura_dir=Resources.getStoragePathForType(Resources.Resources)
-        Logger.log("i", "The Nautilus plugin for cura_dir is: " +str(cura_dir))
-        nautilusDefinitionFile=os.path.join(cura_dir,"definitions","hydra_research_nautilus.def.json")
-        nautilusExtruderFile=os.path.join(cura_dir,"extruders","hydra_research_nautilus_extruder.def.json")
-        oldPluginPath=os.path.join(cura_dir,"plugins","Nautilus")
-        nautilusMaterialFolder=os.path.join(cura_dir,"materials","nautilusmat")
-        nautilusQualityFolder=os.path.join(cura_dir,"quality","nautilusquals")
-        nautilusVariantsFolder=os.path.join(cura_dir,"variants","nautilusvars")
-        nautilusSetVisFolder=os.path.join(cura_dir,"setting_visibility","hrn_settings")
-        ret = []
-        if os.path.isfile(nautilusDefinitionFile):
-            ret.append(nautilusDefinitionFile)
-        if os.path.isfile(nautilusExtruderFile):
-            ret.append(nautilusExtruderFile)
-        if os.path.isfile(nautilusMaterialFolder):
-            ret.append(nautilusMaterialFolder)
-        if os.path.isdir(nautilusQualityFolder):
-            ret.append(nautilusQualityFolder)
-        if os.path.isdir(oldPluginPath):
-            ret.append(oldPluginPath)
-        if os.path.isdir(nautilusVariantsFolder):
-            ret.append(nautilusVariantsFolder)
-        if os.path.isfile(nautilusSetVisFolder):
-            ret.append(nautilusSetVisFile)
-        Logger.log("i", "Nautilus Plugin found files from previous install: " + str(ret))
-        return ret
-
     # returns true if the versions match and false if they don't
     def versionsMatch(self):
         # get the currently installed plugin version number
@@ -308,6 +273,7 @@ class Nautilus(QObject, MeshWriter, Extension):
         upper = Upgrader.Upgrader()
         value = upper.configFixer()
         if value:
+            Logger.log("i","uninstall that shit")
             self.uninstallPluginFiles(value)
         try:
             restartRequired = False
@@ -425,7 +391,7 @@ class Nautilus(QObject, MeshWriter, Extension):
 
         # remove the folder containing the quality files
         try:
-            nautilusQualityDir = os.path.join(self.local_quality_path,"hr_nautilus")
+            nautilusQualityDir = os.path.join(self.local_quality_path,"nautilusquals")
             if os.path.isdir(nautilusQualityDir):
                 Logger.log("i", "Nautilus Plugin removing quality files from " + nautilusQualityDir)
                 shutil.rmtree(nautilusQualityDir)
@@ -435,7 +401,7 @@ class Nautilus(QObject, MeshWriter, Extension):
 
         #remove the folder containing the variant Files
         try:
-            nautilusVariantsDir = os.path.join(self.local_variants_path,"nautilus")
+            nautilusVariantsDir = os.path.join(self.local_variants_path,"nautilusvars")
             if os.path.isdir(nautilusVariantsDir):
                 Logger.log("i", "Nautilus Plugin removing variants files from " + nautilusVariantsDir)
                 shutil.rmtree(nautilusVariantsDir)
