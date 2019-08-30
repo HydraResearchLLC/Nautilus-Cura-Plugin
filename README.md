@@ -2,7 +2,7 @@
 Cura plugin for Nautilus printer
 
 The current file structure is essentially setup as Ultimaker wants the file structure for submission to the marketplace, not installation as a package. We strongly recommend you download the plugin from the Cura marketplace as this will streamline the process for everyone.
-# The Plugin is not currently available in the marketplace
+# The Plugin is currently available in the marketplace
 
 The printer should work just fine, but some of the profiles are not tuned perfectly
 If you wish to manually install for any reason, a properly packaged release can be found at https://github.com/HydraResearchLLC/Nautilus/releases
