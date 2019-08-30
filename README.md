@@ -9,9 +9,9 @@ If you wish to manually install for any reason, a properly packaged release can 
 
 # Installation Instructions
 
--Navigate to https://github.com/HydraResearchLLC/Nautilus/releases and download the latest version (the plugin is compatible with both 3.6 and 4.0)
+-Navigate to https://github.com/HydraResearchLLC/Nautilus/releases and download the latest version 
 
--Open Cura 3.6 or later (it is not a bad idea to have a separate install of Cura for the Nautilus if you already use Cura for other printers, especially while we're still in development)
+-Open Cura 4.0 or later (it is not a bad idea to have a separate install of Cura for the Nautilus if you already use Cura for other printers, especially while we're still in development)
 
 -Drag and drop the downloaded .curapackage onto the open Cura window.
 
