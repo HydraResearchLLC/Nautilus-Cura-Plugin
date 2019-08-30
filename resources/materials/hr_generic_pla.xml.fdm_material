@@ -30,15 +30,15 @@
       </hotend>
       <hotend id="B 250">
         <setting key="hardware compatible">yes</setting>
-        <setting key="print temperature">185</setting>
+        <setting key="print temperature">210</setting>
       </hotend>
     </machine>
-    <setting key="print temperature">210</setting>
+    <setting key="print temperature">225</setting>
     <setting key="heated bed temperature">50</setting>
     <setting key="standby temperature">0</setting>
     <setting key="adhesion tendency">0</setting>
     <setting key="surface energy">100</setting>
-    <setting key="print cooling">100</setting>
+    <setting key="print cooling">80</setting>
     <setting key="retraction amount">1</setting>
     <setting key="retraction speed">25</setting>
     <cura:setting key="material_flow">95</cura:setting>

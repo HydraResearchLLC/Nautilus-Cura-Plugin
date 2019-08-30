@@ -37,14 +37,14 @@
     <setting key="standby temperature">0</setting>
     <setting key="adhesion tendency">0</setting>
     <setting key="surface energy">70</setting>
-    <setting key="print cooling">15</setting>
+    <setting key="print cooling">40</setting>
     <setting key="retraction amount">1</setting>
     <cura:setting key="material_flow">100</cura:setting>
     <cura:setting key="material_name">Vinyl 303 - Fillamentum</cura:setting>
     <cura:setting key="material_print_surface">PEI</cura:setting>
     <cura:setting key="material_door_status">;</cura:setting>
-    <cura:setting key="pressure_advance_value">0.03</cura:setting>
-    <cura:setting key="speed_volumetric_max">11</cura:setting>
+    <cura:setting key="pressure_advance_value">0.09</cura:setting>
+    <cura:setting key="speed_volumetric_max">13</cura:setting>
     <cura:setting key="speed_volumetric_min">0.01</cura:setting>
     <cura:setting key="retraction_enable"> </cura:setting>
   </settings>
