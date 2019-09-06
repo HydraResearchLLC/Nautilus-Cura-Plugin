@@ -24,11 +24,11 @@
       <machine_identifier manufacturer="Hydra Research" product="Hydra Research Nautilus" />
       <hotend id="X 400">
         <setting key="hardware compatible">yes</setting>
-        <setting key="line_width">0.4</setting>
+        <cura:setting key="line_width">0.4</cura:setting>
       </hotend>
       <hotend id="X 800">
         <setting key="hardware compatible">yes</setting>
-        <setting key="line_width">0.8</setting>
+        <cura:setting key="line_width">0.8</cura:setting>
       </hotend>
       <hotend id="B 250">
         <setting key="hardware compatible">no</setting>
