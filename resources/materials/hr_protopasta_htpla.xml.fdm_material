@@ -25,24 +25,25 @@
       </hotend>
       <hotend id="X 800">
         <setting key="hardware compatible">yes</setting>
+        <setting key="speed_volumetric_min">1.3</setting>
       </hotend>
       <hotend id="B 250">
         <setting key="hardware compatible">no</setting>
       </hotend>
     </machine>
-    <setting key="print temperature">225</setting>
+    <setting key="print temperature">220</setting>
     <setting key="heated bed temperature">55</setting>
     <setting key="standby temperature">0</setting>
     <setting key="adhesion tendency">0</setting>
     <setting key="surface energy">100</setting>
     <setting key="print cooling">100</setting>
     <setting key="retraction amount">1</setting>
-    <cura:setting key="material_flow">90</cura:setting>
+    <cura:setting key="material_flow">100</cura:setting>
     <cura:setting key="material_name">HTPLA - Proto-pasta</cura:setting>
     <cura:setting key="material_print_surface">PEI</cura:setting>
     <cura:setting key="material_door_status"> </cura:setting>
-    <cura:setting key="pressure_advance_value">0.055</cura:setting>
-    <cura:setting key="speed_volumetric_max">6</cura:setting>
-    <cura:setting key="speed_volumetric_min">0.01</cura:setting>
+    <cura:setting key="pressure_advance_value">0.6</cura:setting>
+    <cura:setting key="speed_volumetric_max">15</cura:setting>
+    <cura:setting key="speed_volumetric_min">0.55</cura:setting>
   </settings>
 </fdmmaterial>

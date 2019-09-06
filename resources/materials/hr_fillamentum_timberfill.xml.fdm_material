@@ -39,6 +39,7 @@
     <setting key="surface energy">100</setting>
     <setting key="print cooling">100</setting>
     <setting key="retraction amount">1</setting>
+    <cura:setting key="material_flow">100</cura:setting>
     <cura:setting key="material_name">Timberfill - Fillamentum</cura:setting>
     <cura:setting key="material_print_surface">PEI</cura:setting>
     <cura:setting key="material_door_status">;</cura:setting>

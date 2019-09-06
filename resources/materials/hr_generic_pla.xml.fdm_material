@@ -27,26 +27,26 @@
       </hotend>
       <hotend id="X 800">
         <setting key="hardware compatible">yes</setting>
+        <setting key="speed_volumetric_min">0.9</setting>
       </hotend>
       <hotend id="B 250">
         <setting key="hardware compatible">yes</setting>
-        <setting key="print temperature">210</setting>
+        <setting key="print temperature">195</setting>
       </hotend>
     </machine>
-    <setting key="print temperature">225</setting>
+    <setting key="print temperature">215</setting>
     <setting key="heated bed temperature">50</setting>
     <setting key="standby temperature">0</setting>
     <setting key="adhesion tendency">0</setting>
     <setting key="surface energy">100</setting>
-    <setting key="print cooling">80</setting>
+    <setting key="print cooling">100</setting>
     <setting key="retraction amount">1</setting>
-    <setting key="retraction speed">25</setting>
-    <cura:setting key="material_flow">95</cura:setting>
+    <cura:setting key="material_flow">100</cura:setting>
     <cura:setting key="material_name">PLA - Generic</cura:setting>
     <cura:setting key="material_print_surface">PEI</cura:setting>
-    <cura:setting key="material_door_status"> </cura:setting>
+    <cura:setting key="material_door_status">;</cura:setting>
     <cura:setting key="pressure_advance_value">0.06</cura:setting>
     <cura:setting key="speed_volumetric_max">15</cura:setting>
-    <cura:setting key="speed_volumetric_min">0.01</cura:setting>
+    <cura:setting key="speed_volumetric_min">0.35</cura:setting>
   </settings>
 </fdmmaterial>

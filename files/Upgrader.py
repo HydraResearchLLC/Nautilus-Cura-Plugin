@@ -81,7 +81,9 @@ class Upgrader:
                         if str(removedFile) in str(val) or str(removedFile) is str(val):
                             #Logger.log("i","Removing: "+str(val))
                             #Logger.log("i", "From key: "+str(key))
-                            if key == '1':
+                            if key == '0':
+                                emptyval = 'Hydra Research Nautilus_user'
+                            elif key == '1':
                                 emptyval = 'empty_quality_changes'
                             elif key == '2':
                                 emptyval = 'empty_quality'
@@ -89,6 +91,10 @@ class Upgrader:
                                 emptyval = 'empty_material'
                             elif key == '4':
                                 emptyval = 'hrn_X_400'
+                            elif key == '5':
+                                emptyval = 'Hydra Research Nautilus_settings'
+                            elif key == '6':
+                                emptyval = 'hydra_research_nautilus'
                             else:
                                 emptyval = 'huh?'
                                 Logger.log("i","We've replaced a setting we shouldn't've!")
