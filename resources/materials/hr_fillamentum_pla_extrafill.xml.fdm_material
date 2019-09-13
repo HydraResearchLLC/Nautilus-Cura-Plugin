@@ -24,17 +24,16 @@
       <machine_identifier manufacturer="Hydra Research" product="Hydra Research Nautilus" />
       <hotend id="X 400">
         <setting key="hardware compatible">yes</setting>
-        <cura:setting key="speed_volumetric_min">1.3</cura:setting>
       </hotend>
       <hotend id="X 800">
         <setting key="hardware compatible">yes</setting>
       </hotend>
       <hotend id="B 250">
         <setting key="hardware compatible">yes</setting>
-        <setting key="print temperature">205</setting>
+        <setting key="print temperature">195</setting>
       </hotend>
     </machine>
-    <setting key="print temperature">220</setting>
+    <setting key="print temperature">210</setting>
     <setting key="heated bed temperature">50</setting>
     <setting key="standby temperature">0</setting>
     <setting key="adhesion tendency">0</setting>
@@ -44,9 +43,9 @@
     <cura:setting key="material_flow">100</cura:setting>
     <cura:setting key="material_name">PLA - Fillamentum</cura:setting>
     <cura:setting key="material_print_surface">PEI</cura:setting>
-    <cura:setting key="material_door_status"> </cura:setting>
+    <cura:setting key="material_door_status">;</cura:setting>
     <cura:setting key="pressure_advance_value">0.06</cura:setting>
     <cura:setting key="speed_volumetric_max">15</cura:setting>
-    <cura:setting key="speed_volumetric_min">0.55</cura:setting>
+    <cura:setting key="speed_volumetric_min">0.01</cura:setting>
   </settings>
 </fdmmaterial>

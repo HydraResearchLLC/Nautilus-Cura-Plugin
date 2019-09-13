@@ -24,7 +24,7 @@
           "ultimaker_tpu_white", "ultimaker_tough_pla_black", "ultimaker_abs_green", "generic_cpe_plus", "ultimaker_pc_white", "Vertex_Delta_TPU", "tizyx_pla_bois", "generic_pva_175", "generic_hips", "verbatim_bvoh_175", "dsm_novamid1070_175", "polywood_pla", "dsm_arnitel2045_175", "ultimaker_cpe_red", "Vertex_Delta_PLA", "generic_abs_175", "ultimaker_cpe_light-grey", "ultimaker_pla_blue", "ultimaker_tpu_red", "generic_cffpa",
           "ultimaker_pla_black", "generic_pva", "ultimaker_cpe_plus_black", "ultimaker_pla_silver-metallic", "ultimaker_tpu_blue", "octofiber_pla", "ultimaker_tough_pla_green", "ultimaker_abs_black", "imade3d_pla_green", "ultimaker_cpe_yellow", "generic_tough_pla", "ultimaker_pla_yellow", "generic_pla", "generic_cffcpe", "generic_pp", "tizyx_pla", "generic_pc_175", "ultimaker_bam", "ultimaker_abs_orange", "chromatik_pla",
           "generic_bam", "generic_nylon", "generic_abs", "tizyx_abs", "tizyx_pva", "tizyx_flex", "tizyx_petg", "filo3d_pla_green", "generic_pla_175", "generic_gffpa", "innofill_innoflex60_175", "ultimaker_pc_transparent", "ultimaker_nylon_black", "generic_gffcpe", "ultimaker_abs_grey", "ultimaker_cpe_black", "ultimaker_tough_pla_white", "ultimaker_tpu_black", "ultimaker_pc_black", "zyyx_pro_pla", "ultimaker_nylon_transparent", "ultimaker_pva", "ultimaker_cpe_dark-grey",
-          "polyflex_pla", "generic_petg", "Vertex_Delta_ABS", "fabtotum_tpu", "generic_hips_175", "generic_cpe_175", "ultimaker_cpe_blue"],
+          "polyflex_pla", "generic_petg", "Vertex_Delta_ABS", "fabtotum_tpu", "generic_hips_175", "generic_cpe_175", "ultimaker_cpe_blue","emotiontech_abs","emotiontech_petg","emotiontech_pla","emotiontech_pva-m","emotiontech_pva-oks","emotiontech_pva-s","emotiontech_tpu98a","imade3d_petg_175","imade3d_pla_175","Vertex_Delta_PLA_Glitter","Vertex_Delta_PLA_Mat","Vertex_Delta_PLA_Satin","Vertex_Delta_PLA_Wood"],
         "machine_extruder_trains":
         {
             "0": "hydra_research_nautilus_extruder"
@@ -73,7 +73,7 @@
 		"infill_line_width": { "value": "round(line_width, 2)" },
 		"roofing_line_width": { "value": "machine_nozzle_size" },
 		"initial_layer_line_width_factor": { "value": "110" },
-    "wall_min_flow": {"vale": "80"},
+    "wall_min_flow": {"value": "80"},
 
 		"wall_0_wipe_dist": { "value": "machine_nozzle_size / 2"},
 		"infill_wipe_dist": { "value": "machine_nozzle_size * .75"},
@@ -100,15 +100,15 @@
 
 		"infill_pattern": { "value": "'cubic' if infill_sparse_density < 65 else 'lines'" },
 		"zig_zaggify_infill": { "value": "gradual_infill_steps == 0" },
-		"infill_overlap": { "value": "0" },
+		"infill_overlap": { "value": "5" },
 		"skin_overlap": { "value": "0" },
 		"infill_before_walls": { "value": "False" },
 		"skin_preshrink": { "value": "line_width * 2.22" },
 
     "material_standby_temperature": { "value": "0" },
 		"material_bed_temperature_layer_0": {
-			"minimum_value_warning": "25",
-			"value": "default_material_bed_temperature - 5"
+		"minimum_value_warning": "25",
+		"value": "default_material_bed_temperature - 5"
 		},
 		"retraction_enable": { "value": "True" },
 		"retract_at_layer_change": { "value": "True" },
@@ -129,12 +129,12 @@
 		},
 		"speed_wall": {
 			"maximum_value_warning": "205",
-			"default_value": 30,
-			"value": "math.ceil(speed_print if speed_print < 30 else (speed_volumetric_min / (line_width * layer_height)) if (speed_volumetric_min / (line_width * layer_height)) > 30 else 30)"
+			"default_value": 35,
+			"value": "math.ceil(speed_print if speed_print < 35 else (speed_volumetric_min / (line_width * layer_height)) if (speed_volumetric_min / (line_width * layer_height)) > 35 else 35)"
 		},
 		"speed_wall_0": {
 			"maximum_value_warning": "205",
-			"default_value": 30,
+			"default_value": 35,
 			"value": "math.ceil(speed_print if speed_print < speed_wall else speed_wall)"
 		},
 		"speed_wall_x": {
@@ -214,7 +214,7 @@
     "cool_min_speed": {"value": "math.ceil((speed_volumetric_min / (line_width * layer_height)) if (speed_volumetric_min / (line_width * layer_height)) > 15 else speed_print if speed_print < 15 else 15)"},
 
     "support_conical_enabled": { "value": "True" },
-    "support_conical_angle": {"default_value": 35 },
+    "support_conical_angle": {"default_value": 35},
     "support_conical_min_width": { "default_value": 15 },
     "support_angle": { "value": "60" },
     "support_pattern": { "value": "'zigzag'" },
@@ -227,12 +227,20 @@
     "support_xy_distance_overhang": { "value": "wall_line_width_0" },
     "minimum_support_area": { "value": "line_width * 2"},
 		"support_interface_enable": { "value": "True" },
-		"support_interface_height": { "value": "layer_height * 5" },
+		"support_interface_height": {
+      "value": "layer_height * 3 if layer_height < 0.15 else layer_height * 2",
+      "minimum_value_warning": "layer_height * 2"
+    },
+    "support_roof_height": {"minimum_value_warning": "layer_height * 2"},
     "support_interface_density": {"value": "60"},
+    "support_interface_angles": { "value": "[90]" },
+    "support_roof_angles": { "value": "support_interface_angles" },
+    "support_bottom_angles": { "value": "support_interface_angles" },
 		"support_fan_enable": { "value": "True" },
     "support_bottom_stair_step_height": {"value": "0.3"},
     "support_offset": {"value": "1"},
     "support_interface_offset": {"value": "support_offset"},
+    "support_brim_enable": { "value": "True" },
 		"brim_width": { "default_value": 5 },
 		"skirt_gap":{ "value": "line_width * 3" },
 		"support_brim_width": { "default_value": 5},
@@ -256,7 +264,10 @@
 		"bridge_fan_speed_2": { "value": "0 if cool_fan_enabled == False else cool_fan_speed" },
     "bridge_skin_speed_2": { "value": "speed_print if speed_print < 60 else 60"},
 		"bridge_fan_speed_3": { "value": "0 if cool_fan_enabled == False else cool_fan_speed" },
-    "bridge_skin_speed_3": { "value": "speed_print if speed_print < 100 else 100"}
+    "bridge_skin_speed_3": { "value": "speed_print if speed_print < 100 else 100"},
+    "small_hole_max_size": { "value": "12" },
+    "small_feature_speed_factor": { "value": "100 if (speed_volumetric_min / (line_width * layer_height)) > speed_wall_0 * 0.7 else 70" },
+    "small_feature_speed_factor_0": { "value": "100 if (speed_volumetric_min / (line_width * layer_height)) > speed_layer_0 * 0.7 else 70" }
     },
 
 	"settings":
