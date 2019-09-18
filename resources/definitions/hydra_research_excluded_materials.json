@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "name": "Hydra Research Excluded Materials",
+  "inherits": "fdmprinter",
+  "metadata": {
+    "author": "Hydra Research",
+    "manufacturer": "Hydra Research",
+    "category": "Hydra Research",
+    "visible": false
+              }
+}

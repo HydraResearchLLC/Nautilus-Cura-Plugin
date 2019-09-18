@@ -66,7 +66,7 @@ class Nautilus(QObject, MeshWriter, Extension):
     # 1) here
     # 2) plugin.json
     # 3) package.json
-    version = "1.0.7"
+    version = "1.0.8"
 
     ##  Dictionary that defines how characters are escaped when embedded in
     #   g-code.
@@ -284,8 +284,12 @@ class Nautilus(QObject, MeshWriter, Extension):
                 for info in zip_ref.infolist():
                     Logger.log("i", "Nautilus Plugin: found in zipfile: " + info.filename )
                     folder = None
+                    flag = False
                     if info.filename == "hydra_research_nautilus.def.json":
                         folder = self.local_printer_def_path
+                    elif info.filename == "hydra_research_excluded_materials.json":
+                        folder = self.local_printer_def_path
+                        flag = True
                     elif info.filename == "hydra_research_nautilus_extruder.def.json":
                         folder = self.local_extruder_path
                     elif info.filename.endswith("nautilus.cfg"):
@@ -303,6 +307,21 @@ class Nautilus(QObject, MeshWriter, Extension):
                         if not os.path.exists(folder): #Cura doesn't create this by itself. We may have to.
                             os.mkdir(folder)
 
+                    if flag == True:
+                        cura_dir=os.path.join(os.path.dirname(os.path.realpath(sys.argv[0])),"resources","materials")
+                        materiallist = os.listdir(cura_dir)
+                        #print(materiallist)
+                        with zip_ref.open(info,'r') as f:
+                            data = f.read()
+                            obj=json.loads(data.decode('utf-8'))
+                            entry = {}
+                            obj['metadata']['exclude_materials'] = str(materiallist)
+                            Logger.log("i", "Nautilus Plugin installing excluded materials to " + folder)
+                            with open(os.path.join(folder,'hydra_research_excluded_materials.def.json'),'w') as g:
+                                g.write(json.dumps(obj,indent=4))
+                                g.close()
+                            f.close()
+                        folder = None
                     if folder is not None:
                         extracted_path = zip_ref.extract(info.filename, path = folder)
                         permissions = os.stat(extracted_path).st_mode

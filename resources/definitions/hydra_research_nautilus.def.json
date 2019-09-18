@@ -1,7 +1,7 @@
 {
     "version": 2,
     "name": "Hydra Research Nautilus",
-    "inherits": "fdmprinter",
+    "inherits": "hydra_research_excluded_materials",
     "metadata": {
         "visible": true,
         "author": "Hydra Research",
@@ -19,12 +19,6 @@
         "preferred_material": "hr_fillamentum_pla_extrafill",
         "preferred_variant_name": "X 400",
         "preferred_quality_type": "Normal",
-        "exclude_materials": ["ultimaker_abs_red", "ultimaker_abs_blue", "ultimaker_pla_white", "polymax_pla", "ultimaker_cpe_plus_white", "filo3d_pla_red", "generic_petg_175", "fabtotum_pla", "zyyx_pro_flex", "fabtotum_nylon", "ultimaker_pla_pearl-white", "ultimaker_abs_white", "ultimaker_cpe_plus_transparent", "ultimaker_abs_silver-metallic", "ultimaker_cpe_green", "imade3d_petg_pink", "imade3d_pla_pink", "ultimaker_pla_magenta",
-          "ultimaker_pp_transparent", "imade3d_petg_green", "ultimaker_cpe_transparent", "Vertex_Delta_PET", "ultimaker_tough_pla_red", "ultimaker_pla_green", "ultimaker_pla_orange", "generic_nylon_175", "ultimaker_abs_pearl-gold", "ultimaker_abs_yellow", "fiberlogy_hd_pla", "ultimaker_pla_red", "generic_pc", "generic_tpu", "generic_tpu_175", "fabtotum_abs", "ultimaker_pla_transparent", "polyplus_pla", "filo3d_pla", "generic_cpe", "ultimaker_cpe_white",
-          "ultimaker_tpu_white", "ultimaker_tough_pla_black", "ultimaker_abs_green", "generic_cpe_plus", "ultimaker_pc_white", "Vertex_Delta_TPU", "tizyx_pla_bois", "generic_pva_175", "generic_hips", "verbatim_bvoh_175", "dsm_novamid1070_175", "polywood_pla", "dsm_arnitel2045_175", "ultimaker_cpe_red", "Vertex_Delta_PLA", "generic_abs_175", "ultimaker_cpe_light-grey", "ultimaker_pla_blue", "ultimaker_tpu_red", "generic_cffpa",
-          "ultimaker_pla_black", "generic_pva", "ultimaker_cpe_plus_black", "ultimaker_pla_silver-metallic", "ultimaker_tpu_blue", "octofiber_pla", "ultimaker_tough_pla_green", "ultimaker_abs_black", "imade3d_pla_green", "ultimaker_cpe_yellow", "generic_tough_pla", "ultimaker_pla_yellow", "generic_pla", "generic_cffcpe", "generic_pp", "tizyx_pla", "generic_pc_175", "ultimaker_bam", "ultimaker_abs_orange", "chromatik_pla",
-          "generic_bam", "generic_nylon", "generic_abs", "tizyx_abs", "tizyx_pva", "tizyx_flex", "tizyx_petg", "filo3d_pla_green", "generic_pla_175", "generic_gffpa", "innofill_innoflex60_175", "ultimaker_pc_transparent", "ultimaker_nylon_black", "generic_gffcpe", "ultimaker_abs_grey", "ultimaker_cpe_black", "ultimaker_tough_pla_white", "ultimaker_tpu_black", "ultimaker_pc_black", "zyyx_pro_pla", "ultimaker_nylon_transparent", "ultimaker_pva", "ultimaker_cpe_dark-grey",
-          "polyflex_pla", "generic_petg", "Vertex_Delta_ABS", "fabtotum_tpu", "generic_hips_175", "generic_cpe_175", "ultimaker_cpe_blue","emotiontech_abs","emotiontech_petg","emotiontech_pla","emotiontech_pva-m","emotiontech_pva-oks","emotiontech_pva-s","emotiontech_tpu98a","imade3d_petg_175","imade3d_pla_175","Vertex_Delta_PLA_Glitter","Vertex_Delta_PLA_Mat","Vertex_Delta_PLA_Satin","Vertex_Delta_PLA_Wood"],
         "machine_extruder_trains":
         {
             "0": "hydra_research_nautilus_extruder"
