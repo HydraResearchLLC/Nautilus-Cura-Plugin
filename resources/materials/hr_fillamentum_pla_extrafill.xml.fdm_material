@@ -30,22 +30,28 @@
       </hotend>
       <hotend id="B 250">
         <setting key="hardware compatible">yes</setting>
-        <setting key="print temperature">195</setting>
+        <setting key="print temperature">210</setting>
       </hotend>
     </machine>
-    <setting key="print temperature">210</setting>
+    <setting key="print temperature">220</setting>
     <setting key="heated bed temperature">50</setting>
     <setting key="standby temperature">0</setting>
     <setting key="adhesion tendency">0</setting>
     <setting key="surface energy">100</setting>
-    <setting key="print cooling">100</setting>
+    <setting key="print cooling">50</setting>
     <setting key="retraction amount">1</setting>
     <cura:setting key="material_flow">100</cura:setting>
     <cura:setting key="material_name">PLA - Fillamentum</cura:setting>
     <cura:setting key="material_print_surface">PEI</cura:setting>
-    <cura:setting key="material_door_status">;</cura:setting>
+    <cura:setting key="material_door_status"> </cura:setting>
     <cura:setting key="pressure_advance_value">0.06</cura:setting>
     <cura:setting key="speed_volumetric_max">15</cura:setting>
     <cura:setting key="speed_volumetric_min">0.01</cura:setting>
+    <cura:setting key="cool_fan_speed_max">50</cura:setting>
+    <cura:setting key="cool_min_speed">35</cura:setting>
+    <cura:setting key="small_feature_speed_factor">100</cura:setting>
+    <cura:setting key="small_feature_speed_factor_0">100</cura:setting>
+    <cura:setting key="fill_outline_gaps">False</cura:setting>
+    <cura:setting key="wall_min_flow">80</cura:setting>
   </settings>
 </fdmmaterial>

@@ -43,7 +43,7 @@
     <cura:setting key="material_name">NylonG - MatterHackers</cura:setting>
     <cura:setting key="material_print_surface">Use bed adhesive</cura:setting>
     <cura:setting key="material_door_status">;</cura:setting>
-    <cura:setting key="pressure_advance_value">0.05</cura:setting>
+    <cura:setting key="pressure_advance_value">0.06</cura:setting>
     <cura:setting key="speed_volumetric_max">10</cura:setting>
     <cura:setting key="speed_volumetric_min">0.01</cura:setting>
   </settings>
