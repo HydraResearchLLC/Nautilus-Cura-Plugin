@@ -70,7 +70,7 @@ class Nautilus(QObject, MeshWriter, Extension):
     # 1) here
     # 2) plugin.json
     # 3) package.json
-    version = "1.0.8"
+    version = "1.0.9"
 
     ##  Dictionary that defines how characters are escaped when embedded in
     #   g-code.
@@ -91,6 +91,7 @@ class Nautilus(QObject, MeshWriter, Extension):
         #def _onInitialized(self):
         self.this_plugin_path=os.path.join(Resources.getStoragePath(Resources.Resources), "plugins","Nautilus","Nautilus")
         self._preferences_window = None
+        self._guides = None
 
         self.local_meshes_path = None
         self.local_printer_def_path = None
@@ -152,13 +153,14 @@ class Nautilus(QObject, MeshWriter, Extension):
         Duet=NautilusDuet.NautilusDuet()
         self.addMenuItem(catalog.i18nc("@item:inmenu","Nautilus Connections"), Duet.showSettingsDialog)
         self.addMenuItem(catalog.i18nc("@item:inmenu", "Preferences"), self.showPreferences)
-        self.configVersionsMatch()
+        self.addMenuItem(catalog.i18nc("@item:inmenu", "Guides and Troubleshooting"), self.showGuides)
+
         # finally save the cura.cfg file
         self._application.getPreferences().writeToFile(Resources.getStoragePath(Resources.Preferences, self._application.getApplicationName() + ".cfg"))
 
 
     def createPreferencesWindow(self):
-        path = os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), "Nautilusprefs.qml")
+        path = os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), "qml", "Nautilusprefs.qml")
         Logger.log("i", "Creating Nautilus preferences UI "+path)
         self._preferences_window = self._application.createQmlComponent(path, {"manager": self})
 
@@ -167,6 +169,16 @@ class Nautilus(QObject, MeshWriter, Extension):
             self.createPreferencesWindow()
             statuss=self._application.getPreferences().getValue("Nautilus/install_status")
         self._preferences_window.show()
+
+    def createGuidesWindow(self):
+        path = os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), "qml", "Nautilusguides.qml")
+        Logger.log("i", "Creating Nautilus guides UI "+path)
+        self._guides = self._application.createQmlComponent(path, {"manager": self})
+
+    def showGuides(self):
+        if self._guides is None:
+            self.createGuidesWindow()
+        self._guides.show()
 
     def hidePreferences(self):
         if self._preferences_window is not None:
@@ -204,6 +216,39 @@ class Nautilus(QObject, MeshWriter, Extension):
             message = Message(catalog.i18nc("@info:status", "Nautilus plugin could not open https://github.com/HydraResearchLLC/Nautilus/issues/new please navigate to the page and report an issue"))
             message.show()
         return
+
+    @pyqtSlot()
+    def openQualityGuide(self):
+        url = QUrl('https://www.hydraresearch3d.com/print-quality-troubleshooting', QUrl.TolerantMode)
+        if not QDesktopServices.openUrl(url):
+            message = Message(catalog.i18nc("@info:status", "Nautilus plugin could not navigate to https://www.hydraresearch3d.com/print-quality-troubleshooting"))
+            message.show()
+        return
+
+    @pyqtSlot()
+    def openDesignGuide(self):
+        url = QUrl('https://www.hydraresearch3d.com/design-rules', QUrl.TolerantMode)
+        if not QDesktopServices.openUrl(url):
+            message = Message(catalog.i18nc("@info:status", "Nautilus plugin could not navigate to https://www.hydraresearch3d.com/design-rules"))
+            message.show()
+        return
+
+    @pyqtSlot()
+    def openSlicingGuide(self):
+        url = QUrl('https://www.hydraresearch3d.com/advanced-slicing-guide', QUrl.TolerantMode)
+        if not QDesktopServices.openUrl(url):
+            message = Message(catalog.i18nc("@info:status", "Nautilus plugin could not navigate to https://www.hydraresearch3d.com/advanced-slicing-guide"))
+            message.show()
+        return
+
+    @pyqtSlot()
+    def openMaterialGuide(self):
+        url = QUrl('https://www.hydraresearch3d.com/material-guide', QUrl.TolerantMode)
+        if not QDesktopServices.openUrl(url):
+            message = Message(catalog.i18nc("@info:status", "Nautilus plugin could not navigate to https://www.hydraresearch3d.com/material-guide"))
+            message.show()
+        return
+
 
     @pyqtProperty(str)
     def getVersion(self):

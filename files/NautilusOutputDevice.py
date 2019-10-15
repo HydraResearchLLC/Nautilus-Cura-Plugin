@@ -122,7 +122,7 @@ class NautilusOutputDevice(OutputDevice):
             fileName = "%s.gcode" % Application.getInstance().getPrintInformation().jobName
         self._fileName = fileName
 
-        path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'UploadFilename.qml')
+        path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'qml', 'UploadFilename.qml')
         self._dialog = CuraApplication.getInstance().createQmlComponent(path, {"manager": self})
         self._dialog.textChanged.connect(self.onFilenameChanged)
         self._dialog.accepted.connect(self.onFilenameAccepted)
