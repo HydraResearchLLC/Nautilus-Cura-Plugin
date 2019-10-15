@@ -35,6 +35,10 @@ import copy
 import struct
 import time
 import configparser
+import urllib.request
+import requests
+import ssl
+import json
 
 from distutils.version import StrictVersion # for upgrade installations
 
@@ -106,11 +110,18 @@ class Nautilus(QObject, MeshWriter, Extension):
         self.local_setvis_path = os.path.join(Resources.getStoragePath(Resources.Resources), "setting_visibility")
         self.local_global_dir = os.path.join(Resources.getStoragePath(Resources.Resources),"machine_instances")
         self.setvers = self._application.getPreferences().getValue("metadata/setting_version")
+        self.gitUrl = 'https://api.github.com/repos/HydraResearchLLC/Nautilus-Configuration-Macros/releases/latest'
+        self.fullJson = json.loads(requests.get(self.gitUrl).text)
+
 
         # if the plugin was never installed, then force installation
         if self._application.getPreferences().getValue("Nautilus/install_status") is None:
             self._application.getPreferences().addPreference("Nautilus/install_status", "unknown")
             Logger.log("i","1")
+
+        if self._application.getPreferences().getValue("Nautilus/configversion") is None:
+            Logger.log("i","reseting config version")
+            self._application.getPreferences().addPreference("Nautilus/configversion","1.0.0")
 
         # if something got messed up, force installation
         if not self.isInstalled() and self._application.getPreferences().getValue("Nautilus/install_status") is "installed":
@@ -134,14 +145,17 @@ class Nautilus(QObject, MeshWriter, Extension):
             Logger.log("i","5")
             self.installPluginFiles()
 
-
+        if not self.configVersionsMatch():
+            self.messageMaker()
+            Logger.log("i","time for a config update!")
 
         Duet=NautilusDuet.NautilusDuet()
         self.addMenuItem(catalog.i18nc("@item:inmenu","Nautilus Connections"), Duet.showSettingsDialog)
         self.addMenuItem(catalog.i18nc("@item:inmenu", "Preferences"), self.showPreferences)
-
+        self.configVersionsMatch()
         # finally save the cura.cfg file
         self._application.getPreferences().writeToFile(Resources.getStoragePath(Resources.Preferences, self._application.getApplicationName() + ".cfg"))
+
 
     def createPreferencesWindow(self):
         path = os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), "Nautilusprefs.qml")
@@ -211,6 +225,31 @@ class Nautilus(QObject, MeshWriter, Extension):
             return True
         else:
             Logger.log("i", "Nautilus Plugin installed version: " +installedVersion+ " doesn't match this version: "+Nautilus.version)
+            return False
+
+    def messageMaker(self):
+        message=Message(catalog.i18nc("@info:status", "New features are available for your Nautilus! It is recommended to update the firmware on your printer."), 0)
+        message.addAction("download_config", catalog.i18nc("@action:button", "How to update"), "globe", catalog.i18nc("@info:tooltip", "Open website to download new firmware"))
+        message.actionTriggered.connect(self._onMessageActionTriggered)
+        message.show()
+
+    def _onMessageActionTriggered(self,message,action):
+        url = QUrl('https://www.hydraresearch3d.com/nautilus-resources', QUrl.TolerantMode)
+        if not QDesktopServices.openUrl(url):
+            message = Message(catalog.i18nc("@info:status", "Nautilus plugin could not navigate to https://www.hydraresearch3d.com/nautilus-resources"))
+            message.show()
+        return
+
+    def configVersionsMatch(self):
+        newVersion = str(json.dumps(self.fullJson['tag_name'])).replace("\"","")
+        installedVersion = str(self._application.getPreferences().getValue("Nautilus/configversion")).replace("\"","")
+        Logger.log("i","Here we go. have "+installedVersion + "git has " + newVersion)
+        if StrictVersion(installedVersion) == StrictVersion(newVersion):
+            Logger.log("i","Some stuff, it's chill. have "+installedVersion + "git has " + newVersion)
+            return True
+        else:
+            Logger.log("i","No Bueno " + newVersion + " have " + installedVersion)
+            self._application.getPreferences().setValue("Nautilus/configversion",newVersion)
             return False
 
 
