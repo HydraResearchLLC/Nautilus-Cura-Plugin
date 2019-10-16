@@ -1,10 +1,12 @@
-import QtQuick 2.1
+import QtQuick 2.4
 import QtQuick.Controls 2.1
-import QtQuick.Layouts 1.1
-import QtQuick.Window 2.1
 import QtQuick.Controls.Styles 1.1
+import QtQuick.Layouts 1.1
+import QtQuick.Dialogs 1.2
+import QtQuick.Window 2.1
 
-import UM 1.1 as UM
+import UM 1.2 as UM
+import Cura 1.0 as Cura
 
 
 UM.Dialog

@@ -153,7 +153,7 @@ class Nautilus(QObject, MeshWriter, Extension):
         Duet=NautilusDuet.NautilusDuet()
         self.addMenuItem(catalog.i18nc("@item:inmenu","Nautilus Connections"), Duet.showSettingsDialog)
         self.addMenuItem(catalog.i18nc("@item:inmenu", "Preferences"), self.showPreferences)
-        self.addMenuItem(catalog.i18nc("@item:inmenu", "Guides and Troubleshooting"), self.showGuides)
+        self.addMenuItem(catalog.i18nc("@item:inmenu", "Guides and Resources"), self.showGuides)
 
         # finally save the cura.cfg file
         self._application.getPreferences().writeToFile(Resources.getStoragePath(Resources.Preferences, self._application.getApplicationName() + ".cfg"))
@@ -249,6 +249,13 @@ class Nautilus(QObject, MeshWriter, Extension):
             message.show()
         return
 
+    @pyqtSlot()
+    def openUserManual(self):
+        url = QUrl('https://www.hydraresearch3d.com/nautilus-resources', QUrl.TolerantMode)
+        if not QDesktopServices.openUrl(url):
+            message = Message(catalog.i18nc("@info:status", "Nautilus plugin could not navigate to https://www.hydraresearch3d.com/nautilus-resources"))
+            message.show()
+        return
 
     @pyqtProperty(str)
     def getVersion(self):
