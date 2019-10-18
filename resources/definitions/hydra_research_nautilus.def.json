@@ -62,8 +62,8 @@
     "prime_blob_enable": { "enabled": true, "default_value": false },
     "layer_height_0": { "value": "round(machine_nozzle_size / 1.6, 2)" },
 		"line_width": { "value": "round(machine_nozzle_size * 1.125, 2)" },
-		"wall_line_width_0": { "value": "machine_nozzle_size if (layer_height / machine_nozzle_size > 0.70) else line_width" },
-		"wall_line_width_x": { "value": "machine_nozzle_size if (layer_height / machine_nozzle_size > 0.70) else line_width" },
+		"wall_line_width_0": { "value": "line_width" },
+		"wall_line_width_x": { "value": "line_width" },
 		"infill_line_width": { "value": "round(line_width, 2)" },
 		"roofing_line_width": { "value": "machine_nozzle_size" },
 		"initial_layer_line_width_factor": { "value": "110" },
@@ -85,17 +85,10 @@
 		"z_seam_corner": { "value": "'z_seam_corner_weighted'"},
 		"skin_no_small_gaps_heuristic": { "value": "False" },
 
-    "infill_sparse_density": {
-			"description": "Adjusts the density of infill of the print. WARNING: Printing with 100% infill is not recommended as it is quite sensitive to filament diameter/extrusion inconsistency. If you want a solid part use 95% infill.",
-			"maximum_value_warning": "90",
-			"maximum_value": "96",
-			"default_value": 20
-		},
-
 		"infill_pattern": { "value": "'cubic' if infill_sparse_density < 65 else 'lines'" },
 		"zig_zaggify_infill": { "value": "gradual_infill_steps == 0" },
-		"infill_overlap": { "value": "5" },
-		"skin_overlap": { "value": "0" },
+		"infill_overlap": { "value": "10" },
+		"skin_overlap": { "value": "5" },
 		"infill_before_walls": { "value": "False" },
 		"skin_preshrink": { "value": "line_width * 2.22" },
 
@@ -222,7 +215,7 @@
     "minimum_support_area": { "value": "line_width * 2"},
 		"support_interface_enable": { "value": "True" },
 		"support_interface_height": {
-      "value": "layer_height * 3 if layer_height < 0.15 else layer_height * 2",
+      "value": "layer_height * 5 if layer_height < 0.15 else layer_height * 2",
       "minimum_value_warning": "layer_height * 2"
     },
     "support_roof_height": {"minimum_value_warning": "layer_height * 2"},
@@ -281,8 +274,14 @@
                     {
                         "label": "Tool Cartridge",
                         "description": "Name of Tool Cartridge, used for G-code output metadata",
-                        "unit": "",
-                        "type": "str",
+                        "type": "enum",
+                        "options":
+                        {
+                            "X 400": "X 400",
+                            "B 250": "B 250",
+                            "X 800": "X 800",
+                            "Unkown": "Unknown"
+                        },
                         "default_value": "Unknown",
                         "settable_per_mesh": false
 				            }
@@ -407,8 +406,15 @@
                 {
                     "label": "Recommended Print Surface",
                     "description": "Recommended Print Surface for this material. Used for gcode output metadata.",
-                    "unit": "",
-                    "type": "str",
+                    "type": "enum",
+                    "options":
+                    {
+                        "PEI": "PEI",
+                        "BuildTak Original": "BuildTak Original",
+                        "Garrolite": "Garrolite",
+                        "Use bed adhesive": "Use bed adhesive",
+                        "Unkown": "Unknown"
+                    },
                     "default_value": "Unknown",
                     "settable_per_mesh": false
 				},

@@ -70,7 +70,7 @@ class Nautilus(QObject, MeshWriter, Extension):
     # 1) here
     # 2) plugin.json
     # 3) package.json
-    version = "1.0.9"
+    version = "1.0.11"
 
     ##  Dictionary that defines how characters are escaped when embedded in
     #   g-code.
@@ -152,8 +152,8 @@ class Nautilus(QObject, MeshWriter, Extension):
 
         Duet=NautilusDuet.NautilusDuet()
         self.addMenuItem(catalog.i18nc("@item:inmenu","Nautilus Connections"), Duet.showSettingsDialog)
+        self.addMenuItem(catalog.i18nc("@item:inmenu", "Resources and Guides"), self.showGuides)
         self.addMenuItem(catalog.i18nc("@item:inmenu", "Preferences"), self.showPreferences)
-        self.addMenuItem(catalog.i18nc("@item:inmenu", "Guides and Resources"), self.showGuides)
 
         # finally save the cura.cfg file
         self._application.getPreferences().writeToFile(Resources.getStoragePath(Resources.Preferences, self._application.getApplicationName() + ".cfg"))
@@ -376,7 +376,7 @@ class Nautilus(QObject, MeshWriter, Extension):
                     Logger.log("i", "Nautilus Plugin: found in zipfile: " + info.filename )
                     folder = None
                     flag = False
-                    if info.filename == "hydra_research_nautilus.def.json":
+                    if info.filename == "hydra_research_nautilus.def.json" or info.filename == "hrfdmprinter.def.json" or info.filename == "hrfdmextruder.def.json":
                         folder = self.local_printer_def_path
                     elif info.filename == "hydra_research_excluded_materials.json":
                         folder = self.local_printer_def_path
@@ -459,6 +459,26 @@ class Nautilus(QObject, MeshWriter, Extension):
         except: # Installing a new plugin should never crash the application.
             Logger.logException("d", "An exception occurred in Nautilus Plugin while uninstalling files")
 
+        #remove the hrfdmprinter file
+        try:
+            HRFDMFile = os.path.join(self.local_printer_def_path,"hrfdmprinter.def.json")
+            if os.path.isfile(HRFDMFile):
+                Logger.log("i", "Nautilus Plugin removing hrfdmprinter from " + HRFDMFile)
+                os.remove(HRFDMFile)
+                restartRequired = True
+        except: # Installing a new plugin should never crash the application.
+            Logger.logException("d", "An exception occurred in Nautilus Plugin while uninstalling files")
+
+        #remove the hydra_research_excluded_materials file
+        try:
+            HRExludedMaterialsFile = os.path.join(self.local_printer_def_path,"hydra_research_excluded_materials.def.json")
+            if os.path.isfile(HRExludedMaterialsFile):
+                Logger.log("i", "Nautilus Plugin removing excluded materials from " + HRExludedMaterialsFile)
+                os.remove(HRExludedMaterialsFile)
+                restartRequired = True
+        except: # Installing a new plugin should never crash the application.
+            Logger.logException("d", "An exception occurred in Nautilus Plugin while uninstalling files")
+
         # remove the extruder definition file
         try:
             HRNautilusExtruderFile = os.path.join(self.local_printer_def_path,"hydra_research_nautilus_extruder.def.json")
@@ -469,12 +489,32 @@ class Nautilus(QObject, MeshWriter, Extension):
         except: # Installing a new plug-in should never crash the application.
             Logger.logException("d", "An exception occurred in Nautilus Plugin while uninstalling files")
 
+        # remove the hrfdmextruder file
+        try:
+            HRFDMExtruderFile = os.path.join(self.local_printer_def_path,"hrfdmextruder.def.json")
+            if os.path.isfile(HRFDMExtruderFile):
+                Logger.log("i", "Nautilus Plugin removing extruder definition from " + HRFDMExtruderFile)
+                os.remove(HRFDMExtruderFile)
+                restartRequired = True
+        except: # Installing a new plug-in should never crash the application.
+            Logger.logException("d", "An exception occurred in Nautilus Plugin while uninstalling files")
+
         # remove the material directory
         try:
             nautilusmatDir = os.path.join(self.local_materials_path,"nautilusmat")
             if os.path.isdir(nautilusmatDir):
                 Logger.log("i", "Nautilus Plugin removing material files from " + nautilusmatDir)
                 shutil.rmtree(nautilusmatDir)
+                restartRequired = True
+        except: # Installing a new plugin should never crash the application.
+            Logger.logException("d", "An exception occurred in Nautilus Plugin while uninstalling files")
+
+        # remove the setting visibility directory
+        try:
+            nautilussetvisDir = os.path.join(self.local_setvis_path,"hrn_settings")
+            if os.path.isdir(nautilussetvisDir):
+                Logger.log("i", "Nautilus Plugin removing material files from " + nautilussetvisDir)
+                shutil.rmtree(nautilussetvisDir)
                 restartRequired = True
         except: # Installing a new plugin should never crash the application.
             Logger.logException("d", "An exception occurred in Nautilus Plugin while uninstalling files")
