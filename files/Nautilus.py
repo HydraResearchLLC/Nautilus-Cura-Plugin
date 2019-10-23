@@ -150,6 +150,9 @@ class Nautilus(QObject, MeshWriter, Extension):
             self.messageMaker()
             Logger.log("i","time for a config update!")
 
+
+            #This is the signal for machines changing
+        CuraApplication.getInstance().globalContainerStackChanged.connect(self.updateMachineName)
         Duet=NautilusDuet.NautilusDuet()
         self.addMenuItem(catalog.i18nc("@item:inmenu","Nautilus Connections"), Duet.showSettingsDialog)
         self.addMenuItem(catalog.i18nc("@item:inmenu", "Resources and Guides"), self.showGuides)
@@ -183,6 +186,17 @@ class Nautilus(QObject, MeshWriter, Extension):
     def hidePreferences(self):
         if self._preferences_window is not None:
             self._preferences_window.hide()
+
+            #This is the function
+    def updateMachineName(self):
+        self.MachineName = CuraApplication.getInstance().getMachineManager().activeMachine.definition.name
+        #Logger.log("i", "updating this machine to "+self.MachineName)
+        if "Nautilus" in self.MachineName:
+            NautilusDuet.NautilusDuet().start()
+        elif self.MachineName != None:
+            NautilusDuet.NautilusDuet().stop()
+
+
 
     # function so that the preferences menu can open website the version
     @pyqtSlot()
