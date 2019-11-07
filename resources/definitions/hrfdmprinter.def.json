@@ -788,6 +788,15 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
+                "infill_support_layer_height_optimization_enable":
+                {
+                    "label": "Optimize Infill/Support Layer Height",
+                    "description": "Enableling this generates infill and support infill at 2-3 times the layer hieght if possible. This can significantly decrease print times for low layer height jobs.",
+                    "type": "bool",
+                    "default_value": true,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "line_width":
                 {
                     "label": "Line Width",
@@ -985,15 +994,6 @@
                     "default_value": 100.0,
                     "minimum_value": "0.001",
                     "maximum_value_warning": "150",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
-                },
-                "infill_support_layer_height_optimization_enable":
-                {
-                    "label": "Optimize Infill/Support Layer Height",
-                    "description": "Enableling this generates infill and support infill at 2-3 times the layer hieght if possible. This can significantly decrease print times for low layer height jobs.",
-                    "type": "bool",
-                    "default_value": false,
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 }
@@ -1410,7 +1410,7 @@
                     "minimum_value_warning": "-1",
                     "maximum_value_warning": "1",
                     "default_value": 0,
-                    "value": "xy_offset",
+                    "value": "xy_offset + (machine_nozzle_size * -.5)",
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -4496,7 +4496,7 @@
                     "minimum_value": "resolveOrValue('layer_height')",
                     "maximum_value_warning": "0.75 * machine_nozzle_size",
                     "maximum_value": "resolveOrValue('layer_height') * 8",
-                    "value": "resolveOrValue('layer_height') * 2 if 2.9 > math.floor((machine_nozzle_size * 0.75)/resolveOrValue('layer_height')) > 1.9 else resolveOrValue('layer_height') * 3 if math.floor((machine_nozzle_size * 0.75)/resolveOrValue('layer_height')) > 2.9 else resolveOrValue('layer_height')",
+                    "value": "resolveOrValue('layer_height') if not infill_support_layer_height_optimization_enable else resolveOrValue('layer_height') * 2 if 2.9 > math.floor((machine_nozzle_size * 0.75)/resolveOrValue('layer_height')) > 1.9 else resolveOrValue('layer_height') * 3 if math.floor((machine_nozzle_size * 0.75)/resolveOrValue('layer_height')) > 2.9 else resolveOrValue('layer_height')",
                     "enabled": "(support_enable or support_tree_enable) and support_infill_rate > 0",
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": false
