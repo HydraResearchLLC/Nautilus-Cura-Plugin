@@ -8,13 +8,13 @@ from distutils.dir_util import copy_tree
 import zipfile
 import shutil
 
-excludedMaterials = ['xtcf20','pacf','htpla']
-excludedMats = []
+
 path = os.path.dirname(os.path.realpath(__file__))
 resourceContainer = os.path.join(path,'Nautilus.zip')
 pluginName = 'Nautilus'
 matContainer = 'nautilusmat'
 qualContainer = 'nautilusquals'
+intentContainer = 'nautilusintent'
 varContainer = 'nautilusvars'
 setvisContainer = 'hrn_settings'
 pluginPath = os.path.join('files','plugins',pluginName)
@@ -57,17 +57,13 @@ with tempfile.TemporaryDirectory() as configDirectory:
                 matList = fileList(file)
                 mats = (mat for mat in matList if mat.endswith('.fdm_material'))
                 for mat in mats:
-                    if not any(noWay in mat for noWay in excludedMaterials):
-                            shutil.copy(mat, os.path.join(configDirectory, matContainer))
-                    else:
-                        excludedMats.append(os.path.basename(mat))
+                    shutil.copy(mat, os.path.join(configDirectory, matContainer))
             elif os.path.basename(file) == 'quality':
                 filer(os.path.join(configDirectory, qualContainer))
                 qualList = fileList(file)
                 quals = (qual for qual in qualList if qual.endswith('.inst.cfg'))
                 for qual in quals:
-                    if not any(noWay in qual for noWay in excludedMaterials):
-                            shutil.copy(qual, os.path.join(configDirectory, qualContainer))
+                    shutil.copy(qual, os.path.join(configDirectory, qualContainer))
             elif os.path.basename(file) == 'variants':
                 filer(os.path.join(configDirectory, varContainer))
                 varList = fileList(file)
@@ -80,6 +76,12 @@ with tempfile.TemporaryDirectory() as configDirectory:
                 settings = (set for set in setvisList if set.endswith('.cfg'))
                 for set in settings:
                     shutil.copy(set,os.path.join(configDirectory, setvisContainer))
+            elif os.path.basename(file) == 'intent':
+                filer(os.path.join(configDirectory,intentContainer))
+                intentList = fileList(file)
+                intents = (intent for intent in intentList if intent.endswith('.inst.cfg'))
+                for intent in intents:
+                    shutil.copy(intent,os.path.join(configDirectory,intentContainer))
 
 
 
@@ -112,5 +114,3 @@ with tempfile.TemporaryDirectory() as configDirectory:
                     shutil.copy(item,ultimakerReleasePath)
         zf.close()
         print("Update version numbers before release!")
-        print("Double Check Excluded Materials!")
-        print("Right now, they are: ", excludedMats)

@@ -30,7 +30,7 @@
       </hotend>
       <hotend id="B 250">
         <setting key="hardware compatible">yes</setting>
-        <setting key="print temperature">195</setting>
+        <setting key="print temperature">200</setting>
       </hotend>
     </machine>
     <setting key="print temperature">215</setting>
@@ -47,5 +47,8 @@
     <cura:setting key="pressure_advance_value">0.06</cura:setting>
     <cura:setting key="speed_volumetric_max">15</cura:setting>
     <cura:setting key="speed_volumetric_min">0.01</cura:setting>
+    <cura:setting key="adhesion_type">skirt</cura:setting>
+    <cura:setting key="infill_overlap">5</cura:setting>
+    <cura:setting key="skin_overlap">0</cura:setting>
   </settings>
 </fdmmaterial>

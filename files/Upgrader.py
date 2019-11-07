@@ -26,14 +26,17 @@ class Upgrader:
         #This function fills sets with the currently installed materials,qualities, and Variants
         #Then it searches the newly installed zipfile and fills sets with the resources to be installed
         #Finally it removes all files found in both sets so the old set only contains deprecated resources
+        intentNames = ['engineering.inst.cfg','visual.inst.cfg','quick.inst.cfg']
         oldVars = set(['hrn_X_250','hrn_X_400','hrn_X_800'])#set(self.fileList(os.path.join(Resources.getStoragePath(Resources.Resources),"variants","nautilus")))
         #Logger.log("i","Number of old variants: "+str(len(oldVars)))
         oldMats = set(self.fileList(os.path.join(Resources.getStoragePath(Resources.Resources), "materials","nautilusmat")))
         oldQuals = set(self.fileList(os.path.join(Resources.getStoragePath(Resources.Resources),"quality","nautilusquals")))
+        oldIntents = set(self.fileList(os.path.join(Resources.getStoragePath(Resources.Resources),"intent","nautilusintent")))
 
         newMats = set()
         newQuals = set()
         newVars = set()
+        newIntents = set()
 
         path = os.path.dirname(os.path.realpath(__file__))
         zipdata = os.path.join(path,"Nautilus.zip")
@@ -50,6 +53,9 @@ class Upgrader:
                     varName = os.path.basename(str(info.filename))
                     newVars.add(varName.split('.',1)[0])
                     #Logger.log("i", "Finding New Variants: "+str(varName.split('.',1)[0]))
+                elif any(info.filename.endswith(name) for name in intentNames):
+                    intentName = os.path.basename(str(info.filename))
+                    newIntents.add(intentName.split('.',1)[0])
                 elif info.filename.endswith(".cfg"):
                     qualName = os.path.basename(str(info.filename))
                     newQuals.add(qualName.split('.',1)[0])
@@ -58,10 +64,12 @@ class Upgrader:
         oldMats -= newMats
         oldVars -= newVars
         oldQuals -= newQuals
+        oldIntents -= newIntents
         Logger.log("i","Number of changed materials: "+str(len(oldMats)))
         Logger.log("i","Number of changed quality profiles: "+str(len(oldQuals)))
         Logger.log("i","Number of changed variants: "+str(len(oldVars)))
-        return oldMats, oldVars, oldQuals
+        Logger.log("i","Number of changed intents: "+str(len(oldIntents)))
+        return oldMats, oldVars, oldQuals, oldIntents
 
     def cachePatch(self,removedFiles,configCache):
         #this function takes in cached config files and looks for deprecated Resources
@@ -86,14 +94,16 @@ class Upgrader:
                             elif key == '1':
                                 emptyval = 'empty_quality_changes'
                             elif key == '2':
-                                emptyval = 'empty_quality'
+                                emptyval = 'empty_intent'
                             elif key == '3':
-                                emptyval = 'empty_material'
+                                emptyval = 'empty_quality'
                             elif key == '4':
-                                emptyval = 'hrn_X_400'
+                                emptyval = 'empty_material'
                             elif key == '5':
-                                emptyval = 'Hydra Research Nautilus_settings'
+                                emptyval = 'hrn_X_400'
                             elif key == '6':
+                                emptyval = 'Hydra Research Nautilus_settings'
+                            elif key == '7':
                                 emptyval = 'hydra_research_nautilus'
                             else:
                                 emptyval = 'huh?'
@@ -113,8 +123,8 @@ class Upgrader:
 
     def configFixer(self):
         #This finds all the config cache files and runs the previous two functions
-        dMats, dVars, dQuals = self.diffMaker()
-        if len(dMats)>0 or len(dQuals)>0:
+        dMats, dVars, dQuals, dIntents = self.diffMaker()
+        if len(dMats)>0 or len(dQuals)>0 or len(dIntents)>0:
             truth = True
         else:
             truth = False
@@ -123,6 +133,7 @@ class Upgrader:
         files = []
         for (dirpath, dirnames, filenames) in os.walk(path):
             for file in filenames:
+                #don't mess with anything in the plugins directory
                 if "autilus" in file and "autilus" not in dirpath and file.endswith(".cfg"):
                     #Logger.log("i","!!!@"+os.path.join(dirpath,file))
                     files.append(os.path.join(dirpath,file))
@@ -130,4 +141,5 @@ class Upgrader:
         self.cachePatch(dMats,files)
         self.cachePatch(dQuals,files)
         self.cachePatch(dVars,files)
+        self.cachePatch(dIntents,files)
         return truth

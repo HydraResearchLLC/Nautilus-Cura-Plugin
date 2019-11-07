@@ -107,7 +107,7 @@ class NautilusOutputDevice(OutputDevice):
 
         mat = str(Application.getInstance().getPrintInformation().materialNames)[2:-2]
 
-        noz = str(Application.getInstance().getMachineManager().activeVariantName)
+        noz = Application.getInstance().getExtruderManager().getActiveExtruderStacks()[0].variant.getName()
         layerheight = str(int(Application.getInstance().getMachineManager().activeMachine.getProperty("layer_height", "value")*1000)) + 'um'
         fileName = base + " - " +  mat + " - " + noz + " - " + layerheight
         return fileName

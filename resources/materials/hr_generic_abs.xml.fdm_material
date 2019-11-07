@@ -9,7 +9,7 @@
     </name>
     <GUID>506c9f0d-e3aa-4bd4-b2d2-23e242hr004</GUID>
     <version>3</version>
-    <color_code>#8cb219</color_code>
+    <color_code>#c0ff00</color_code>
     <description>Tough and durable. ABS is good for mechanical parts. It is impact resistant, dimensionally stable, and can handle temperatures up to 85ºC. The data in this file may not be correct for your specific filament.</description>
     <adhesion_info>PEI</adhesion_info>
   </metadata>
@@ -33,7 +33,7 @@
       </hotend>
     </machine>
     <setting key="print temperature">245</setting>
-    <setting key="heated bed temperature">105</setting>
+    <setting key="heated bed temperature">100</setting>
     <setting key="standby temperature">0</setting>
     <setting key="adhesion tendency">0</setting>
     <setting key="surface energy">70</setting>

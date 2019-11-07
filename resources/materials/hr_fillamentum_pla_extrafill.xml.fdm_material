@@ -47,6 +47,9 @@
     <cura:setting key="pressure_advance_value">0.06</cura:setting>
     <cura:setting key="speed_volumetric_max">15</cura:setting>
     <cura:setting key="speed_volumetric_min">0.01</cura:setting>
+    <cura:setting key="adhesion_type">skirt</cura:setting>
+    <cura:setting key="infill_overlap">0</cura:setting>
+    <cura:setting key="skin_overlap">0</cura:setting>
     <cura:setting key="cool_fan_speed_max">50</cura:setting>
     <cura:setting key="cool_min_speed">35</cura:setting>
     <cura:setting key="small_feature_speed_factor">100</cura:setting>

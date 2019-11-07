@@ -70,7 +70,7 @@ class Nautilus(QObject, MeshWriter, Extension):
     # 1) here
     # 2) plugin.json
     # 3) package.json
-    version = "1.0.12"
+    version = "1.0.15"
 
     ##  Dictionary that defines how characters are escaped when embedded in
     #   g-code.
@@ -101,6 +101,7 @@ class Nautilus(QObject, MeshWriter, Extension):
         self.local_variants_path = None
         self.local_setvis_path = None
         self.local_global_dir = None
+        self.local_intent_path = None
         Logger.log("i", "Nautilus Plugin setting up")
         self.local_meshes_path = os.path.join(Resources.getStoragePathForType(Resources.Resources), "meshes")
         self.local_printer_def_path = Resources.getStoragePath(Resources.DefinitionContainers)#os.path.join(Resources.getStoragePath(Resources.Resources),"definitions")
@@ -110,6 +111,7 @@ class Nautilus(QObject, MeshWriter, Extension):
         self.local_variants_path = os.path.join(Resources.getStoragePath(Resources.Resources), "variants")
         self.local_setvis_path = os.path.join(Resources.getStoragePath(Resources.Resources), "setting_visibility")
         self.local_global_dir = os.path.join(Resources.getStoragePath(Resources.Resources),"machine_instances")
+        self.local_intent_path = os.path.join(Resources.getStoragePath(Resources.Resources),"intent")
         self.setvers = self._application.getPreferences().getValue("metadata/setting_version")
         self.gitUrl = 'https://api.github.com/repos/HydraResearchLLC/Nautilus-Configuration-Macros/releases/latest'
         self.fullJson = json.loads(requests.get(self.gitUrl).text)
@@ -325,6 +327,7 @@ class Nautilus(QObject, MeshWriter, Extension):
         nautilusExtruderDefFile = os.path.join(self.local_extruder_path,"hydra_research_nautilus_extruder.def.json")
         nautilusMatDir = os.path.join(self.local_materials_path,"nautilusmat")
         nautilusQualityDir = os.path.join(self.local_quality_path,"nautilusquals")
+        nautilusIntentDir = os.path.join(self.local_intent_path,"nautilusintent")
         nautilusVariantsDir = os.path.join(self.local_variants_path,"nautilusvars")
         nautilusSettingVisDir = os.path.join(self.local_setvis_path,'hrn_settings')
         sstatus = 0
@@ -343,6 +346,10 @@ class Nautilus(QObject, MeshWriter, Extension):
             return False
         if not os.path.isdir(nautilusQualityDir):
             Logger.log("i", "Nautilus quality files are NOT installed ")
+            sstatus += 1
+            return False
+        if not os.path.isdir(nautilusIntentDir):
+            Logger.log("i", "Nautilus intent files are NOT installed ")
             sstatus += 1
             return False
         if not os.path.isdir(nautilusVariantsDir):
@@ -377,6 +384,7 @@ class Nautilus(QObject, MeshWriter, Extension):
         Logger.log("i", "Nautilus Plugin installing printer files")
         upper = Upgrader.Upgrader()
         value = upper.configFixer()
+        intentNames = ['engineering.inst.cfg','visual.inst.cfg','quick.inst.cfg']
         if value:
             Logger.log("i","uninstall that shit")
             self.uninstallPluginFiles(value)
@@ -404,6 +412,9 @@ class Nautilus(QObject, MeshWriter, Extension):
                     elif info.filename.endswith("0.inst.cfg"):
                         folder = self.local_variants_path
                         Logger.log("i", "Finding Variants")
+                    elif any(info.filename.endswith(name) for name in intentNames):
+                        folder = self.local_intent_path
+                        Logger.log("i", "Finding Intent")
                     elif info.filename.endswith(".cfg"):
                         folder = self.local_quality_path
                         Logger.log("i", "Finding Quality")
@@ -412,7 +423,7 @@ class Nautilus(QObject, MeshWriter, Extension):
                         if not os.path.exists(folder): #Cura doesn't create this by itself. We may have to.
                             os.mkdir(folder)
 
-                    if flag == True:
+                    if flag == True: #create the excluded materials file on install so all native Cura materials are blocked
                         cura_dir=os.path.join(os.path.dirname(os.path.realpath(sys.argv[0])),"resources","materials")
                         materiallist = os.listdir(cura_dir)
                         #print(materiallist)
@@ -432,6 +443,7 @@ class Nautilus(QObject, MeshWriter, Extension):
                         permissions = os.stat(extracted_path).st_mode
                         os.chmod(extracted_path, permissions | stat.S_IEXEC) #Make these files executable.
                         Logger.log("i", "Nautilus Plugin installing " + info.filename + " to " + extracted_path)
+                         #update variant version numbers on install, Cura blocks out of date variants from appearing
                         if folder is self.local_variants_path:
                             Logger.log("i", "The variant is " + extracted_path)
                             config = configparser.ConfigParser()
@@ -559,6 +571,16 @@ class Nautilus(QObject, MeshWriter, Extension):
             if os.path.isdir(nautilusQualityDir):
                 Logger.log("i", "Nautilus Plugin removing quality files from " + nautilusQualityDir)
                 shutil.rmtree(nautilusQualityDir)
+                restartRequired = True
+        except: # Installing a new plugin should never crash the application.
+            Logger.logException("d", "An exception occurred in Nautilus Plugin while uninstalling files")
+
+        #remove the folder containing the intent files
+        try:
+            nautilusIntentDir = os.path.join(self.local_intent_path,"nautilusintent")
+            if os.path.isdir(nautilusIntentDir):
+                Logger.log("i", "Nautilus Plugin removing intent files from " + nautilusIntentDir)
+                shutil.rmtree(nautilusIntentDir)
                 restartRequired = True
         except: # Installing a new plugin should never crash the application.
             Logger.logException("d", "An exception occurred in Nautilus Plugin while uninstalling files")
