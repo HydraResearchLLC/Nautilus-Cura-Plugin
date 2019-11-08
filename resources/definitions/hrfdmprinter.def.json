@@ -1750,10 +1750,40 @@
                     },
                     "default_value": "grid",
                     "enabled": "infill_sparse_density > 0",
-                    "value": "'lines' if infill_sparse_density > 25 else 'grid'",
+                    "value": "'lines' if infill_sparse_density > 65 else infill_pattern_base",
                     "limit_to_extruder": "infill_extruder_nr",
-                    "settable_per_mesh": true
+                    "settable_per_mesh": true,
+                    "children":
+                    {
+                      "infill_pattern_base":
+                      {
+                          "label": "Infill Pattern Base",
+                          "description": "The infill pattern to be used if infill percentage less than 65%",
+                          "type": "enum",
+                          "options":
+                          {
+                              "grid": "Grid",
+                              "lines": "Lines",
+                              "triangles": "Triangles",
+                              "trihexagon": "Tri-Hexagon",
+                              "cubic": "Cubic",
+                              "cubicsubdiv": "Cubic Subdivision",
+                              "tetrahedral": "Octet",
+                              "quarter_cubic": "Quarter Cubic",
+                              "concentric": "Concentric",
+                              "zigzag": "Zig Zag",
+                              "cross": "Cross",
+                              "cross_3d": "Cross 3D",
+                              "gyroid": "Gyroid"
+                          },
+                          "default_value": "cubic",
+                          "enabled": "infill_sparse_density > 0",
+                          "limit_to_extruder": "infill_extruder_nr",
+                          "settable_per_mesh": true
+                        }
+                    }
                 },
+
                 "zig_zaggify_infill":
                 {
                     "label": "Connect Infill Lines",

@@ -84,7 +84,6 @@
 		"z_seam_corner": { "value": "'z_seam_corner_weighted'"},
 		"skin_no_small_gaps_heuristic": { "value": "False" },
 
-		"infill_pattern": { "value": "'cubic' if infill_sparse_density < 65 else 'lines'" },
 		"zig_zaggify_infill": { "value": "gradual_infill_steps == 0" },
 		"infill_overlap": { "value": "10" },
 		"skin_overlap": { "value": "5" },

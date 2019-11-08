@@ -53,6 +53,6 @@
     <cura:setting key="retraction_combing">noskin</cura:setting>
     <cura:setting key="retraction_enable">False</cura:setting>
     <cura:setting key="adhesion_type">skirt</cura:setting>
-    <cura:setting key="infill_pattern">gyroid</cura:setting>
+    <cura:setting key="infill_pattern_base">gyroid</cura:setting>
   </settings>
 </fdmmaterial>
