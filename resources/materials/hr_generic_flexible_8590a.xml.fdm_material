@@ -46,8 +46,8 @@
     <cura:setting key="material_name">Flex 85-90A - Generic</cura:setting>
     <cura:setting key="material_print_surface">Use bed adhesive</cura:setting>
     <cura:setting key="material_door_status">;</cura:setting>
-    <cura:setting key="pressure_advance_value">0.6</cura:setting>
-    <cura:setting key="speed_volumetric_max">1.25</cura:setting>
+    <cura:setting key="pressure_advance_value">0.8</cura:setting>
+    <cura:setting key="speed_volumetric_max">2</cura:setting>
     <cura:setting key="speed_volumetric_min">0.01</cura:setting>
     <cura:setting key="retraction_extra_prime_amount">0</cura:setting>
     <cura:setting key="retraction_combing">noskin</cura:setting>

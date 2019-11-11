@@ -70,7 +70,7 @@ class Nautilus(QObject, MeshWriter, Extension):
     # 1) here
     # 2) plugin.json
     # 3) package.json
-    version = "1.0.17"
+    version = "1.1.0"
 
     ##  Dictionary that defines how characters are escaped when embedded in
     #   g-code.
@@ -378,9 +378,20 @@ class Nautilus(QObject, MeshWriter, Extension):
             Logger.log("i","Uninstalling")
             self.uninstallPluginFiles(False)
 
+    def setCurrency(self):
+        testitem = str(self._application.getPreferences().getValue("cura/currency"))
+        Logger.log("i","it is "+testitem)
+        if self._application.getPreferences().getValue("cura/currency") is None:
+            Logger.log("i","check me out")
+            self._application.getPreferences().addPreference("cura/currency","$")
+            self._application.getPreferences().setValue("cura/currency","$")
+        else:
+            self._application.getPreferences().setValue("cura/currency","$")
+        self._application.getPreferences().writeToFile(Resources.getStoragePath(Resources.Preferences, self._application.getApplicationName() + ".cfg"))
 
     # Install the plugin files.
     def installPluginFiles(self):
+        self.setCurrency()
         Logger.log("i", "Nautilus Plugin installing printer files")
         upper = Upgrader.Upgrader()
         value = upper.configFixer()

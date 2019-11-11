@@ -42,13 +42,13 @@
     <setting key="print cooling">30</setting>
     <setting key="retraction amount">1</setting>
     <setting key="retraction speed">15</setting>
-    <cura:setting key="material_flow">105</cura:setting>
+    <cura:setting key="material_flow">108</cura:setting>
     <cura:setting key="material_name">Flexfill 98A - Fillamentum</cura:setting>
     <cura:setting key="material_print_surface">Use bed adhesive</cura:setting>
     <cura:setting key="material_door_status">;</cura:setting>
     <cura:setting key="pressure_advance_value">0.7</cura:setting>
-    <cura:setting key="speed_volumetric_max">5.6</cura:setting>
-    <cura:setting key="speed_volumetric_min">3.6</cura:setting>
+    <cura:setting key="speed_volumetric_max">5</cura:setting>
+    <cura:setting key="speed_volumetric_min">3</cura:setting>
     <cura:setting key="retraction_extra_prime_amount">0</cura:setting>
     <cura:setting key="retraction_combing">noskin</cura:setting>
     <cura:setting key="retraction_enable">False</cura:setting>

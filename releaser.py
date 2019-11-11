@@ -39,6 +39,9 @@ def fileList(fileName):
         files += [os.path.join(dirpath, file) for file in filenames]
     return files
 
+print("Do you want intent profiles? y or n ")
+flag = str(input())
+
 # Create the resources temp directory in the appropriate structure for the plugin
 with tempfile.TemporaryDirectory() as configDirectory:
     # Create the plugin temp directory
@@ -77,11 +80,16 @@ with tempfile.TemporaryDirectory() as configDirectory:
                 for set in settings:
                     shutil.copy(set,os.path.join(configDirectory, setvisContainer))
             elif os.path.basename(file) == 'intent':
-                filer(os.path.join(configDirectory,intentContainer))
-                intentList = fileList(file)
-                intents = (intent for intent in intentList if intent.endswith('.inst.cfg'))
-                for intent in intents:
-                    shutil.copy(intent,os.path.join(configDirectory,intentContainer))
+                if "y" in flag:
+                    filer(os.path.join(configDirectory,intentContainer))
+                    intentList = fileList(file)
+                    intents = (intent for intent in intentList if intent.endswith('.inst.cfg'))
+                    for intent in intents:
+                        shutil.copy(intent,os.path.join(configDirectory,intentContainer))
+                elif "n" in flag:
+                    print("No intents ")
+                else:
+                    print("something went wrong, neither flag occured")
 
 
 
