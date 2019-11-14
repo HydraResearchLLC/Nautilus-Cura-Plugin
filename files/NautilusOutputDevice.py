@@ -40,7 +40,7 @@ class NautilusOutputDevice(OutputDevice):
     def __init__(self, name, url, duet_password, http_user, http_password, device_type):
         self._device_type = device_type
         if device_type == DeviceType.upload:
-            description = catalog.i18nc("@action:button", "Upload to {0}").format(name)
+            description = catalog.i18nc("@action:button", "Send to {0}").format(name)
             name_id = name + "-upload"
             priority = 10
         else:
@@ -149,7 +149,7 @@ class NautilusOutputDevice(OutputDevice):
         self.writeStarted.emit(self)
 
         # show a progress message
-        self._message = Message(catalog.i18nc("@info:progress", "Uploading to {}").format(self._name), 0, False, -1)
+        self._message = Message(catalog.i18nc("@info:progress", "Sending to {}").format(self._name), 0, False, -1)
         self._message.show()
 
         Logger.log("d", self._name_id + " | Loading gcode...")
