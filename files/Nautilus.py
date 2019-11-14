@@ -42,6 +42,7 @@ import json
 
 from distutils.version import StrictVersion # for upgrade installations
 
+from UM.Application import Application
 from UM.i18n import i18nCatalog
 from UM.Extension import Extension
 from UM.Message import Message
@@ -70,7 +71,7 @@ class Nautilus(QObject, MeshWriter, Extension):
     # 1) here
     # 2) plugin.json
     # 3) package.json
-    version = "1.1.0"
+    version = "1.1.1"
 
     ##  Dictionary that defines how characters are escaped when embedded in
     #   g-code.
@@ -92,6 +93,7 @@ class Nautilus(QObject, MeshWriter, Extension):
         self.this_plugin_path=os.path.join(Resources.getStoragePath(Resources.Resources), "plugins","Nautilus","Nautilus")
         self._preferences_window = None
         self._guides = None
+        self._ready = False
 
         self.local_meshes_path = None
         self.local_printer_def_path = None
@@ -119,6 +121,7 @@ class Nautilus(QObject, MeshWriter, Extension):
 
         # if the plugin was never installed, then force installation
         if self._application.getPreferences().getValue("Nautilus/install_status") is None:
+            self._ready = True
             self._application.getPreferences().addPreference("Nautilus/install_status", "unknown")
             Logger.log("i","1")
 
@@ -154,7 +157,7 @@ class Nautilus(QObject, MeshWriter, Extension):
 
 
             #This is the signal for machines changing
-        CuraApplication.getInstance().globalContainerStackChanged.connect(self.updateMachineName)
+        self._application.globalContainerStackChanged.connect(self.updateMachineName)
         Duet=NautilusDuet.NautilusDuet()
         self.addMenuItem(catalog.i18nc("@item:inmenu","Nautilus Connections"), Duet.showSettingsDialog)
         self.addMenuItem(catalog.i18nc("@item:inmenu", "Resources and Guides"), self.showGuides)
@@ -162,7 +165,8 @@ class Nautilus(QObject, MeshWriter, Extension):
 
         # finally save the cura.cfg file
         self._application.getPreferences().writeToFile(Resources.getStoragePath(Resources.Preferences, self._application.getApplicationName() + ".cfg"))
-
+        if self._ready == True:
+            Application.getInstance().engineCreatedSignal.connect(self.addMatCosts)
 
     def createPreferencesWindow(self):
         path = os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), "qml", "Nautilusprefs.qml")
@@ -278,6 +282,20 @@ class Nautilus(QObject, MeshWriter, Extension):
         numba = Nautilus.version
         Logger.log("i","Nailed it!"+numba)
         return str(numba)
+
+    @pyqtSlot()
+    def addMatCosts(self):
+        Logger.log("i","Setting Material costs and currency!")
+        matCosts = open(os.path.join(self.this_plugin_path,"matCosts.txt"),'r').read()
+        matCosts = matCosts.replace("[","").replace("]","")
+        if self._application.getPreferences().getValue("cura/material_settings") is None:
+            self._application.getPreferences().addPreference("cura/material_settings",matCosts)
+        else:
+            self._application.getPreferences().setValue("cura/material_settings",matCosts)
+        if self._application.getPreferences().getValue("cura/currency") is None:
+            self._application.getPreferences().addPreference("cura/currency","$")
+        else:
+            self._application.getPreferences().setValue("cura/currency","$")
 
     # returns true if the versions match and false if they don't
     def versionsMatch(self):

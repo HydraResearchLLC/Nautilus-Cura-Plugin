@@ -99,7 +99,19 @@ UM.Dialog
               anchors.margins: 10
               implicitWidth: 300
           }
-
+          Button{
+            id: resetprice
+            UM.I18nCatalog
+            {
+                id: catalog5
+                name: "cura"
+            }
+            anchors.top: sep1.bottom
+            anchors.margins: 10
+            anchors.horizontalCenter: parent.horizontalCenter
+            text: catalog1.i18nc("@action:button", "Reset Material Prices")
+            onClicked: manager.addMatCosts()
+          }
           Button {
                 id: button
                 UM.I18nCatalog
@@ -107,7 +119,7 @@ UM.Dialog
                     id: catalog1
                     name: "cura"
                 }
-                anchors.top: sep1.bottom
+                anchors.top: resetprice.bottom
                 anchors.margins: 10
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: catalog1.i18nc("@action:button", "Report Issue")
