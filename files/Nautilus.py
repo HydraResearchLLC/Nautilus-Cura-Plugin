@@ -167,6 +167,7 @@ class Nautilus(QObject, MeshWriter, Extension):
         self._application.getPreferences().writeToFile(Resources.getStoragePath(Resources.Preferences, self._application.getApplicationName() + ".cfg"))
         if self._ready == True:
             Application.getInstance().engineCreatedSignal.connect(self.addMatCosts)
+            Application.getInstance().engineCreatedSignal.connect(self.createPreferencesWindow)
 
     def createPreferencesWindow(self):
         path = os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), "qml", "Nautilusprefs.qml")
