@@ -123,32 +123,30 @@ class Nautilus(QObject, MeshWriter, Extension):
         if self._application.getPreferences().getValue("Nautilus/install_status") is None:
             self._ready = True
             self._application.getPreferences().addPreference("Nautilus/install_status", "unknown")
-            Logger.log("i","1")
+            Logger.log("i","first install")
 
-        if self._application.getPreferences().getValue("Nautilus/configversion") is None:
-            Logger.log("i","reseting config version")
-            self._application.getPreferences().addPreference("Nautilus/configversion","1.0.0")
+        self._application.getPreferences().addPreference("Nautilus/configversion","1.0.0")
 
         # if something got messed up, force installation
         if not self.isInstalled() and self._application.getPreferences().getValue("Nautilus/install_status") is "installed":
             self._application.getPreferences().setValue("Nautilus/install_status", "unknown")
-            Logger.log("i","2")
+            Logger.log("i","weird error, config uninstalled, preference incorrect")
 
         # if it's installed, and it's listed as uninstalled, then change that to reflect the truth
         if self.isInstalled() and self._application.getPreferences().getValue("Nautilus/install_status") is "uninstalled":
             self._application.getPreferences().setValue("Nautilus/install_status", "installed")
-            Logger.log("i","3")
+            Logger.log("i","weird error, config installed, preference incorrect")
 
         # if the version isn't the same, then force installation
         if not self.versionsMatch():
             self._application.getPreferences().setValue("Nautilus/install_status", "unknown")
-            Logger.log("i","4")
+            Logger.log("i","Version's don't match")
 
         # Check the preferences to see if the user uninstalled the files -
         # if so don't automatically install them
         if self._application.getPreferences().getValue("Nautilus/install_status") is "unknown":
             # if the user never installed the files, then automatically install it
-            Logger.log("i","5")
+            Logger.log("i","Time to install!")
             self.installPluginFiles()
 
         if not self.configVersionsMatch():
@@ -164,7 +162,7 @@ class Nautilus(QObject, MeshWriter, Extension):
         self.addMenuItem(catalog.i18nc("@item:inmenu", "Preferences"), self.showPreferences)
 
         # finally save the cura.cfg file
-        self._application.getPreferences().writeToFile(Resources.getStoragePath(Resources.Preferences, self._application.getApplicationName() + ".cfg"))
+        #self._application.getPreferences().writeToFile(Resources.getStoragePath(Resources.Preferences, self._application.getApplicationName() + ".cfg"))
         if self._ready == True:
             Application.getInstance().engineCreatedSignal.connect(self.addMatCosts)
             Application.getInstance().engineCreatedSignal.connect(self.createPreferencesWindow)
@@ -289,20 +287,15 @@ class Nautilus(QObject, MeshWriter, Extension):
         Logger.log("i","Setting Material costs and currency!")
         matCosts = open(os.path.join(self.this_plugin_path,"matCosts.txt"),'r').read()
         matCosts = matCosts.replace("[","").replace("]","")
-        if self._application.getPreferences().getValue("cura/material_settings") is None:
-            self._application.getPreferences().addPreference("cura/material_settings",matCosts)
-        else:
-            self._application.getPreferences().setValue("cura/material_settings",matCosts)
-        if self._application.getPreferences().getValue("cura/currency") is None:
-            self._application.getPreferences().addPreference("cura/currency","$")
-        else:
-            self._application.getPreferences().setValue("cura/currency","$")
+        self._application.getPreferences().addPreference("cura/material_settings",matCosts)
+        self._application.getPreferences().setValue("cura/material_settings",matCosts)
+        self._application.getPreferences().addPreference("cura/currency","$")
+        self._application.getPreferences().setValue("cura/currency","$")
 
     # returns true if the versions match and false if they don't
     def versionsMatch(self):
         # get the currently installed plugin version number
-        if self._application.getPreferences().getValue("Nautilus/curr_version") is None:
-            self._application.getPreferences().addPreference("Nautilus/curr_version", "0.0.0")
+        self._application.getPreferences().addPreference("Nautilus/curr_version", "0.0.0")
 
         installedVersion = self._application.getPreferences().getValue("Nautilus/curr_version")
 
@@ -400,13 +393,8 @@ class Nautilus(QObject, MeshWriter, Extension):
     def setCurrency(self):
         testitem = str(self._application.getPreferences().getValue("cura/currency"))
         Logger.log("i","it is "+testitem)
-        if self._application.getPreferences().getValue("cura/currency") is None:
-            Logger.log("i","check me out")
-            self._application.getPreferences().addPreference("cura/currency","$")
-            self._application.getPreferences().setValue("cura/currency","$")
-        else:
-            self._application.getPreferences().setValue("cura/currency","$")
-        self._application.getPreferences().writeToFile(Resources.getStoragePath(Resources.Preferences, self._application.getApplicationName() + ".cfg"))
+        self._application.getPreferences().addPreference("cura/currency","$")
+        self._application.getPreferences().setValue("cura/currency","$")
 
     # Install the plugin files.
     def installPluginFiles(self):
@@ -491,7 +479,6 @@ class Nautilus(QObject, MeshWriter, Extension):
                 self._application.getPreferences().setValue("Nautilus/install_status", "installed")
                 self._application.getPreferences().setValue("Nautilus/curr_version",Nautilus.version)
                 Logger.log("i", "Nautilus Plugin is now installed - Please restart ")
-                self._application.getPreferences().writeToFile(Resources.getStoragePath(Resources.Preferences, self._application.getApplicationName() + ".cfg"))
 
         except: # Installing a new plugin should never crash the application.
             Logger.logException("d", "An exception occurred in Nautilus Plugin while installing the files")
@@ -641,6 +628,5 @@ class Nautilus(QObject, MeshWriter, Extension):
                 message = Message(catalog.i18nc("@info:status","You have at least one Nautilus added into Cura. Remove it from your Preferences menu before restarting to avoid an error!"))
                 message.show()
             self._application.getPreferences().setValue("Nautilus/install_status", "uninstalled")
-            self._application.getPreferences().writeToFile(Resources.getStoragePath(Resources.Preferences, self._application.getApplicationName() + ".cfg"))
             message = Message(catalog.i18nc("@info:status", "Nautilus files have been uninstalled, please restart Cura to complete uninstallation."))
             message.show()
