@@ -71,7 +71,7 @@ class Nautilus(QObject, MeshWriter, Extension):
     # 1) here
     # 2) plugin.json
     # 3) package.json
-    version = "1.1.1"
+    version = "1.1.2"
 
     ##  Dictionary that defines how characters are escaped when embedded in
     #   g-code.
@@ -165,7 +165,7 @@ class Nautilus(QObject, MeshWriter, Extension):
         #self._application.getPreferences().writeToFile(Resources.getStoragePath(Resources.Preferences, self._application.getApplicationName() + ".cfg"))
         if self._ready == True:
             Application.getInstance().engineCreatedSignal.connect(self.addMatCosts)
-            Application.getInstance().engineCreatedSignal.connect(self.createPreferencesWindow)
+            #Application.getInstance().engineCreatedSignal.connect(self.createPreferencesWindow)
 
     def createPreferencesWindow(self):
         path = os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), "qml", "Nautilusprefs.qml")
