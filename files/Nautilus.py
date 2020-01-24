@@ -399,6 +399,7 @@ class Nautilus(QObject, MeshWriter, Extension):
     # Install the plugin files.
     def installPluginFiles(self):
         self.setCurrency()
+        self.addMatCosts()
         Logger.log("i", "Nautilus Plugin installing printer files")
         upper = Upgrader.Upgrader()
         value = upper.configFixer()
