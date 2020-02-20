@@ -7,11 +7,11 @@
       <color>Generic</color>
       <label>Vinyl 303</label>
     </name>
-    <GUID>506c9f0d-e3aa-4bd4-b2d2-23e242hr019</GUID>
+    <GUID>506c9f0d-e3aa-4bd4-b2d2-23e242hr027</GUID>
     <version>3</version>
     <color_code>#a64d79</color_code>
     <description>Vinyl/PVC is a technical material that is functionally tough and rigid with flame retardance, chemical resistance, and high impact resistance. Warning! Toxic fumes are emitted during printing. Use proper air filtration and print in a well ventilated room.</description>
-    <adhesion_info>Use bed adhesive</adhesion_info>
+    <adhesion_info>Use Magigoo</adhesion_info>
   </metadata>
   <properties>
     <density>1.35</density>
@@ -47,5 +47,6 @@
     <cura:setting key="speed_volumetric_max">13</cura:setting>
     <cura:setting key="speed_volumetric_min">0.01</cura:setting>
     <cura:setting key="retraction_enable"> </cura:setting>
+    <cura:setting key="brim_width">8</cura:setting>
   </settings>
 </fdmmaterial>

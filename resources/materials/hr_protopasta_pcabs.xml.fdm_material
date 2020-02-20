@@ -7,11 +7,11 @@
       <color>Generic</color>
       <label>PCABS</label>
     </name>
-    <GUID>506c9f0d-e3aa-4bd4-b2d2-23e242hr021</GUID>
+    <GUID>506c9f0d-e3aa-4bd4-b2d2-23e242hr028</GUID>
     <version>3</version>
     <color_code>#3c78d8</color_code>
     <description>Engineering grade polycarbonate-ABS alloy that yields strong and tough parts.</description>
-    <adhesion_info>PEl</adhesion_info>
+    <adhesion_info>PEI</adhesion_info>
   </metadata>
   <properties>
     <density>1.24</density>
@@ -32,7 +32,7 @@
         <setting key="hardware compatible">yes</setting>
       </hotend>
     </machine>
-    <setting key="print temperature">280</setting>
+    <setting key="print temperature">290</setting>
     <setting key="heated bed temperature">125</setting>
     <setting key="standby temperature">0</setting>
     <setting key="adhesion tendency">0</setting>
@@ -41,10 +41,12 @@
     <setting key="retraction amount">1</setting>
     <cura:setting key="material_flow">100</cura:setting>
     <cura:setting key="material_name">PCABS - Proto-pasta</cura:setting>
-    <cura:setting key="material_print_surface">PEl</cura:setting>
+    <cura:setting key="material_print_surface">PEI</cura:setting>
     <cura:setting key="material_door_status">;</cura:setting>
     <cura:setting key="pressure_advance_value">0.05</cura:setting>
     <cura:setting key="speed_volumetric_max">8</cura:setting>
     <cura:setting key="speed_volumetric_min">0.01</cura:setting>
+    <cura:setting key="brim_width">8</cura:setting>
+    <cura:setting key="cool_min_layer_time">10</cura:setting>
   </settings>
 </fdmmaterial>

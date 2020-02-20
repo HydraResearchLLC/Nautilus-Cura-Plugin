@@ -3,7 +3,7 @@
   <metadata>
     <name>
       <brand>Generic</brand>
-      <material>ABS / ASA</material>
+      <material>ASA</material>
       <color>Generic</color>
       <label>ASA</label>
     </name>
@@ -46,5 +46,6 @@
     <cura:setting key="pressure_advance_value">0.04</cura:setting>
     <cura:setting key="speed_volumetric_max">11</cura:setting>
     <cura:setting key="speed_volumetric_min">0.01</cura:setting>
+    <cura:setting key="cool_fan_speed_max">20</cura:setting>
   </settings>
 </fdmmaterial>

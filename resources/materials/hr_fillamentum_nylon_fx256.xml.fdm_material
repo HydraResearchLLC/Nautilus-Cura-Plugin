@@ -7,11 +7,11 @@
       <color>Generic</color>
       <label>Nylon FX256</label>
     </name>
-    <GUID>506c9f0d-e3aa-4bd4-b2d2-23e242hr013</GUID>
+    <GUID>506c9f0d-e3aa-4bd4-b2d2-23e242hr018</GUID>
     <version>3</version>
     <color_code>#3df266</color_code>
     <description>Nylon is strong, abrasion-resistant, durable, and slightly flexible with strong inter-layer adhesion.</description>
-    <adhesion_info>Use bed adhesive</adhesion_info>
+    <adhesion_info>Use Magigoo</adhesion_info>
   </metadata>
   <properties>
     <density>1.01</density>
@@ -46,5 +46,7 @@
     <cura:setting key="pressure_advance_value">0.1</cura:setting>
     <cura:setting key="speed_volumetric_max">10</cura:setting>
     <cura:setting key="speed_volumetric_min">0.01</cura:setting>
+    <cura:setting key="brim_width">8</cura:setting>
+    <cura:setting key="cool_min_layer_time">10</cura:setting>
   </settings>
 </fdmmaterial>

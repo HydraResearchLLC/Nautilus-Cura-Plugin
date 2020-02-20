@@ -7,11 +7,11 @@
       <color>Generic</color>
       <label>Nylon CF15 Carbon</label>
     </name>
-    <GUID>506c9f0d-e3aa-4bd4-b2d2-23e242hr014</GUID>
+    <GUID>506c9f0d-e3aa-4bd4-b2d2-23e242hr019</GUID>
     <version>3</version>
     <color_code>#3df266</color_code>
     <description>Nylon is strong, abrasion-resistant, durable, and slightly flexible with strong inter-layer adhesion. Carbon fiber reinforced Nylon increases the rigidity of printed parts and exhibits a matte surface finish.</description>
-    <adhesion_info>Use bed adhesive</adhesion_info>
+    <adhesion_info>Use Magigoo</adhesion_info>
   </metadata>
   <properties>
     <density>1.08</density>

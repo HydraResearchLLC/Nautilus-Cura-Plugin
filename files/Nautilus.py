@@ -71,7 +71,7 @@ class Nautilus(QObject, MeshWriter, Extension):
     # 1) here
     # 2) plugin.json
     # 3) package.json
-    version = "1.1.2"
+    version = "1.2.0"
 
     ##  Dictionary that defines how characters are escaped when embedded in
     #   g-code.
@@ -163,8 +163,8 @@ class Nautilus(QObject, MeshWriter, Extension):
 
         # finally save the cura.cfg file
         #self._application.getPreferences().writeToFile(Resources.getStoragePath(Resources.Preferences, self._application.getApplicationName() + ".cfg"))
-        if self._ready == True:
-            Application.getInstance().engineCreatedSignal.connect(self.addMatCosts)
+
+        Application.getInstance().engineCreatedSignal.connect(self.addMatCosts)
             #Application.getInstance().engineCreatedSignal.connect(self.createPreferencesWindow)
 
     def createPreferencesWindow(self):
@@ -390,22 +390,15 @@ class Nautilus(QObject, MeshWriter, Extension):
             Logger.log("i","Uninstalling")
             self.uninstallPluginFiles(False)
 
-    def setCurrency(self):
-        testitem = str(self._application.getPreferences().getValue("cura/currency"))
-        Logger.log("i","it is "+testitem)
-        self._application.getPreferences().addPreference("cura/currency","$")
-        self._application.getPreferences().setValue("cura/currency","$")
-
     # Install the plugin files.
     def installPluginFiles(self):
-        self.setCurrency()
         self.addMatCosts()
         Logger.log("i", "Nautilus Plugin installing printer files")
         upper = Upgrader.Upgrader()
         value = upper.configFixer()
         intentNames = ['engineering.inst.cfg','visual.inst.cfg','quick.inst.cfg']
         if value:
-            Logger.log("i","uninstall that shit")
+            Logger.log("i","uninstall that stuff")
             self.uninstallPluginFiles(value)
         try:
             restartRequired = False
@@ -443,8 +436,13 @@ class Nautilus(QObject, MeshWriter, Extension):
                             os.mkdir(folder)
 
                     if flag == True: #create the excluded materials file on install so all native Cura materials are blocked
-                        cura_dir=os.path.join(os.path.dirname(os.path.realpath(sys.argv[0])),"resources","materials")
-                        materiallist = os.listdir(cura_dir)
+                        try:
+                            cura_dir=os.path.normpath(os.path.join(Resources.getPath(CuraApplication.getInstance().ResourceTypes.MaterialInstanceContainer, 'ultimaker_pla_black.xml.fdm_material'),'..'))
+                            #os.path.join(os.path.dirname(os.path.realpath(sys.argv[0])),"resources","materials")
+                            materiallist = os.listdir(cura_dir)
+                        except:
+                            Logger.log("i","unable to exclude materials")
+                            materiallist = ''
                         #print(materiallist)
                         with zip_ref.open(info,'r') as f:
                             data = f.read()
@@ -463,7 +461,7 @@ class Nautilus(QObject, MeshWriter, Extension):
                         os.chmod(extracted_path, permissions | stat.S_IEXEC) #Make these files executable.
                         Logger.log("i", "Nautilus Plugin installing " + info.filename + " to " + extracted_path)
                          #update variant version numbers on install, Cura blocks out of date variants from appearing
-                        if folder is self.local_variants_path:
+                        if 'variant' in extracted_path or 'intent' in extracted_path:
                             Logger.log("i", "The variant is " + extracted_path)
                             config = configparser.ConfigParser()
                             config.read(extracted_path)

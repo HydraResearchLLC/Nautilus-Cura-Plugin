@@ -7,7 +7,7 @@
       <color>Generic</color>
       <label>PLA</label>
     </name>
-    <GUID>506c9f0d-e3aa-4bd4-b2d2-23e242hr018</GUID>
+    <GUID>506c9f0d-e3aa-4bd4-b2d2-23e242hr025</GUID>
     <version>3</version>
     <color_code>#ffc924</color_code>
     <description>Fast, safe, and reliable printing. PLA is ideal for fast and reliable printing of parts and prototypes with a great surface quality. The data in this file may not be correct for your specific filament.</description>
@@ -33,7 +33,7 @@
         <setting key="print temperature">200</setting>
       </hotend>
     </machine>
-    <setting key="print temperature">215</setting>
+    <setting key="print temperature">210</setting>
     <setting key="heated bed temperature">50</setting>
     <setting key="standby temperature">0</setting>
     <setting key="adhesion tendency">0</setting>
@@ -47,9 +47,7 @@
     <cura:setting key="pressure_advance_value">0.05</cura:setting>
     <cura:setting key="speed_volumetric_max">15</cura:setting>
     <cura:setting key="speed_volumetric_min">0.01</cura:setting>
-    <cura:setting key="adhesion_type">skirt</cura:setting>
-    <cura:setting key="infill_overlap">5</cura:setting>
-    <cura:setting key="skin_overlap">0</cura:setting>
-    <cura:setting key="cool_fan_speed_max">90</cura:setting>
+    <cura:setting key="brim_width">3</cura:setting>
+    <cura:setting key="support_z_distance_ratio">25</cura:setting>
   </settings>
 </fdmmaterial>

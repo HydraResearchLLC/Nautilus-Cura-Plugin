@@ -7,7 +7,7 @@
       <color>Generic</color>
       <label>Timberfill</label>
     </name>
-    <GUID>506c9f0d-e3aa-4bd4-b2d2-23e242hr017</GUID>
+    <GUID>506c9f0d-e3aa-4bd4-b2d2-23e242hr026</GUID>
     <version>3</version>
     <color_code>#8B4513</color_code>
     <description>Timberfill has unique visual properties and is great for cosmetic models. It prints similar to PLA, can be sanded, and can take wood stain to achieve a wood-like appearance.</description>
@@ -46,5 +46,6 @@
     <cura:setting key="pressure_advance_value">0.047</cura:setting>
     <cura:setting key="speed_volumetric_max">15</cura:setting>
     <cura:setting key="speed_volumetric_min">0.01</cura:setting>
+    <cura:setting key="support_z_distance_ratio">25</cura:setting>
   </settings>
 </fdmmaterial>
