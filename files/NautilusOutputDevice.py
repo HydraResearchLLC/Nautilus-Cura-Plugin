@@ -121,14 +121,14 @@ class NautilusOutputDevice(OutputDevice):
         else:
             fileName = "%s.gcode" % Application.getInstance().getPrintInformation().jobName
         self._fileName = fileName
-
+        self._baseLength = len(Application.getInstance().getPrintInformation().baseName)
         path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'qml', 'UploadFilename.qml')
         self._dialog = CuraApplication.getInstance().createQmlComponent(path, {"manager": self})
         self._dialog.textChanged.connect(self.onFilenameChanged)
         self._dialog.accepted.connect(self.onFilenameAccepted)
         self._dialog.show()
         self._dialog.findChild(QObject, "nameField").setProperty('text', self._fileName)
-        self._dialog.findChild(QObject, "nameField").select(0, len(self._fileName) - 6)
+        self._dialog.findChild(QObject, "nameField").select(0, self._baseLength)
         self._dialog.findChild(QObject, "nameField").setProperty('focus', True)
 
     def onFilenameChanged(self):
