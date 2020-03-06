@@ -19,5 +19,7 @@ def register(app):
         NautilusDuet.NautilusDuet()
         ],
         "output_device":
+        NautilusDuet.NautilusDuet(),
+        "machine_action":
         NautilusDuet.NautilusDuet()
     }

@@ -24,6 +24,7 @@ from PyQt5.QtQml import QQmlComponent, QQmlContext
 from UM.Message import Message
 from UM.Logger import Logger
 
+from UM.Resources import Resources
 from UM.Extension import Extension
 from UM.PluginRegistry import PluginRegistry
 from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
@@ -33,13 +34,13 @@ from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
 from cura.CuraApplication import CuraApplication
+from cura.MachineAction import MachineAction
 
 
-class NautilusDuet(QObject, Extension, OutputDevicePlugin):
+class NautilusDuet(MachineAction, QObject, Extension, OutputDevicePlugin):
     def __init__(self, parent=None):
-        QObject.__init__(self, parent)
-        Extension.__init__(self)
-        OutputDevicePlugin.__init__(self)
+        super().__init__("NautilusAction", catalog.i18nc("@action", "Connect via Network"))
+        self._qml_url = os.path.join(Resources.getStoragePath(Resources.Resources), "plugins","Nautilus","Nautilus",'qml','NautilusAction.qml')
         self._dialogs = {}
         self._dialogView = None
 
