@@ -71,7 +71,7 @@ class Nautilus(QObject, MeshWriter, Extension):
     # 1) here
     # 2) plugin.json
     # 3) package.json
-    version = "1.2.0"
+    version = "1.2.1"
 
     ##  Dictionary that defines how characters are escaped when embedded in
     #   g-code.
@@ -214,25 +214,25 @@ class Nautilus(QObject, MeshWriter, Extension):
 
     @pyqtSlot()
     def showHelp(self):
-        Logger.log("i", "Nautilus Plugin opening help page: https://www.hydraresearch3d.com/resources/")
+        Logger.log("i", "Nautilus Plugin opening help page: https://hydraresearch3d.dozuki.com/")
         try:
-            if not QDesktopServices.openUrl(QUrl("https://www.hydraresearch3d.com/resources/")):
-                message = Message(catalog.i18nc("@info:status", "Nautilus plugin could not open https://www.hydraresearch3d.com/resources/ please navigate to the page for assistance"))
+            if not QDesktopServices.openUrl(QUrl("https://hydraresearch3d.dozuki.com/")):
+                message = Message(catalog.i18nc("@info:status", "Nautilus plugin could not open https://hydraresearch3d.dozuki.com/ please navigate to the page for assistance"))
                 message.show()
         except:
-            message = Message(catalog.i18nc("@info:status", "Nautilus plugin could not open https://www.hydraresearch3d.com/resources/ please navigate to the page for assistance"))
+            message = Message(catalog.i18nc("@info:status", "Nautilus plugin could not open https://hydraresearch3d.dozuki.com/ please navigate to the page for assistance"))
             message.show()
         return
 
     @pyqtSlot()
     def reportIssue(self):
-        Logger.log("i", "Nautilus Plugin opening issue page: https://github.com/HydraResearchLLC/Nautilus/issues/new")
+        Logger.log("i", "Nautilus Plugin opening issue page: https://github.com/HydraResearchLLC/Nautilus-Cura-Plugin/issues/new")
         try:
-            if not QDesktopServices.openUrl(QUrl("https://github.com/HydraResearchLLC/Nautilus/issues/new")):
-                message = Message(catalog.i18nc("@info:status", "Nautilus plugin could not open https://github.com/HydraResearchLLC/Nautilus/issues/new please navigate to the page and report an issue"))
+            if not QDesktopServices.openUrl(QUrl("https://github.com/HydraResearchLLC/Nautilus-Cura-Plugin/issues/new")):
+                message = Message(catalog.i18nc("@info:status", "Nautilus plugin could not open https://github.com/HydraResearchLLC/Nautilus-Cura-Plugin/issues/new please navigate to the page and report an issue"))
                 message.show()
         except:
-            message = Message(catalog.i18nc("@info:status", "Nautilus plugin could not open https://github.com/HydraResearchLLC/Nautilus/issues/new please navigate to the page and report an issue"))
+            message = Message(catalog.i18nc("@info:status", "Nautilus plugin could not open https://github.com/HydraResearchLLC/Nautilus-Cura-Plugin/issues/new please navigate to the page and report an issue"))
             message.show()
         return
 
@@ -270,7 +270,7 @@ class Nautilus(QObject, MeshWriter, Extension):
 
     @pyqtSlot()
     def openUserManual(self):
-        url = QUrl('https://www.hydraresearch3d.com/nautilus-resources', QUrl.TolerantMode)
+        url = QUrl('https://hydraresearch3d.dozuki.com/c/Nautilus', QUrl.TolerantMode)
         if not QDesktopServices.openUrl(url):
             message = Message(catalog.i18nc("@info:status", "Nautilus plugin could not navigate to https://www.hydraresearch3d.com/nautilus-resources"))
             message.show()
@@ -314,9 +314,9 @@ class Nautilus(QObject, MeshWriter, Extension):
         message.show()
 
     def _onMessageActionTriggered(self,message,action):
-        url = QUrl('https://www.hydraresearch3d.com/nautilus-resources', QUrl.TolerantMode)
+        url = QUrl('https://hydraresearch3d.dozuki.com/Guide/Update+Printer+Firmware+and+Configuration/7', QUrl.TolerantMode)
         if not QDesktopServices.openUrl(url):
-            message = Message(catalog.i18nc("@info:status", "Nautilus plugin could not navigate to https://www.hydraresearch3d.com/nautilus-resources"))
+            message = Message(catalog.i18nc("@info:status", "Nautilus plugin could not navigate to https://hydraresearch3d.dozuki.com/Guide/Update+Printer+Firmware+and+Configuration"))
             message.show()
         return
 
