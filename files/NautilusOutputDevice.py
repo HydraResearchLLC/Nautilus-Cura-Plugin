@@ -71,7 +71,7 @@ class NautilusOutputDevice(OutputDevice):
         self._stream = None
         self._cleanupRequest()
 
-        if hasattr(self, '_message'):
+        if hasattr(self, '_message') and self._message:
             self._message.hide()
         self._message = None
 
