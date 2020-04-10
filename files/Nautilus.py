@@ -138,7 +138,7 @@ class Nautilus(QObject, MeshWriter, Extension):
             Logger.log("i","weird error, config installed, preference incorrect")
 
         # if the version isn't the same, then force installation
-        if not self.versionsMatch():
+        if not self.versionsMatch() and self._application.getPreferences().getValue("Nautilus/install_status") is not "uninstalled":
             self._application.getPreferences().setValue("Nautilus/install_status", "unknown")
             Logger.log("i","Version's don't match")
 
@@ -476,7 +476,7 @@ class Nautilus(QObject, MeshWriter, Extension):
             if restartRequired and self.isInstalled():
                 # either way, the files are now installed, so set the prefrences value
                 self._application.getPreferences().setValue("Nautilus/install_status", "installed")
-                self._application.getPreferences().setValue("Nautilus/curr_version",Nautilus.version)
+                self._application.getPreferences().setValue("Nautilus/curr_version", Nautilus.version)
                 Logger.log("i", "Nautilus Plugin is now installed - Please restart ")
 
         except: # Installing a new plugin should never crash the application.
