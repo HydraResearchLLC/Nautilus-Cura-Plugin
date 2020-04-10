@@ -159,6 +159,10 @@ UM.Dialog
 
                 Label { text: catalog.i18nc("@label", "HTTP Basic Auth: password"); }
                 Text { font.bold: true; text: manager.instanceHTTPPassword(dialog.currentName); }
+
+                Button { text: catalog.i18nc("@action:button","Update Firmware"); onClicked: manager.updateFirmware(dialog.currentName); }
+
+                Button { text: catalog.i18nc("@action:button","Check for Updates"); onClicked: manager.updateFirmwareCheck(dialog.currentName); }
             }
 
             visible: (instanceList.currentIndex != -1);

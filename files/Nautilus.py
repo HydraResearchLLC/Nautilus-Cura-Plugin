@@ -39,6 +39,7 @@ import urllib.request
 import requests
 import ssl
 import json
+import traceback
 
 from distutils.version import StrictVersion # for upgrade installations
 
@@ -116,8 +117,6 @@ class Nautilus(QObject, MeshWriter, Extension):
         self.local_intent_path = os.path.join(Resources.getStoragePath(Resources.Resources),"intent")
         self.setvers = self._application.getPreferences().getValue("metadata/setting_version")
         self.gitUrl = 'https://api.github.com/repos/HydraResearchLLC/Nautilus-Configuration-Macros/releases/latest'
-        self.fullJson = json.loads(requests.get(self.gitUrl).text)
-
 
         # if the plugin was never installed, then force installation
         if self._application.getPreferences().getValue("Nautilus/install_status") is None:
@@ -149,9 +148,9 @@ class Nautilus(QObject, MeshWriter, Extension):
             Logger.log("i","Time to install!")
             self.installPluginFiles()
 
-        if not self.configVersionsMatch():
-            self.messageMaker()
-            Logger.log("i","time for a config update!")
+        #if not self.configVersionsMatch():
+        #    self.messageMaker() #RETOOL WITH NEW UPDATING PROCEDURES
+        #    Logger.log("i","time for a config update!")
 
 
             #This is the signal for machines changing
@@ -165,6 +164,7 @@ class Nautilus(QObject, MeshWriter, Extension):
         #self._application.getPreferences().writeToFile(Resources.getStoragePath(Resources.Preferences, self._application.getApplicationName() + ".cfg"))
 
         Application.getInstance().engineCreatedSignal.connect(self.addMatCosts)
+        self.checkGit() #eventually move htis process to NautilusOutputDevice
             #Application.getInstance().engineCreatedSignal.connect(self.createPreferencesWindow)
 
     def createPreferencesWindow(self):
@@ -201,6 +201,19 @@ class Nautilus(QObject, MeshWriter, Extension):
         elif self.MachineName != None:
             NautilusDuet.NautilusDuet().stop()
 
+    def setFirmVers(self, versno):
+        self.firmwareVersion = str(versno)
+        self._application.getPreferences().addPreference("Nautilus/configversion",self.firmwareVersion)
+
+    def checkGit(self): #eventually move htis process to NautilusOutputDevice
+        try:
+            self.versionNo = str(json.dumps(json.loads(requests.get(self.gitUrl).text)['tag_name'])).replace("\"","")
+            self._application.getPreferences().setValue("Nautilus/configversion",self.versionNo)
+            Logger.log('d',"checked Github, firmware version: "+str(self.versionNo))
+        except:
+            Logger.log("i","couldn't connect to github: "+str(traceback.format_exc()))
+            message = Message(catalog.i18nc("@info:status", "Hydra Research plugin could not connect to GitHub"))
+            message.show()
 
 
     # function so that the preferences menu can open website the version
@@ -223,6 +236,7 @@ class Nautilus(QObject, MeshWriter, Extension):
             message = Message(catalog.i18nc("@info:status", "Nautilus plugin could not open https://hydraresearch3d.dozuki.com/ please navigate to the page for assistance"))
             message.show()
         return
+
 
     @pyqtSlot()
     def reportIssue(self):
@@ -306,32 +320,6 @@ class Nautilus(QObject, MeshWriter, Extension):
         else:
             Logger.log("i", "Nautilus Plugin installed version: " +installedVersion+ " doesn't match this version: "+Nautilus.version)
             return False
-
-    def messageMaker(self):
-        message=Message(catalog.i18nc("@info:status", "New features are available for your Nautilus! It is recommended to update the firmware on your printer."), 0)
-        message.addAction("download_config", catalog.i18nc("@action:button", "How to update"), "globe", catalog.i18nc("@info:tooltip", "Open website to download new firmware"))
-        message.actionTriggered.connect(self._onMessageActionTriggered)
-        message.show()
-
-    def _onMessageActionTriggered(self,message,action):
-        url = QUrl('https://hydraresearch3d.dozuki.com/Guide/Update+Printer+Firmware+and+Configuration/7', QUrl.TolerantMode)
-        if not QDesktopServices.openUrl(url):
-            message = Message(catalog.i18nc("@info:status", "Nautilus plugin could not navigate to https://hydraresearch3d.dozuki.com/Guide/Update+Printer+Firmware+and+Configuration"))
-            message.show()
-        return
-
-    def configVersionsMatch(self):
-        newVersion = str(json.dumps(self.fullJson['tag_name'])).replace("\"","")
-        installedVersion = str(self._application.getPreferences().getValue("Nautilus/configversion")).replace("\"","")
-        Logger.log("i","Here we go. have "+installedVersion + "git has " + newVersion)
-        if StrictVersion(installedVersion) == StrictVersion(newVersion):
-            Logger.log("i","Some stuff, it's chill. have "+installedVersion + "git has " + newVersion)
-            return True
-        else:
-            Logger.log("i","No Bueno " + newVersion + " have " + installedVersion)
-            self._application.getPreferences().setValue("Nautilus/configversion",newVersion)
-            return False
-
 
     # check to see if the plugin files are all installed
     def isInstalled(self):
@@ -466,7 +454,7 @@ class Nautilus(QObject, MeshWriter, Extension):
                             config = configparser.ConfigParser()
                             config.read(extracted_path)
                             Logger.log("i", "The sections are " + str(config.sections()))
-                            config['metadata']['setting_version']=self.setvers
+                            config['metadata']['setting_version'] = str(self.setvers)
                             with open(extracted_path,'w') as configfile:
                                 config.write(configfile)
 
@@ -476,7 +464,7 @@ class Nautilus(QObject, MeshWriter, Extension):
             if restartRequired and self.isInstalled():
                 # either way, the files are now installed, so set the prefrences value
                 self._application.getPreferences().setValue("Nautilus/install_status", "installed")
-                self._application.getPreferences().setValue("Nautilus/curr_version", Nautilus.version)
+                self._application.getPreferences().setValue("Nautilus/curr_version",Nautilus.version)
                 Logger.log("i", "Nautilus Plugin is now installed - Please restart ")
 
         except: # Installing a new plugin should never crash the application.
@@ -629,3 +617,34 @@ class Nautilus(QObject, MeshWriter, Extension):
             self._application.getPreferences().setValue("Nautilus/install_status", "uninstalled")
             message = Message(catalog.i18nc("@info:status", "Nautilus files have been uninstalled, please restart Cura to complete uninstallation."))
             message.show()
+
+"""
+FUNCTION GRAVEYARD
+    def messageMaker(self): #deprecate
+        message=Message(catalog.i18nc("@info:status", "New features are available for your Nautilus! It is recommended to update the firmware on your printer."), 0)
+        message.addAction("download_config", catalog.i18nc("@action:button", "Update Firmware"), "globe", catalog.i18nc("@info:tooltip", "Automatically download and install the latest firmware"))
+        message.actionTriggered.connect(self._onMessageActionTriggered)
+        message.show()
+
+    def _onMessageActionTriggered(self,message,action): #deprecate
+        url = QUrl('https://hydraresearch3d.dozuki.com/Guide/Update+Printer+Firmware+and+Configuration/7', QUrl.TolerantMode)
+        if not QDesktopServices.openUrl(url):
+            message = Message(catalog.i18nc("@info:status", "Nautilus plugin could not navigate to https://hydraresearch3d.dozuki.com/Guide/Update+Printer+Firmware+and+Configuration"))
+            message.show()
+        return
+
+    def configVersionsMatch(self):#deprecate
+        if self.fullJson:
+            newVersion = str(json.dumps(self.fullJson['tag_name'])).replace("\"","")
+            installedVersion = str(self._application.getPreferences().getValue("Nautilus/configversion")).replace("\"","")
+            Logger.log("i","Here we go. have "+installedVersion + "git has " + newVersion)
+            if StrictVersion(installedVersion) == StrictVersion(newVersion):
+                Logger.log("i","Some stuff, it's chill. have "+installedVersion + "git has " + newVersion)
+                return True
+            else:
+                Logger.log("i","No Bueno " + newVersion + " have " + installedVersion)
+                self._application.getPreferences().setValue("Nautilus/configversion",newVersion)
+                return False
+        else:
+            return True
+"""

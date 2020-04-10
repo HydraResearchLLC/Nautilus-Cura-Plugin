@@ -18,7 +18,7 @@ import re
 import os.path
 import json
 
-from PyQt5.QtCore import QObject, QUrl, pyqtProperty, pyqtSignal, pyqtSlot
+from PyQt5.QtCore import QObject, QUrl, QTimer, pyqtProperty, pyqtSignal, pyqtSlot
 from PyQt5.QtQml import QQmlComponent, QQmlContext
 
 from UM.Message import Message
@@ -51,6 +51,7 @@ class NautilusDuet(MachineAction, QObject, Extension, OutputDevicePlugin):
         manager = self.getOutputDeviceManager()
         for name, instance in self._instances.items():
             manager.addOutputDevice(NautilusOutputDevice.NautilusOutputDevice(name, instance["url"], instance["duet_password"], instance["http_user"], instance["http_password"], device_type=NautilusOutputDevice.DeviceType.upload))
+            #QTimer.singleShot(15000, NautilusOutputDevice.NautilusOutputDevice(name, instance["url"], instance["duet_password"], instance["http_user"], instance["http_password"], device_type=NautilusOutputDevice.DeviceType.upload).updateCheck)
 
     def stop(self):
         manager = self.getOutputDeviceManager()
@@ -74,6 +75,25 @@ class NautilusDuet(MachineAction, QObject, Extension, OutputDevicePlugin):
     @pyqtProperty("QVariantList", notify=serverListChanged)
     def serverList(self):
         return list(self._instances.keys())
+
+    @pyqtSlot(str)
+    def updateFirmware(self, name):
+        if name in self._instances.keys():
+            NautilusOutputDevice.NautilusOutputDevice(name, self._instances[name]["url"], self._instances[name]["duet_password"], self._instances[name]["http_user"], self._instances[name]["http_password"], device_type=NautilusOutputDevice.DeviceType.upload).beginUpdate()
+        else:
+            message = Message(catalog.i18nc("@info:status", "Error finding \"{}\" to update firmware").format(name))
+            message.show()
+        return None
+
+    @pyqtSlot(str)
+    def updateFirmwareCheck(self,name):
+        if name in self._instances.keys():
+            NautilusOutputDevice.NautilusOutputDevice(name, self._instances[name]["url"], self._instances[name]["duet_password"], self._instances[name]["http_user"], self._instances[name]["http_password"], device_type=NautilusOutputDevice.DeviceType.upload).updateCheck()
+        else:
+            message = Message(catalog.i18nc("@info:status", "Error finding \"{}\" to update firmware").format(name))
+            message.show()
+        return None
+
 
     @pyqtSlot(str, result=str)
     def instanceUrl(self, name):
