@@ -209,7 +209,7 @@ class Nautilus(QObject, MeshWriter, Extension):
 
     def checkGit(self): #eventually move htis process to NautilusOutputDevice
         try:
-            self.versionNo = str(json.dumps(json.loads(requests.get(self.gitUrl, auth = ('zachrose@hydraresearch3d.com', 'a95ce8150aada96ed3a8f02e6674184daa5e707f')).text)['tag_name'])).replace("\"","")
+            self.versionNo = str(json.dumps(json.loads(requests.get(self.gitUrl).text)['tag_name'])).replace("\"","")
             self._application.getPreferences().setValue("Nautilus/configversion",self.versionNo)
             Logger.log('d',"checked Github, firmware version: "+str(self.versionNo))
         except Exception as err:
