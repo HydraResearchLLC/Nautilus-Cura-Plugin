@@ -29,6 +29,7 @@ from UM.OutputDevice import OutputDeviceError
 from UM.Resources import Resources
 
 from . import Nautilus
+from . import NautilusDuet
 
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
@@ -47,7 +48,7 @@ class DeviceType(Enum):
 
 
 class NautilusOutputDevice(OutputDevice):
-    def __init__(self, name, url, duet_password, http_user, http_password, device_type):
+    def __init__(self, name, url, duet_password, http_user, http_password, firmware_version, device_type):
         self._device_type = device_type
         if device_type == DeviceType.upload:
             description = catalog.i18nc("@action:button", "Send to {0}").format(name)
@@ -69,9 +70,12 @@ class NautilusOutputDevice(OutputDevice):
         self._duet_password = duet_password
         self._http_user = http_user
         self._http_password = http_password
+        self._firmware_version = firmware_version
         self.gitUrl = 'https://api.github.com/repos/HydraResearchLLC/Nautilus-Configuration-Macros/releases/latest'
         self.path = os.path.join(Resources.getStoragePath(Resources.Resources), "plugins","Nautilus","Nautilus")
-        self.flag = 1
+        #RESOLVE FLAG ISSUE
+        self.Nauti = Nautilus.Nautilus()
+
 
 
         Logger.log("d", self._name_id + " | New Nautilus Connected")
@@ -89,11 +93,12 @@ class NautilusOutputDevice(OutputDevice):
         self._warning = None
         self._message = None
         self._progress = None
+        self.updateFlag = 0
         self._macStruct = []
         self._dirStruct = []
-        Logger.log('d','!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+
+        QTimer.singleShot(28000, self.initFlag)
         QTimer.singleShot(30000, self.updateCheck)
-        QTimer.singleShot(35000, self.setFlag)
 
 
 
@@ -241,7 +246,7 @@ class NautilusOutputDevice(OutputDevice):
         self._progress.show()
         Logger.log('i','query github')
         self._stage = OutputStage.ready
-
+        #gitRequest.setRawHeader(b'auth', b'zachrose@hydraresearch3d.com, bUZNX@00#ETk')
         try:
             #self.nam = QtNetwork.QNetworkAccessManager()
             self.gitRequest = QtNetwork.QNetworkRequest(QUrl(self.gitUrl))
@@ -408,6 +413,10 @@ class NautilusOutputDevice(OutputDevice):
         sleep(.1)
         self._stage = OutputStage.ready
 
+    def initFlag(self):
+        Logger.log('i','flag init')
+        self.updateFlag = 1
+
 
     def onSysDataReady(self):
         self._streamer = BytesIO()
@@ -483,7 +492,7 @@ class NautilusOutputDevice(OutputDevice):
         self._message.show()
 
     def updateCheck(self):
-        Nautilus.Nautilus().checkGit()
+        self.Nauti.checkGit()
         self._send('download', [("name", "0:/private/firmware_version")])
         loop = QEventLoop()
         getTimer = QTimer()
@@ -495,16 +504,21 @@ class NautilusOutputDevice(OutputDevice):
             if len(reply_body)>0:
                 newestVersion = CuraApplication.getInstance().getPreferences().getValue("Nautilus/configversion")
                 if StrictVersion(newestVersion)>StrictVersion(reply_body):
+                    self._application.getPreferences().addPreference("Nautilus/uptodate","no")
                     self._onUpdateRequired()
                 #self._testmess = Message(catalog.i18nc("@info:status","{} has firmware version: {}").format(self._name,reply_body))
                 #self._testmess.show()
                 else:
-                    Logger.log('i', str(self._name) + " is up to date")
-                    if self.flag == 0:
+                    Logger.log('i', str(self._name) + " is up to date"+str(self.updateFlag))
+                    self._application.getPreferences().addPreference("Nautilus/uptodate","yes")
+                    NautilusDuet.NautilusDuet.SaveInstance(self._name, self._name, self._url, self._duet_password, self._http_user, self._http_password, self._firmware_version)
+                    if self.updateFlag == 0:
                         mess = Message(catalog.i18nc("@info:status",'Nautilus is up to date!'))
                         mess.show()
             else:
                 Logger.log('i','timeout error')
+                if self.updateFlag == 0:
+                    self._onTimeout()
         else:
             Logger.log('i','unknown error')
 
@@ -576,9 +590,6 @@ class NautilusOutputDevice(OutputDevice):
             self._cleanupRequest()
             self.updateCheck()
 
-    def setFlag(self):
-        self.flag = 0
-
     def _onUpdateProgress(self,progress):
         if self._progress:
             self._progress.setProgress(progress)
@@ -633,23 +644,26 @@ class NautilusOutputDevice(OutputDevice):
             errorString = ''
 
 
-        if '99' in repr(errorCode) and self.flag==0:
+        if '99' in repr(errorCode):
+            if self.updateFlag==0:
+                self._unknownError()
             #Unknown Error
             Logger.log('e','unkown error')
-            self._unknownError()
         elif '203' in repr(errorCode):
             #File DNE
             Logger.log('e','file DNE')
             if 'firmware' in str(errorString).lower():
                 self._onUpdateRequired()
-            elif self.flag==0:
+            elif self.updateFlag==0:
                 Logger.log('e','unknown '+str(errorString))
                 self._unknownError()
-        elif '4' in repr(errorCode)and self.flag==0:
+        elif '4' in repr(errorCode):
+            if self.updateFlag==0:
+                self._onTimeout()
             #Timed Out
             Logger.log('e','connection timed out')
-            self._onTimeout()
         else:
+            Logger.log('e',"unknown error! code: "+str(errorCode)+"mess: "+str(errorString))
             message = Message(catalog.i18nc("@info:status", "There was a network error: {} {}").format(errorCode, errorString), 0, False)
             message.show()
 

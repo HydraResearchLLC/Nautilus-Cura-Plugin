@@ -17,6 +17,7 @@
 import re
 import os.path
 import json
+from distutils.version import StrictVersion
 
 from PyQt5.QtCore import QObject, QUrl, QTimer, pyqtProperty, pyqtSignal, pyqtSlot
 from PyQt5.QtQml import QQmlComponent, QQmlContext
@@ -39,19 +40,21 @@ from cura.MachineAction import MachineAction
 
 class NautilusDuet(MachineAction, QObject, Extension, OutputDevicePlugin):
     def __init__(self, parent=None):
-        super().__init__("NautilusAction", catalog.i18nc("@action", "Connect via Network"))
+        super().__init__("NautilusAction", catalog.i18nc("@action", "Update Firmware"))
         self._qml_url = os.path.join(Resources.getStoragePath(Resources.Resources), "plugins","Nautilus","Nautilus",'qml','NautilusAction.qml')
         self._dialogs = {}
         self._dialogView = None
 
         CuraApplication.getInstance().getPreferences().addPreference("Nautilus/instances", json.dumps({}))
         self._instances = json.loads(CuraApplication.getInstance().getPreferences().getValue("Nautilus/instances"))
+        #CuraApplication.getInstance().getMachineManager().removeMachineAction("UpgradeFirmware")
 
     def start(self):
         manager = self.getOutputDeviceManager()
         for name, instance in self._instances.items():
-            manager.addOutputDevice(NautilusOutputDevice.NautilusOutputDevice(name, instance["url"], instance["duet_password"], instance["http_user"], instance["http_password"], device_type=NautilusOutputDevice.DeviceType.upload))
+            manager.addOutputDevice(NautilusOutputDevice.NautilusOutputDevice(name, instance["url"], instance["duet_password"], instance["http_user"], instance["http_password"], instance["firmware_version"], device_type=NautilusOutputDevice.DeviceType.upload))
             #QTimer.singleShot(15000, NautilusOutputDevice.NautilusOutputDevice(name, instance["url"], instance["duet_password"], instance["http_user"], instance["http_password"], device_type=NautilusOutputDevice.DeviceType.upload).updateCheck)
+
 
     def stop(self):
         manager = self.getOutputDeviceManager()
@@ -77,18 +80,26 @@ class NautilusDuet(MachineAction, QObject, Extension, OutputDevicePlugin):
         return list(self._instances.keys())
 
     @pyqtSlot(str)
-    def updateFirmware(self, name):
-        if name in self._instances.keys():
-            NautilusOutputDevice.NautilusOutputDevice(name, self._instances[name]["url"], self._instances[name]["duet_password"], self._instances[name]["http_user"], self._instances[name]["http_password"], device_type=NautilusOutputDevice.DeviceType.upload).beginUpdate()
+    def updateButton(self, name):
+        status = CuraApplication.getInstance().getPreferences().getValue("Nautilus/uptodate")
+        if 'yes' not in status:
+            if name in self._instances.keys():
+                NautilusOutputDevice.NautilusOutputDevice(name, self._instances[name]["url"], self._instances[name]["duet_password"], self._instances[name]["http_user"], self._instances[name]["http_password"], self._instances[name]["firmware_version"], device_type=NautilusOutputDevice.DeviceType.upload).beginUpdate()
+            else:
+                message = Message(catalog.i18nc("@info:status", "Error finding \"{}\" to update firmware").format(name))
+                message.show()
         else:
-            message = Message(catalog.i18nc("@info:status", "Error finding \"{}\" to update firmware").format(name))
-            message.show()
+            if name in self._instances.keys():
+                NautilusOutputDevice.NautilusOutputDevice(name, self._instances[name]["url"], self._instances[name]["duet_password"], self._instances[name]["http_user"], self._instances[name]["http_password"], self._instances[name]["firmware_version"], device_type=NautilusOutputDevice.DeviceType.upload).updateCheck()
+            else:
+                message = Message(catalog.i18nc("@info:status", "Error finding \"{}\" to update firmware").format(name))
+                message.show()
         return None
 
     @pyqtSlot(str)
     def updateFirmwareCheck(self,name):
         if name in self._instances.keys():
-            NautilusOutputDevice.NautilusOutputDevice(name, self._instances[name]["url"], self._instances[name]["duet_password"], self._instances[name]["http_user"], self._instances[name]["http_password"], device_type=NautilusOutputDevice.DeviceType.upload).updateCheck()
+            NautilusOutputDevice.NautilusOutputDevice(name, self._instances[name]["url"], self._instances[name]["duet_password"], self._instances[name]["http_user"], self._instances[name]["http_password"], self._instances[name]["firmware_version"], device_type=NautilusOutputDevice.DeviceType.upload).updateCheck()
         else:
             message = Message(catalog.i18nc("@info:status", "Error finding \"{}\" to update firmware").format(name))
             message.show()
@@ -119,8 +130,13 @@ class NautilusDuet(MachineAction, QObject, Extension, OutputDevicePlugin):
             return self._instances[name]["http_password"]
         return None
 
-    @pyqtSlot(str, str, str, str, str, str)
-    def saveInstance(self, oldName, name, url, duet_password, http_user, http_password):
+    @pyqtSlot(str, result=str)
+    def instanceFirmwareVersion(self, name):
+        if name in self._instances.keys():
+            return self._instances[name]["firmware_version"]
+
+    @pyqtSlot(str, str, str, str, str, str, str)
+    def saveInstance(self, oldName, name, url, duet_password, http_user, http_password, firmware_version):
         if oldName:
             # this is a edit operation, delete the old instance before saving the new one
             self.removeInstance(oldName)
@@ -132,10 +148,11 @@ class NautilusDuet(MachineAction, QObject, Extension, OutputDevicePlugin):
             "url": url,
             "duet_password": duet_password,
             "http_user": http_user,
-            "http_password": http_password
+            "http_password": http_password,
+            "firmware_version": firmware_version
         }
         manager = self.getOutputDeviceManager()
-        manager.addOutputDevice(NautilusOutputDevice.NautilusOutputDevice(name, url, duet_password, http_user, http_password, device_type=NautilusOutputDevice.DeviceType.upload))
+        manager.addOutputDevice(NautilusOutputDevice.NautilusOutputDevice(name, url, duet_password, http_user, http_password, firmware_version, device_type=NautilusOutputDevice.DeviceType.upload))
         CuraApplication.getInstance().getPreferences().setValue("Nautilus/instances", json.dumps(self._instances))
         self.serverListChanged.emit()
         Logger.log("d", "Instance saved: " + name)
@@ -174,3 +191,15 @@ class NautilusDuet(MachineAction, QObject, Extension, OutputDevicePlugin):
             return False
 
         return True
+
+    @pyqtSlot(str, result = str)
+    def needsUpdate(self, name):
+        if name in self._instances.keys():
+            Logger.log('i','returning: '+str(name))
+            firmVersion = CuraApplication.getInstance().getPreferences().getValue("Nautilus/configversion")
+            if StrictVersion(self._instances[name]["firmware_version"])<StrictVersion(firmVersion):
+                return "Update Firmware"
+            else:
+                return "Check for Updates"
+        else:
+            return "Check for Updates"

@@ -11,7 +11,6 @@ Cura.MachineAction
 {
 
   id: dialog;
-  anchors.fill: parent;
 
   property string currentName: (instanceList.currentIndex != -1 ? instanceList.currentItem.name : "");
   property int defaultVerticalMargin: UM.Theme.getSize("default_margin").height;
@@ -155,6 +154,13 @@ Cura.MachineAction
 
               Label { text: catalog.i18nc("@label", "HTTP Basic Auth: password"); }
               Text { font.bold: true; text: manager.instanceHTTPPassword(dialog.currentName); }
+
+              Label { text: catalog.i18nc("@label", "Firmware Version"); }
+              Text { font.bold: true; text: manager.instanceFirmwareVersion(dialog.currentName); }
+
+              Button { text: qsTr(manager.needsUpdate(dialog.currentName)); onClicked: manager.updateButton(dialog.currentName); }
+
+              //Button { text: catalog.i18nc("@action:button","Check for Updates"); onClicked: manager.updateFirmwareCheck(dialog.currentName); }
           }
 
           visible: (instanceList.currentIndex != -1);
@@ -179,7 +185,7 @@ Cura.MachineAction
           minimumHeight: screenScaleFactor * 330;
 
           onAccepted: {
-              manager.saveInstance(oldName, nameField.text, urlField.text, duet_passwordField.text, http_userField.text, http_passwordField.text);
+              manager.saveInstance(oldName, nameField.text, urlField.text, duet_passwordField.text, http_userField.text, http_passwordField.text, "1.0");
               var index = instanceList.currentIndex;
               instanceList.currentIndex = -1;
               instanceList.currentIndexChanged();
