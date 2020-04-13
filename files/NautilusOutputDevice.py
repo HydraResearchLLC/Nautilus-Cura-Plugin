@@ -246,7 +246,7 @@ class NautilusOutputDevice(OutputDevice):
         self._progress.show()
         Logger.log('i','query github')
         self._stage = OutputStage.ready
-        #gitRequest.setRawHeader(b'auth', b'zachrose@hydraresearch3d.com, bUZNX@00#ETk')
+        
         try:
             #self.nam = QtNetwork.QNetworkAccessManager()
             self.gitRequest = QtNetwork.QNetworkRequest(QUrl(self.gitUrl))
