@@ -78,17 +78,23 @@ Cura.MachineAction
           right: parent.right;
           bottom: parent.bottom;
       }
+      Label{
+        anchors.left: parent.left
+        anchors.leftMargin: 0
+        id: titlePrinterConnected
+        Text { text: "Connected Printers"; font: UM.Theme.getFont("medium")}
+      }
 
       ScrollView {
           id: instanceScroll;
 
           anchors {
-              top: parent.top;
+              top: titlePrinterConnected.bottom;
               topMargin: dialog.defaultVerticalMargin;
               bottom: parent.bottom;
               left: parent.left;
           }
-          width: parent.width * 0.35;
+          width: parent.width * 0.35
 
           ListView {
               id: instanceList;
@@ -102,12 +108,14 @@ Cura.MachineAction
 
               delegate: Rectangle {
                   width: parent.width;
-                  height: childrenRect.height;
+                  height: 20;
                   color: ListView.isCurrentItem ? palette.highlight : index % 2 ? palette.base : palette.alternateBase;
                   property string name: modelData.toString();
 
                   Text {
-                      text: name;
+                      text: "   " + name;
+                      anchors.verticalCenter: parent.verticalCenter;
+                      // color: wrapper.ListView.isCurrentItem ? "white" : "black" ##This did not work, but should
                   }
 
                   MouseArea {
@@ -158,7 +166,7 @@ Cura.MachineAction
               Label { text: catalog.i18nc("@label", "Firmware Version"); }
               Text { font.bold: true; text: manager.instanceFirmwareVersion(dialog.currentName); }
 
-              Button { text: qsTr(manager.needsUpdate(dialog.currentName)); onClicked: manager.updateButton(dialog.currentName); }
+              //Button { text: qsTr(manager.needsUpdate(dialog.currentName)); onClicked: manager.updateButton(dialog.currentName); }
 
               //Button { text: catalog.i18nc("@action:button","Check for Updates"); onClicked: manager.updateFirmwareCheck(dialog.currentName); }
           }

@@ -64,6 +64,7 @@ from PyQt5.QtGui import QPixmap, QScreen, QColor, qRgb, QImageReader, QImage, QD
 from PyQt5.QtCore import QByteArray, QBuffer, QIODevice, QRect, Qt, QSize, pyqtSlot, QObject, QUrl, pyqtProperty
 
 
+
 catalog = i18nCatalog("cura")
 
 
@@ -166,7 +167,7 @@ class Nautilus(QObject, MeshWriter, Extension):
         #self._application.getPreferences().writeToFile(Resources.getStoragePath(Resources.Preferences, self._application.getApplicationName() + ".cfg"))
 
         Application.getInstance().engineCreatedSignal.connect(self._onStartup)
-        self.checkGit() #eventually move htis process to NautilusOutputDevice
+
             #Application.getInstance().engineCreatedSignal.connect(self.createPreferencesWindow)
 
     def createPreferencesWindow(self):
@@ -209,13 +210,15 @@ class Nautilus(QObject, MeshWriter, Extension):
 
     def checkGit(self): #eventually move htis process to NautilusOutputDevice
         try:
-            self.versionNo = str(json.dumps(json.loads(requests.get(self.gitUrl).text)['tag_name'])).replace("\"","")
+            gitInfo = requests.get(self.gitUrl).text
+            Logger.log('i', "!!!"+str(gitInfo))
+            self.versionNo = str(json.dumps(json.loads(gitInfo)['tag_name'])).replace("\"","")
             self._application.getPreferences().setValue("Nautilus/configversion",self.versionNo)
             Logger.log('d',"checked Github, firmware version: "+str(self.versionNo))
         except Exception as err:
             Logger.log("i","couldn't connect to github: "+str(err))
-            message = Message(catalog.i18nc("@info:status", "Hydra Research plugin could not connect to GitHub"))
-            message.show()
+            #message = Message(catalog.i18nc("@info:status", "Hydra Research plugin could not connect to GitHub"))
+            #message.show()
 
     # function so that the preferences menu can open website the version
     @pyqtSlot()
@@ -309,6 +312,7 @@ class Nautilus(QObject, MeshWriter, Extension):
 
     def _onStartup(self):
         self.addMatCosts()
+        self.checkGit()
         #self._application.getMachineManager().removeMachineAction("UpgradeFirmware")
 
     # returns true if the versions match and false if they don't
