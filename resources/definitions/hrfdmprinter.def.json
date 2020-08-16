@@ -7,7 +7,7 @@
         "author": "Ultimaker & Hydra Research",
         "category": "Other",
         "manufacturer": "Unknown",
-        "setting_version": 11,
+        "setting_version": 12,
         "file_formats": "text/x-gcode;application/x-stl-ascii;application/x-stl-binary;application/x-wavefront-obj;application/x3g",
         "visible": false,
         "has_materials": true,
@@ -18,8 +18,7 @@
             "0": "hrfdmextruder"
         },
         "supports_usb_connection": true,
-        "supports_network_connection": false,
-        "supported_actions": [ "NautilusAction" ]
+        "supports_network_connection": false
     },
     "settings":
     {
@@ -74,7 +73,7 @@
                 "material_guid":
                 {
                     "label": "Material GUID",
-                    "description": "GUID of the material. This is set automatically. ",
+                    "description": "GUID of the material. This is set automatically.",
                     "default_value": "",
                     "type": "str",
                     "enabled": false
@@ -141,6 +140,8 @@
                     "description": "The width (X-direction) of the printable area.",
                     "default_value": 100,
                     "type": "float",
+                    "minimum_value": "0.001",
+                    "maximum_value": "2000000",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
@@ -151,6 +152,8 @@
                     "description": "The depth (Y-direction) of the printable area.",
                     "default_value": 100,
                     "type": "float",
+                    "minimum_value": "0.001",
+                    "maximum_value": "2000000",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
@@ -292,18 +295,6 @@
                     "description": "The distance from the tip of the nozzle in which heat from the nozzle is transferred to the filament.",
                     "unit": "mm",
                     "default_value": 16,
-                    "type": "float",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true,
-                    "settable_per_meshgroup": false
-                },
-                "machine_filament_park_distance":
-                {
-                    "label": "Filament Park Distance",
-                    "description": "The distance from the tip of the nozzle where to park the filament when an extruder is no longer used.",
-                    "unit": "mm",
-                    "default_value": 16,
-                    "value": "machine_heat_zone_length",
                     "type": "float",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
@@ -1036,6 +1027,7 @@
                     "description": "The thickness of the walls in the horizontal direction. This value divided by the wall line width defines the number of walls.",
                     "unit": "mm",
                     "default_value": 0.8,
+                    "value": "wall_line_width_0 if magic_spiralize else 0.8",
                     "minimum_value": "0",
                     "minimum_value_warning": "line_width",
                     "maximum_value_warning": "10 * line_width",
@@ -1397,7 +1389,19 @@
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true
                 },
-                "z_seam_type":
+                "hole_xy_offset":
+                {
+                    "label": "Hole Horizontal Expansion",
+                    "description": "Amount of offset applied to all holes in each layer. Positive values increase the size of the holes, negative values reduce the size of the holes.",
+                    "unit": "mm",
+                    "type": "float",
+                    "minimum_value_warning": "-1",
+                    "maximum_value_warning": "1",
+                    "default_value": 0,
+                    "limit_to_extruder": "wall_0_extruder_nr",
+                    "settable_per_mesh": true
+                },
+               "z_seam_type":
                 {
                     "label": "Z Seam Alignment",
                     "description": "Starting point of each path in a layer. When paths in consecutive layers start at the same point a vertical seam may show on the print. When aligning these near a user specified location, the seam is easiest to remove. When placed randomly the inaccuracies at the paths' start will be less noticeable. When taking the shortest path the print will be quicker.",
@@ -2007,6 +2011,7 @@
                     "default_value": 1,
                     "value": "wall_line_width_0 + (wall_line_count - 1) * wall_line_width_x",
                     "minimum_value": "0",
+                    "maximum_value_warning": "wall_line_width_0 + (wall_line_count - 1) * wall_line_width_x",
                     "enabled": "top_layers > 0 or bottom_layers > 0",
                     "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true,
@@ -2020,6 +2025,7 @@
                             "type": "float",
                             "default_value": 1,
                             "value": "skin_preshrink",
+                            "maximum_value_warning": "wall_line_width_0 + (wall_line_count - 1) * wall_line_width_x",
                             "minimum_value": "0",
                             "enabled": "top_layers > 0 or bottom_layers > 0",
                             "limit_to_extruder": "top_bottom_extruder_nr",
@@ -2033,6 +2039,7 @@
                             "type": "float",
                             "default_value": 1,
                             "value": "skin_preshrink",
+                            "maximum_value_warning": "wall_line_width_0 + (wall_line_count - 1) * wall_line_width_x",
                             "minimum_value": "0",
                             "enabled": "top_layers > 0 or bottom_layers > 0",
                             "limit_to_extruder": "top_bottom_extruder_nr",
@@ -2121,7 +2128,7 @@
                     "minimum_value": "0",
                     "maximum_value": "machine_height",
                     "type": "float",
-                    "value": "0",
+                    "value": "0 if infill_sparse_density > 0 else 0",
                     "limit_to_extruder": "infill_extruder_nr",
                     "enabled": "infill_sparse_density > 0",
                     "settable_per_mesh": true,
@@ -2419,7 +2426,7 @@
                     "unit": "mm",
                     "default_value": -4,
                     "enabled": false,
-                    "minimum_value_warning": "-retraction_amount",
+                    "minimum_value_warning": "-switch_extruder_retraction_amount",
                     "maximum_value_warning": "0",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
@@ -2521,7 +2528,7 @@
                 "material_flush_purge_speed":
                 {
                     "label": "Flush Purge Speed",
-                    "description": "Material Station internal value",
+                    "description": "How fast to prime the material after switching to a different material.",
                     "type": "float",
                     "default_value": 0.5,
                     "enabled": false
@@ -2529,23 +2536,23 @@
                 "material_flush_purge_length":
                 {
                     "label": "Flush Purge Length",
-                    "description": "Material Station internal value",
+                    "description": "How much material to use to purge the previous material out of the nozzle (in length of filament) when switching to a different material.",
                     "type": "float",
                     "default_value": 60,
                     "enabled": false
                 },
                 "material_end_of_filament_purge_speed":
                 {
-                    "label": "End Of Filament Purge Speed",
-                    "description": "Material Station internal value",
+                    "label": "End of Filament Purge Speed",
+                    "description": "How fast to prime the material after replacing an empty spool with a fresh spool of the same material.",
                     "type": "float",
                     "default_value": 0.5,
                     "enabled": false
                 },
                 "material_end_of_filament_purge_length":
                 {
-                    "label": "End Of Filament Purge Length",
-                    "description": "Material Station internal value",
+                    "label": "End of Filament Purge Length",
+                    "description": "How much material to use to purge the previous material out of the nozzle (in length of filament) when replacing an empty spool with a fresh spool of the same material.",
                     "type": "float",
                     "default_value": 20,
                     "enabled": false
@@ -2553,7 +2560,7 @@
                 "material_maximum_park_duration":
                 {
                     "label": "Maximum Park Duration",
-                    "description": "Material Station internal value",
+                    "description": "How long the material can be kept out of dry storage safely.",
                     "type": "float",
                     "default_value": 300,
                     "enabled": false
@@ -2561,7 +2568,7 @@
                 "material_no_load_move_factor":
                 {
                     "label": "No Load Move Factor",
-                    "description": "Material Station internal value",
+                    "description": "A factor indicating how much the filament gets compressed between the feeder and the nozzle chamber, used to determine how far to move the material for a filament switch.",
                     "type": "float",
                     "default_value": 0.940860215,
                     "enabled": false
@@ -2691,7 +2698,7 @@
                             "description": "Flow compensation on support structure lines.",
                             "unit": "%",
                             "type": "float",
-                            "default_value": 95,
+                            "default_value": 100,
                             "value": "material_flow",
                             "minimum_value": "5",
                             "minimum_value_warning": "50",
@@ -2706,8 +2713,8 @@
                             "description": "Flow compensation on lines of support roof or floor.",
                             "unit": "%",
                             "type": "float",
-                            "default_value": 95,
-                            "value": "material_flow - 5 if layer_height > machine_nozzle_size * 0.38 else material_flow - 10",
+                            "default_value": 100,
+                            "value": "material_flow - 0 if layer_height > machine_nozzle_size * 0.38 else material_flow - 0",
                             "minimum_value": "5",
                             "minimum_value_warning": "50",
                             "maximum_value_warning": "150",
@@ -3833,7 +3840,7 @@
                 "retraction_enable":
                 {
                     "label": "Enable Retraction",
-                    "description": "Retract the filament when the nozzle is moving over a non-printed area. ",
+                    "description": "Retract the filament when the nozzle is moving over a non-printed area.",
                     "type": "bool",
                     "default_value": true,
                     "settable_per_mesh": false,
@@ -4869,7 +4876,7 @@
                     "description": "Adjusts the density of the roofs and floors of the support structure. A higher value results in better overhangs, but the supports are harder to remove.",
                     "unit": "%",
                     "type": "float",
-                    "default_value": 60,
+                    "default_value": 50,
                     "minimum_value": "0",
                     "maximum_value_warning": "100",
                     "limit_to_extruder": "support_interface_extruder_nr",
@@ -6097,7 +6104,7 @@
             "label": "Mesh Fixes",
             "type": "category",
             "icon": "category_fixes",
-            "description": "category_fixes",
+            "description": "Make the meshes more suited for 3D printing.",
             "children":
             {
                 "meshfix_union_all":
@@ -6223,7 +6230,7 @@
             "label": "Special Modes",
             "type": "category",
             "icon": "category_blackmagic",
-            "description": "category_blackmagic",
+            "description": "Non-traditional ways to print your models.",
             "children":
             {
                 "print_sequence":
@@ -6396,7 +6403,7 @@
             "label": "Experimental",
             "type": "category",
             "icon": "category_experimental",
-            "description": "experimental!",
+            "description": "Features that haven't completely been fleshed out yet.",
             "children":
             {
                 "support_tree_enable":
@@ -7559,7 +7566,7 @@
                     "label": "Bridge Has Multiple Layers",
                     "description": "If enabled, the second and third layers above the air are printed using the following settings. Otherwise, those layers are printed using the normal settings.",
                     "type": "bool",
-                    "default_value": false,
+                    "default_value": true,
                     "enabled": "bridge_settings_enabled",
                     "settable_per_mesh": true
                 },
@@ -7596,7 +7603,7 @@
                     "label": "Bridge Second Skin Density",
                     "description": "The density of the second bridge skin layer. Values less than 100 will increase the gaps between the skin lines.",
                     "unit": "%",
-                    "default_value": 75,
+                    "default_value": 100,
                     "type": "float",
                     "minimum_value": "5",
                     "maximum_value": "100",
@@ -7635,7 +7642,7 @@
                     "label": "Bridge Third Skin Flow",
                     "description": "When printing the third bridge skin layer, the amount of material extruded is multiplied by this value.",
                     "unit": "%",
-                    "default_value": 110,
+                    "default_value": 100,
                     "type": "float",
                     "minimum_value": "5",
                     "maximum_value": "500",
@@ -7649,7 +7656,7 @@
                     "label": "Bridge Third Skin Density",
                     "description": "The density of the third bridge skin layer. Values less than 100 will increase the gaps between the skin lines.",
                     "unit": "%",
-                    "default_value": 80,
+                    "default_value": 100,
                     "type": "float",
                     "minimum_value": "5",
                     "maximum_value": "100",

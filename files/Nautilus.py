@@ -73,7 +73,7 @@ class Nautilus(QObject, MeshWriter, Extension):
     # 1) here
     # 2) plugin.json
     # 3) package.json
-    version = "1.2.1"
+    version = "1.2.2"
 
     ##  Dictionary that defines how characters are escaped when embedded in
     #   g-code.
@@ -117,7 +117,10 @@ class Nautilus(QObject, MeshWriter, Extension):
         self.local_global_dir = os.path.join(Resources.getStoragePath(Resources.Resources),"machine_instances")
         self.local_intent_path = os.path.join(Resources.getStoragePath(Resources.Resources),"intent")
         self.setvers = self._application.getPreferences().getValue("metadata/setting_version")
-        self.gitUrl = 'https://api.github.com/repos/HydraResearchLLC/Nautilus-Configuration-Macros/releases/latest'
+        try:
+            self.gitUrl = 'https://api.github.com/repos/HydraResearchLLC/Nautilus-Configuration-Macros/releases/latest'
+        except:
+            Logger.log('e', "Github connection failed")
 
         # if the plugin was never installed, then force installation
         if self._application.getPreferences().getValue("Nautilus/install_status") is None:
