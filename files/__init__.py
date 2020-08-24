@@ -22,6 +22,5 @@ def register(app):
         [NautilusDuet.NautilusDuet(),
         NautilusUpdate.NautilusUpdate()],
         "machine_action":
-        [ NautilusDuet.NautilusDuet(),
-        NautilusUpdate.NautilusUpdate()]
+        [ NautilusDuet.NautilusDuet()]
     }

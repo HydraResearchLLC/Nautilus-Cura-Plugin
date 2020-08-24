@@ -163,8 +163,8 @@ Cura.MachineAction
               Label { text: catalog.i18nc("@label", "HTTP Basic Auth: password"); }
               Text { font.bold: true; text: manager.instanceHTTPPassword(dialog.currentName); }
 
-              Label { text: catalog.i18nc("@label", "Firmware Version"); }
-              Text { font.bold: true; text: manager.instanceFirmwareVersion(dialog.currentName); }
+              //Label { text: catalog.i18nc("@label", "Firmware Version"); }
+              //Text { font.bold: true; text: manager.instanceFirmwareVersion(dialog.currentName); }
 
               //Button { text: qsTr(manager.needsUpdate(dialog.currentName)); onClicked: manager.updateButton(dialog.currentName); }
 

@@ -40,7 +40,7 @@ from cura.MachineAction import MachineAction
 
 class NautilusDuet(MachineAction, QObject, Extension, OutputDevicePlugin):
     def __init__(self, parent=None):
-        super().__init__("NautilusAction", catalog.i18nc("@action", "Connect via Network"))
+        super().__init__("NautilusConnections", catalog.i18nc("@action", "Connect via Network"))
 
         self._qml_url = os.path.join(Resources.getStoragePath(Resources.Resources), "plugins","Nautilus","Nautilus",'qml','NautilusAction.qml')
         self._dialogs = {}
@@ -48,6 +48,7 @@ class NautilusDuet(MachineAction, QObject, Extension, OutputDevicePlugin):
 
         CuraApplication.getInstance().getPreferences().addPreference("Nautilus/instances", json.dumps({}))
         self._instances = json.loads(CuraApplication.getInstance().getPreferences().getValue("Nautilus/instances"))
+        Logger.log('d','bigmoney')
 
 
     def start(self):
