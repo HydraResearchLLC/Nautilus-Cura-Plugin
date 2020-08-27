@@ -236,7 +236,7 @@ class NautilusOutputDevice(OutputDevice):
             if 'i' in status.lower():
                 Logger.log('d', 'update under normal conditions. Status: '+status)
                 self._send('gcode', [("gcode", 'M291 P\"Do not power off your printer or close Cura until updates complete\" R\"Update Alert\" S0 T0')])
-                self.githubRequest()
+                #self.githubRequest()
             else:
                 message = Message(catalog.i18nc("@info:status","{} is busy, unable to update").format(self._name))
                 message.show()
