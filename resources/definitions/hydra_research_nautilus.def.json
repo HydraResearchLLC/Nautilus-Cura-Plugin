@@ -149,7 +149,7 @@
 			"value": "math.ceil((speed_volumetric_min / (support_line_width * support_infill_sparse_thickness)) if 80 * speed_print_factor < (speed_volumetric_min / (support_line_width * support_infill_sparse_thickness)) else 80 * speed_print_factor if 80 * speed_print_factor < (speed_print_max if speed_print_max < (speed_volumetric_max / (support_line_width * support_infill_sparse_thickness)) else (speed_volumetric_max / (support_line_width * support_infill_sparse_thickness))) else speed_print_max if speed_print_max < (speed_volumetric_max / (support_line_width * support_infill_sparse_thickness)) else (speed_volumetric_max / (support_line_width * support_infill_sparse_thickness)))"
 		},
     "speed_support_interface": {
-      "value": "math.ceil((speed_volumetric_min / (support_interface_line_width * layer_height)) if 40 * speed_print_factor < (speed_volumetric_min / (support_interface_line_width * layer_height)) else 40 * speed_print_factor if 40 * speed_print_factor < (speed_print_max if speed_print_max < (speed_volumetric_max / (support_interface_line_width * layer_height)) else (speed_volumetric_max / (support_interface_line_width * layer_height))) else speed_print_max if speed_print_max < (speed_volumetric_max / (support_interface_line_width * layer_height)) else (speed_volumetric_max / (support_interface_line_width * layer_height)))"
+      "value": "math.ceil((speed_volumetric_min / (support_interface_line_width * layer_height)) if 30 * speed_print_factor < (speed_volumetric_min / (support_interface_line_width * layer_height)) else 30 * speed_print_factor if 30 * speed_print_factor < (speed_print_max if speed_print_max < (speed_volumetric_max / (support_interface_line_width * layer_height)) else (speed_volumetric_max / (support_interface_line_width * layer_height))) else speed_print_max if speed_print_max < (speed_volumetric_max / (support_interface_line_width * layer_height)) else (speed_volumetric_max / (support_interface_line_width * layer_height)))"
     },
 		"speed_travel": {
 			"maximum_value_warning": "305",
@@ -242,9 +242,9 @@
     "bridge_skin_speed": { "value": "speed_print if speed_print < 30 else cool_min_speed if cool_min_speed > 30 else 30" },
 		"bridge_fan_speed": { "value": "0 if cool_fan_enabled == False else cool_fan_speed_max" },
 		"bridge_fan_speed_2": { "value": "0 if cool_fan_enabled == False else cool_fan_speed" },
-    "bridge_skin_speed_2": { "value": "speed_print if speed_print < 60 else 60"},
+    "bridge_skin_speed_2": { "value": "speed_print if speed_print < 45 else 45"},
 		"bridge_fan_speed_3": { "value": "0 if cool_fan_enabled == False else cool_fan_speed" },
-    "bridge_skin_speed_3": { "value": "speed_print if speed_print < 100 else 100"},
+    "bridge_skin_speed_3": { "value": "speed_print"},
     "small_hole_max_size": { "value": "12" },
     "small_feature_speed_factor": { "value": "100 if (speed_volumetric_min / (line_width * layer_height)) > speed_wall_0 * 0.7 else 70" },
     "small_feature_speed_factor_0": { "value": "100 if (speed_volumetric_min / (line_width * layer_height)) > speed_layer_0 * 0.7 else 70" }

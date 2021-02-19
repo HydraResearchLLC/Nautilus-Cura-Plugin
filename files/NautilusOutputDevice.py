@@ -30,11 +30,13 @@ from UM.Resources import Resources
 
 from . import Nautilus
 from . import NautilusDuet
+from . import NautilusUpdate
 
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
 from cura.CuraApplication import CuraApplication
+from cura.MachineAction import MachineAction
 
 
 from enum import Enum
@@ -97,8 +99,8 @@ class NautilusOutputDevice(OutputDevice):
         self._macStruct = []
         self._dirStruct = []
 
-        QTimer.singleShot(28000, self.initFlag)
-        QTimer.singleShot(30000, self.updateCheck)
+        #QTimer.singleShot(28000, self.initFlag)
+        #QTimer.singleShot(30000, self.updateCheck)
 
 
 
@@ -206,12 +208,13 @@ class NautilusOutputDevice(OutputDevice):
                 Logger.log('i',"what in tarnation")
         Logger.log("i",'big done!')
 
-    def beginUpdate(self):
+    def beginUpdate(self, message, action):
+        if message:
+            message.hide()
         self._send('connect', [("password", self._duet_password), self._timestamp()])
         loop = QEventLoop()
         getTimer = QTimer()
         self._reply.finished.connect(loop.quit)
-        getTimer.singleShot(8000, loop.quit)
         loop.exec_()
         if self._reply:
             self.onConnected()
@@ -232,21 +235,40 @@ class NautilusOutputDevice(OutputDevice):
             status = json.loads(reply_body)["status"]
             if 'i' in status.lower():
                 Logger.log('d', 'update under normal conditions. Status: '+status)
+                self._send('gcode', [("gcode", 'M291 P\"Do not power off your printer or close Cura until updates complete\" R\"Update Alert\" S0 T0')])
                 #self.githubRequest()
             else:
-                message = Message(catalog.i18nc("@info:status","{} is printing, unable to update").format(self._name))
+                message = Message(catalog.i18nc("@info:status","{} is busy, unable to update").format(self._name))
                 message.show()
+
+    def checkPrinterStatus(self):
+        self._send('status', [("type", '3')])
+        loop = QEventLoop()
+        self._reply.finished.connect(loop.quit)
+        getTimer.singleShot(3000, loop.quit)
+        loop.exec_()
+        reply_body = bytes(self._reply.readAll()).decode()
+        Logger.log("d", str(len(reply_body)) + " | The reply is: | " + reply_body)
+        if len(reply_body)==0:
+            self._onTimeout()
+            return False
+        else:
+            status = json.loads(reply_body)["status"]
+            if 'i' in status.lower():
+                return True
+            else:
+                return False
 
 
     def githubRequest(self):
         #self.writeError.connect(self.updateError())
-        self._warning = Message(catalog.i18nc("@info:status","Do not input commands or power off printer until updates complete"), 0, False)
-        self._warning.show()
-        self._progress = Message(catalog.i18nc("@info:progress", "Updating {}").format(self._name), 0, False, 1)
+        self._progress = Message(catalog.i18nc("@info:progress", "Do not power off printer or close Cura until updates complete \n Updating {} \n").format(self._name), 0, False, 1)
         self._progress.show()
+        self._warning = Message(catalog.i18nc("@info:status","Do not power off printer or close Cura until updates complete"), 0, False)
+        self._warning.show()
         Logger.log('i','query github')
         self._stage = OutputStage.ready
-        
+
         try:
             #self.nam = QtNetwork.QNetworkAccessManager()
             self.gitRequest = QtNetwork.QNetworkRequest(QUrl(self.gitUrl))
@@ -376,7 +398,7 @@ class NautilusOutputDevice(OutputDevice):
                             #change DWC filename to DuetWiFiServer.bin
                             elif 'server' in info.filename.lower():
                                 Logger.log("i","dwc bin: "+info.filename)
-                                self._fileName = 'Duet2WiFiServer.bin'
+                                self._fileName = 'DuetWiFiServer.bin'
                                 self.configData = fileobj.read()
                                 self.onSysDataReady()
                                 self.configData = None
@@ -409,7 +431,7 @@ class NautilusOutputDevice(OutputDevice):
     def firmwareInstall(self):
         self._stage = OutputStage.writing
         #FIX THIS
-        #self._send('gcode', [("gcode", 'M997 S0:1:2')])
+        self._send('gcode', [("gcode", 'M997 S0:1:2')])
         sleep(.1)
         self._stage = OutputStage.ready
 
@@ -484,7 +506,7 @@ class NautilusOutputDevice(OutputDevice):
         self._warning = None
         self._progress.hide()
         self._progress = None
-        QTimer(15000, self.updateCheck)
+        QTimer.singleShot(15000, self.updateCheck)
 
     def updateError(self, errorCode):
         Logger.log("e", "updateError: %s", repr(errorCode))
@@ -504,14 +526,17 @@ class NautilusOutputDevice(OutputDevice):
             if len(reply_body)>0:
                 newestVersion = CuraApplication.getInstance().getPreferences().getValue("Nautilus/configversion")
                 if StrictVersion(newestVersion)>StrictVersion(reply_body):
-                    self._application.getPreferences().addPreference("Nautilus/uptodate","no")
+                    #CuraApplication.getInstance().getPreferences().addPreference("Nautilus/uptodate","no")
                     self._onUpdateRequired()
+                    NautilusUpdate.NautilusUpdate().thingsChanged()
                 #self._testmess = Message(catalog.i18nc("@info:status","{} has firmware version: {}").format(self._name,reply_body))
                 #self._testmess.show()
                 else:
                     Logger.log('i', str(self._name) + " is up to date"+str(self.updateFlag))
-                    self._application.getPreferences().addPreference("Nautilus/uptodate","yes")
-                    NautilusDuet.NautilusDuet.SaveInstance(self._name, self._name, self._url, self._duet_password, self._http_user, self._http_password, self._firmware_version)
+                    #CuraApplication.getInstance().getPreferences().addPreference("Nautilus/uptodate","yes")
+                    NautilusDuet.NautilusDuet().saveInstance(self._name, self._name, self._url, self._duet_password, self._http_user, self._http_password, reply_body)
+                    sleep(.5)
+                    NautilusUpdate.NautilusUpdate().thingsChanged()
                     if self.updateFlag == 0:
                         mess = Message(catalog.i18nc("@info:status",'Nautilus is up to date!'))
                         mess.show()
@@ -662,6 +687,10 @@ class NautilusOutputDevice(OutputDevice):
                 self._onTimeout()
             #Timed Out
             Logger.log('e','connection timed out')
+        elif '3' in repr(errorCode):
+            Logger.log('i','couldn\'t find host')
+            if self.updateFlag==0:
+                self._notFound()
         else:
             Logger.log('e',"unknown error! code: "+str(errorCode)+"mess: "+str(errorString))
             message = Message(catalog.i18nc("@info:status", "There was a network error: {} {}").format(errorCode, errorString), 0, False)
@@ -674,11 +703,16 @@ class NautilusOutputDevice(OutputDevice):
         message = Message(catalog.i18nc("@info:status", "Unable to connect to {}, there was an unknown error").format(self._name), 0, False)
         message.show()
 
+    def _notFound(self):
+        message = Message(catalog.i18nc("@info:status", "Unable to connect to {}, the IP address is invalid or does not exist").format(self._name), 0, False)
+        message.show()
+
     def _onTimeout(self):
         message = Message(catalog.i18nc("@info:status", "Unable to check for updates, Cura cannot connect to {}").format(self._name), 0, False)
         message.show()
 
     def _onUpdateRequired(self):
+        #NautilusUpdate.NautilusUpdate().thingsChanged()
         message=Message(catalog.i18nc("@info:status", "New features are available for {}! It is recommended to update the firmware on your printer.").format(self._name), 0)
         message.addAction("download_config", catalog.i18nc("@action:button", "Update Firmware"), "globe", catalog.i18nc("@info:tooltip", "Automatically download and install the latest firmware"))
         message.actionTriggered.connect(self.beginUpdate)

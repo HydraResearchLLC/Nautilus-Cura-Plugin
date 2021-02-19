@@ -3,6 +3,7 @@
 
 from . import Nautilus
 from . import NautilusDuet
+from . import NautilusUpdate
 
 
 from UM.i18n import i18nCatalog
@@ -16,10 +17,10 @@ def getMetaData():
 def register(app):
     return {"extension": [
         Nautilus.Nautilus(),
-        NautilusDuet.NautilusDuet()
-        ],
+        NautilusDuet.NautilusDuet()],
         "output_device":
-        NautilusDuet.NautilusDuet(),
+        [NautilusDuet.NautilusDuet(),
+        NautilusUpdate.NautilusUpdate()],
         "machine_action":
-        NautilusDuet.NautilusDuet()
+        [ NautilusDuet.NautilusDuet()]
     }
