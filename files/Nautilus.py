@@ -73,7 +73,7 @@ class Nautilus(QObject, MeshWriter, Extension):
     # 1) here
     # 2) plugin.json
     # 3) package.json
-    version = "1.2.4"
+    version = "1.2.8"
 
     ##  Dictionary that defines how characters are escaped when embedded in
     #   g-code.
