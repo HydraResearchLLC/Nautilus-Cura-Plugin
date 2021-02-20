@@ -412,12 +412,14 @@ class Nautilus(QObject, MeshWriter, Extension):
                     Logger.log("i", "Nautilus Plugin: found in zipfile: " + info.filename )
                     folder = None
                     flag = False
-                    if info.filename == "hydra_research_nautilus.def.json" or info.filename == "hrfdmprinter.def.json" or info.filename == "hrfdmextruder.def.json":
+                    defs = ["hydra_research_nautilus.def.json", "hrfdmprinter.def.json", "hrfdmextruder.def.json", "hydra_research_minnow.def.json"]
+                    exts = ["hydra_research_nautilus_extruder.def.json", "hydra_research_minnow_extruder.def.json"]
+                    if info.filename in defs:
                         folder = self.local_printer_def_path
                     elif info.filename == "hydra_research_excluded_materials.json":
                         folder = self.local_printer_def_path
                         flag = True
-                    elif info.filename == "hydra_research_nautilus_extruder.def.json":
+                    elif info.filename in exts:
                         folder = self.local_extruder_path
                     elif info.filename.endswith("nautilus.cfg"):
                         folder = self.local_setvis_path

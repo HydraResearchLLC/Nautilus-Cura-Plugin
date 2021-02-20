@@ -11,7 +11,7 @@
     <version>3</version>
     <color_code>#8cb219</color_code>
     <description>Tough and durable. ASA is good for mechanical parts that require UV resistance. It is impact resistant, dimensionally stable, and can handle temperatures up to 85ºC. The data in this file may not be correct for your specific filament.</description>
-    <adhesion_info>PEI</adhesion_info>
+    <adhesion_info>Phenolic w Magigoo</adhesion_info>
   </metadata>
   <properties>
     <density>1.07</density>
@@ -24,12 +24,23 @@
       <machine_identifier manufacturer="Hydra Research" product="Hydra Research Nautilus" />
       <hotend id="X 400">
         <setting key="hardware compatible">yes</setting>
+        <cura:setting key="pressure_advance_value">0.04</cura:setting>
       </hotend>
       <hotend id="X 800">
         <setting key="hardware compatible">yes</setting>
+        <cura:setting key="pressure_advance_value">0.04</cura:setting>
       </hotend>
       <hotend id="B 250">
         <setting key="hardware compatible">yes</setting>
+        <cura:setting key="pressure_advance_value">0.04</cura:setting>
+      </hotend>
+    </machine>
+    <machine>
+      <machine_identifier manufacturer="Hydra Research" product="Hydra Research Minnow" />
+      <hotend id="X 400">
+        <setting key="hardware compatible">no</setting>
+        <cura:setting key="pressure_advance_value">0.02</cura:setting>
+        <cura:setting key="speed_volumetric_max">11</cura:setting>
       </hotend>
     </machine>
     <setting key="print temperature">250</setting>
@@ -41,11 +52,12 @@
     <setting key="retraction amount">1</setting>
     <cura:setting key="material_flow">100</cura:setting>
     <cura:setting key="material_name">ASA - Generic</cura:setting>
-    <cura:setting key="material_print_surface">PEI</cura:setting>
+    <cura:setting key="material_print_surface">Phenolic w Magigoo</cura:setting>
     <cura:setting key="material_door_status">;</cura:setting>
     <cura:setting key="pressure_advance_value">0.04</cura:setting>
     <cura:setting key="speed_volumetric_max">11</cura:setting>
     <cura:setting key="speed_volumetric_min">0.01</cura:setting>
+    <cura:setting key="brim_width">8</cura:setting>
     <cura:setting key="cool_fan_speed_max">20</cura:setting>
   </settings>
 </fdmmaterial>

@@ -7,11 +7,11 @@
       <color>Generic</color>
       <label>CPE</label>
     </name>
-    <GUID>506c9f0d-e3aa-4bd4-b2d2-23e242hr010</GUID>
+    <GUID>506c9f0d-e3aa-4bd4-b2d2-23e242hr009</GUID>
     <version>3</version>
     <color_code>#f3a112</color_code>
     <description>CPE(co-polyester)is similar to PETG. It is chemically resistant and good for mechanical and end use parts. The data in this file may not be correct for your specific filament.</description>
-    <adhesion_info>PEI</adhesion_info>
+    <adhesion_info>Phenolic</adhesion_info>
   </metadata>
   <properties>
     <density>1.25</density>
@@ -24,22 +24,33 @@
       <machine_identifier manufacturer="Hydra Research" product="Hydra Research Nautilus" />
       <hotend id="X 400">
         <setting key="hardware compatible">yes</setting>
+        <cura:setting key="pressure_advance_value">0.05</cura:setting>
       </hotend>
       <hotend id="X 800">
         <setting key="hardware compatible">yes</setting>
+        <cura:setting key="pressure_advance_value">0.05</cura:setting>
       </hotend>
       <hotend id="B 250">
         <setting key="hardware compatible">no</setting>
+        <cura:setting key="pressure_advance_value">0.05</cura:setting>
+      </hotend>
+    </machine>
+    <machine>
+      <machine_identifier manufacturer="Hydra Research" product="Hydra Research Minnow" />
+      <hotend id="X 400">
+        <setting key="hardware compatible">no</setting>
+        <cura:setting key="pressure_advance_value">0.025</cura:setting>
+        <cura:setting key="speed_volumetric_max">8</cura:setting>
       </hotend>
     </machine>
     <setting key="print temperature">265</setting>
     <setting key="heated bed temperature">85</setting>
     <setting key="standby temperature">0</setting>
     <setting key="print cooling">20</setting>
-    <setting key="retraction amount">1</setting>
+    <setting key="retraction amount">1.4</setting>
     <cura:setting key="material_flow">100</cura:setting>
     <cura:setting key="material_name">CPE - Generic</cura:setting>
-    <cura:setting key="material_print_surface">PEI</cura:setting>
+    <cura:setting key="material_print_surface">Phenolic</cura:setting>
     <cura:setting key="material_door_status">;</cura:setting>
     <cura:setting key="pressure_advance_value">0.05</cura:setting>
     <cura:setting key="speed_volumetric_max">8</cura:setting>
