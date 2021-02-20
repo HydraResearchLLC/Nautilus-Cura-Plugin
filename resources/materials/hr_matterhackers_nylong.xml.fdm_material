@@ -37,7 +37,7 @@
     </machine>
     <machine>
       <machine_identifier manufacturer="Hydra Research" product="Hydra Research Minnow" />
-      <hotend id="X 400">
+      <hotend id="0.40mm">
         <setting key="hardware compatible">no</setting>
         <cura:setting key="pressure_advance_value">0.03</cura:setting>
         <cura:setting key="speed_volumetric_max">10</cura:setting>

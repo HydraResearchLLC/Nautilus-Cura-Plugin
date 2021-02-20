@@ -17,7 +17,7 @@
         "has_variants": true,
         "variants_name": "Nozzle",
         "preferred_material": "hr_fillamentum_pla_extrafill",
-        "preferred_variant_name": "X 400",
+        "preferred_variant_name": "0.40mm",
         "preferred_quality_type": "normal",
         "machine_extruder_trains":
         {
@@ -263,9 +263,7 @@
                           "type": "enum",
                           "options":
                           {
-                              "X 400": "X 400",
-                              "B 250": "B 250",
-                              "X 800": "X 800",
+                              "0.40mm": "0.40mm",
                               "Unkown": "Unknown"
                           },
                           "default_value": "Unknown",

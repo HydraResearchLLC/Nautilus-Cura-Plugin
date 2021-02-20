@@ -73,7 +73,7 @@ class Nautilus(QObject, MeshWriter, Extension):
     # 1) here
     # 2) plugin.json
     # 3) package.json
-    version = "1.2.8"
+    version = "1.2.10"
 
     ##  Dictionary that defines how characters are escaped when embedded in
     #   g-code.
@@ -213,18 +213,6 @@ class Nautilus(QObject, MeshWriter, Extension):
         self.firmwareVersion = str(versno)
         self._application.getPreferences().addPreference("Nautilus/configversion",self.firmwareVersion)
 
-    def checkGit(self): #eventually move htis process to NautilusOutputDevice
-        try:
-            gitInfo = requests.get(self.gitUrl).text
-            Logger.log('i', "!!!"+str(gitInfo))
-            self.versionNo = str(json.dumps(json.loads(gitInfo)['tag_name'])).replace("\"","")
-            self._application.getPreferences().setValue("Nautilus/configversion",self.versionNo)
-            Logger.log('d',"checked Github, firmware version: "+str(self.versionNo))
-        except Exception as err:
-            Logger.log("i","couldn't connect to github: "+str(err))
-            #message = Message(catalog.i18nc("@info:status", "Hydra Research plugin could not connect to GitHub"))
-            #message.show()
-
     # function so that the preferences menu can open website the version
     @pyqtSlot()
     def openPluginWebsite(self):
@@ -317,8 +305,6 @@ class Nautilus(QObject, MeshWriter, Extension):
 
     def _onStartup(self):
         self.addMatCosts()
-        #self.checkGit()
-        #self._application.getMachineManager().removeMachineAction("UpgradeFirmware")
 
     # returns true if the versions match and false if they don't
     def versionsMatch(self):
@@ -663,4 +649,17 @@ FUNCTION GRAVEYARD
                 return False
         else:
             return True
+
+def checkGit(self): #eventually move htis process to NautilusOutputDevice
+    try:
+        gitInfo = requests.get(self.gitUrl).text
+        Logger.log('i', "!!!"+str(gitInfo))
+        self.versionNo = str(json.dumps(json.loads(gitInfo)['tag_name'])).replace("\"","")
+        self._application.getPreferences().setValue("Nautilus/configversion",self.versionNo)
+        Logger.log('d',"checked Github, firmware version: "+str(self.versionNo))
+    except Exception as err:
+        Logger.log("i","couldn't connect to github: "+str(err))
+        #message = Message(catalog.i18nc("@info:status", "Hydra Research plugin could not connect to GitHub"))
+        #message.show()
+
 """
