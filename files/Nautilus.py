@@ -55,7 +55,8 @@ from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Qt.Duration import DurationFormat
 from UM.Qt.Bindings.Theme import Theme
 from UM.PluginRegistry import PluginRegistry
-from . import NautilusDuet
+#from . import NautilusDuet
+from . import HRNetworkPlugin
 from . import Upgrader
 from cura.CuraApplication import CuraApplication
 
@@ -73,7 +74,7 @@ class Nautilus(QObject, MeshWriter, Extension):
     # 1) here
     # 2) plugin.json
     # 3) package.json
-    version = "1.2.10"
+    version = "1.2.11"
 
     ##  Dictionary that defines how characters are escaped when embedded in
     #   g-code.
@@ -162,9 +163,9 @@ class Nautilus(QObject, MeshWriter, Extension):
 
 
             #This is the signal for machines changing
-        self._application.globalContainerStackChanged.connect(self.updateMachineName)
-        Duet=NautilusDuet.NautilusDuet()
-        self.addMenuItem(catalog.i18nc("@item:inmenu","Nautilus Connections"), Duet.showSettingsDialog)
+        #self._application.globalContainerStackChanged.connect(self.updateMachineName)
+        HRNetwork=HRNetworkPlugin.HRNetworkPlugin()
+        self.addMenuItem(catalog.i18nc("@item:inmenu","Nautilus Connections"), self.settingsHaveMoved)
         self.addMenuItem(catalog.i18nc("@item:inmenu", "Resources and Guides"), self.showGuides)
         self.addMenuItem(catalog.i18nc("@item:inmenu", "Preferences"), self.showPreferences)
 
@@ -196,18 +197,12 @@ class Nautilus(QObject, MeshWriter, Extension):
             self.createGuidesWindow()
         self._guides.show()
 
+    def settingsHaveMoved(self):
+        Logger.log('d','settings moved')
+
     def hidePreferences(self):
         if self._preferences_window is not None:
             self._preferences_window.hide()
-
-            #This is the function
-    def updateMachineName(self):
-        self.MachineName = CuraApplication.getInstance().getMachineManager().activeMachine.definition.name
-        #Logger.log("i", "updating this machine to "+self.MachineName)
-        if "Nautilus" in self.MachineName:
-            NautilusDuet.NautilusDuet().start()
-        elif self.MachineName != None:
-            NautilusDuet.NautilusDuet().stop()
 
     def setFirmVers(self, versno):
         self.firmwareVersion = str(versno)
@@ -661,5 +656,16 @@ def checkGit(self): #eventually move htis process to NautilusOutputDevice
         Logger.log("i","couldn't connect to github: "+str(err))
         #message = Message(catalog.i18nc("@info:status", "Hydra Research plugin could not connect to GitHub"))
         #message.show()
+
+
+            #This is the function
+    def updateMachineName(self):
+        self.MachineName = CuraApplication.getInstance().getMachineManager().activeMachine.definition.name
+        Logger.log("i", "updating this machine to "+self.MachineName)
+        if "Nautilus" in self.MachineName or "Minnow" in self.MachineName:
+            HRNetworkPlugin.HRNetworkPlugin().start()
+        elif self.MachineName != None:
+            HRNetworkPlugin.HRNetworkPlugin().stop()
+
 
 """
