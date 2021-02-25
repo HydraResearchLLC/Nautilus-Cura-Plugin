@@ -40,21 +40,21 @@ class HRNetworkConfigureOutputDevice(OutputDevice):
     def __init__(self) -> None:
         super().__init__("hrnetwork-configure")
         self.setShortDescription("HRNetwork Plugin")
-        self.setDescription("Configure Duet RepRapFirmware...")
+        self.setDescription("Configure Hydra Research Printer...")
         self.setPriority(0)
 
     def requestWrite(self, node, fileName=None, *args, **kwargs):
         msg = (
-            "To configure your Duet RepRapFirmware printer go to:\n"
+            "To configure your Hydra Research printer go to:\n"
             "→ Cura Preferences\n"
             "→ Printers\n"
             "→ activate and select your printer\n"
-            "→ click on 'Connect Duet RepRapFirmware'\n"
+            "→ click on 'Connect via Network'\n"
         )
         message = Message(
             msg,
             lifetime=0,
-            title="Configure HRNetwork in Cura Preferences!",
+            title="Configure your connection in Cura Preferences!",
         )
         message.show()
         self.writeSuccess.emit(self)
@@ -95,7 +95,7 @@ class HRNetworkOutputDevice(OutputDevice):
         self._use_rrf_http_api = True # by default we try to connect to the RRF HTTP API via rr_connect
 
         Logger.log("d",
-            "New {} HRNetworkOutputDevice created | URL: {} | Duet password: {} | HTTP Basic Auth: user:{}, password:{}".format(
+            "New {} HRNetworkOutputDevice created | URL: {} | Printer password: {} | HTTP Basic Auth: user:{}, password:{}".format(
             self._name_id,
             self._url,
             "set" if self._printer_password else "<empty>",

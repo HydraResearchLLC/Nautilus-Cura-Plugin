@@ -58,7 +58,7 @@ class HRNetworkAction(MachineAction):
         s = get_config()
         if s:
             return s["url"]
-        return "https://"
+        return "http://"
 
     @pyqtProperty(str, notify=printerSettingsPrinterPasswordChanged)
     def printerSettingPrinterPassword(self) -> Optional[str]:
