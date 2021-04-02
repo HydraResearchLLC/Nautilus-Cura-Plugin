@@ -161,3 +161,14 @@ class HRNetworkPlugin(Extension, OutputDevicePlugin):
                 global_container_stack.getId(),
                 global_container_stack.getName(),
             ))
+
+    def thingsChanged(self):
+        self.serverListChanged.emit()
+
+    def updateButton(self, name):
+        Logger.log('i','we go!')
+        HRNetworkOutputDevice.HRNetworkOutputDevice().beginUpdate()
+        return None
+
+    def statusCheck(self, name):
+        HRNetworkOutputDevice.HRNetworkOutputDevice().checkPrinterStatus()

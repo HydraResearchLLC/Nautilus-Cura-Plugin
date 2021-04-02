@@ -497,3 +497,385 @@ class HRNetworkOutputDevice(OutputDevice):
 
         self.writeError.emit(self)
         self._resetState()
+
+    def fileLister(self, url, dir):
+      try:
+          self.macRequest = QtNetwork.QNetworkRequest(QUrl(url + 'rr_filelist?dir=' + dir))
+          self.macRequest.setRawHeader(b'User-Agent', b'Cura Plugin Nautilus')
+          self.macRequest.setRawHeader(b'Accept', b'application/json, text/javascript')
+          self.macRequest.setRawHeader(b'Connection', b'keep-alive')
+
+          #self.gitRequest.setRawHeader(b"User-Agent", b"Mozilla/5.0 (Windows; U; Windows NT 6.0; en-US; rv:1.9.1.7) Gecko/20091221 Firefox/3.5.7 (.NET CLR 3.5.30729)")
+          self.macroReply = self._qnam.get(self.macRequest)
+          loop = QEventLoop()
+          self.macroReply.finished.connect(loop.quit)
+          loop.exec_()
+          reply_body = bytes(self.macroReply.readAll()).decode()
+          Logger.log("d", self._name_id + " | Status received | "+reply_body)
+          return reply_body
+
+      except:
+          Logger.log("i","couldn't connect to the printer: "+str(traceback.format_exc()))
+          return '0'
+
+    def fileStructer(self,url,dir):
+      fileStr = self.fileLister(url,dir)
+      if fileStr == '0':
+          return
+      try:
+          filelist = json.loads(fileStr)['files']
+      except:
+          filelist = {}
+
+      for macs in filelist:
+          if macs['type'] == 'f':
+              self._macStruct.append(dir+'/'+macs['name'])
+              self.updProg+=1
+              self._onConfigUpdateProgress(self.updProg)
+          elif macs['type'] == 'd':
+              direc = dir + '/' + macs['name']
+              self._dirStruct.append(direc)
+              self.fileStructer(url,direc)
+          else:
+              Logger.log('i',"what in tarnation")
+      Logger.log("i",'big done!')
+
+    def beginUpdate(self, message, action):
+      if message:
+          message.hide()
+      self._send('connect', [("password", self._printer_password), self._timestamp()])
+      loop = QEventLoop()
+      getTimer = QTimer()
+      self._reply.finished.connect(loop.quit)
+      loop.exec_()
+      if self._reply:
+          self.onConnected()
+      else:
+          Logger.log('d','no reply item')
+          self._onTimeout()
+
+    def onConnected(self):
+      self._send('status', [("type", '3')])
+      loop = QEventLoop()
+      self._reply.finished.connect(loop.quit)
+      loop.exec_()
+      reply_body = bytes(self._reply.readAll()).decode()
+      Logger.log("d", str(len(reply_body)) + " | The reply is: | " + reply_body)
+      if len(reply_body)==0:
+          self._onTimeout()
+      else:
+          status = json.loads(reply_body)["status"]
+          if 'i' in status.lower():
+              Logger.log('d', 'update under normal conditions. Status: '+status)
+              self._send('gcode', [("gcode", 'M291 P\"Do not power off your printer or close Cura until updates complete\" R\"Update Alert\" S0 T0')])
+              #self.githubRequest()
+          else:
+              message = Message(catalog.i18nc("@info:status","{} is busy, unable to update").format(self._name))
+              message.show()
+
+    def checkPrinterStatus(self):
+      self._send('status', [("type", '3')])
+      loop = QEventLoop()
+      self._reply.finished.connect(loop.quit)
+      getTimer.singleShot(3000, loop.quit)
+      loop.exec_()
+      reply_body = bytes(self._reply.readAll()).decode()
+      Logger.log("d", str(len(reply_body)) + " | The reply is: | " + reply_body)
+      if len(reply_body)==0:
+          self._onTimeout()
+          return False
+      else:
+          status = json.loads(reply_body)["status"]
+          if 'i' in status.lower():
+              return True
+          else:
+              return False
+
+    """
+    def githubRequest(self):
+      #self.writeError.connect(self.updateError())
+      self._progress = Message(catalog.i18nc("@info:progress", "Do not power off printer or close Cura until updates complete \n Updating {} \n").format(self._name), 0, False, 1)
+      self._progress.show()
+      self._warning = Message(catalog.i18nc("@info:status","Do not power off printer or close Cura until updates complete"), 0, False)
+      self._warning.show()
+      Logger.log('i','query github')
+      self._stage = OutputStage.ready
+
+      try:
+          #self.nam = QtNetwork.QNetworkAccessManager()
+          self.gitRequest = QtNetwork.QNetworkRequest(QUrl(self.gitUrl))
+          debugstatement = self.gitRequest.url().toString()
+          Logger.log('i','debug: '+debugstatement)
+          #self.gitRequest.setRawHeader(b"User-Agent", b"Mozilla/5.0 (Windows; U; Windows NT 6.0; en-US; rv:1.9.1.7) Gecko/20091221 Firefox/3.5.7 (.NET CLR 3.5.30729)")
+          self.gitReply = self._qnam.get(self.gitRequest)
+          loop = QEventLoop()
+          self.gitReply.finished.connect(loop.quit)
+          loop.exec_()
+          response = bytes(self.gitReply.readAll()).decode()
+
+          Logger.log('i','123 '+str(len(response)))
+          #self._qnam.finished.connect(self.githubDownload())
+          macroUrl = json.loads(response)['assets'][1]['browser_download_url']
+          configUrl = json.loads(response)['assets'][0]['browser_download_url']
+          Logger.log("i",'gettin macros from '+str(macroUrl))
+          resp = requests.get(macroUrl, self.path, allow_redirects=True)
+          self.updProg = 0
+          open(os.path.join(self.path,'Nautilus_macros.zip'), 'wb').write(resp.content)
+          self.deleteMacros()
+          #don't forget this
+          respo = requests.get(configUrl, self.path, allow_redirects=True)
+          open(os.path.join(self.path,'Nautilus_config.zip'),'wb').write(respo.content)
+          Logger.log("i",'gettin config from '+str(configUrl))
+          self.updateConfig(configUrl)
+          self.updateComplete()
+      except:
+          Logger.log("i","somethings goofed! "+str(traceback.format_exc()))
+
+    """
+    def deleteMacros(self):
+      if self._stage != OutputStage.ready:
+          raise OutputDeviceError.DeviceBusyError()
+      self.fileStructer(self._url, 'macros')
+      Logger.log('i', 'Macs: '+ str(self._macStruct))
+      Logger.log('i', 'Dirs: '+str(self._dirStruct))
+      for mac in self._macStruct:
+          Logger.log('i','1')
+          self._send('delete',[('name',"0:/"+mac),self._timestamp()], self.onMacroDeleted)
+          sleep(.1)
+      for dir in self._dirStruct:
+          Logger.log('i','1')
+          self._send('delete',[('name',"0:/"+dir),self._timestamp()], self.onMacroDeleted)
+          sleep(.1)
+      self.updateMacros()
+
+    def updateMacros(self):
+      self._stage = OutputStage.writing
+      self.writeStarted.emit(self)
+
+      zipdata = os.path.join(self.path,'Nautilus_macros.zip')
+      with zipfile.ZipFile(zipdata, "r") as zip_ref:
+          with tempfile.TemporaryDirectory() as folder:
+              for info in zip_ref.infolist():
+                  self.updProg+=1
+                  self._onConfigUpdateProgress(self.updProg)
+                  extracted_path = zip_ref.extract(info.filename, path = folder)
+                  permissions = os.stat(extracted_path).st_mode
+                  os.chmod(extracted_path, permissions | stat.S_IEXEC)
+                  Logger.log('i',"extracting and uploading "+info.filename)
+                  #Logger.log('i',"relative to: "+str(folder))
+                  with open(extracted_path, 'r') as fileobj:
+                      self._fileName = info.filename
+                      self.macData = fileobj.read()
+                      self.onMacDataReady()
+                      sleep(.25)
+                      self.macData = None
+
+    def onMacDataReady(self):
+      # create the temp file for the macro
+      self._streamer = StringIO()
+      self._stage = OutputStage.writing
+      self.writeStarted.emit(self)
+
+      # show a progress message
+      #self._message = Message(catalog.i18nc("@info:progress", "Sending to {}").format(self._name), 0, False, -1)
+      #self._message.show()
+
+      try:
+          self._streamer.write(self.macData)
+      except:
+          Logger.log("e", "Macro write failed.")
+          return
+
+      # start
+      Logger.log("d", self._name_id + " | Connecting...")
+      self._send('connect', [("password", self._duet_password), self._timestamp()], self.macroUpload())
+
+    def macroUpload(self):
+      Logger.log('i','time to upload the macro')
+      #if self._stage != OutputStage.writing:
+      #    return
+
+      Logger.log("d", self._name_id + " | Uploading... | "+str(self._fileName))
+      self._streamer.seek(0)
+      self._posterData = QByteArray()
+      self._posterData.append(self._streamer.getvalue().encode())
+      self._send('upload', [("name", "0:/macros/" + self._fileName), self._timestamp()], self.onMacUploadDone(), self._posterData)
+      loop = QEventLoop()
+      self._reply.finished.connect(loop.quit)
+      loop.exec()
+
+    def updateConfig(self, url):
+      self._stage = OutputStage.ready
+      self.writeStarted.emit(self)
+
+      #unpack zip as in update Macros
+      zipdata = os.path.join(self.path,'Nautilus_config.zip')
+      with zipfile.ZipFile(zipdata, "r") as zip_ref:
+          with tempfile.TemporaryDirectory() as folder:
+              for info in zip_ref.infolist():
+                  self.updProg+=1
+                  self._onConfigUpdateProgress(self.updProg)
+                  extracted_path = zip_ref.extract(info.filename, path = folder)
+                  Logger.log('i',"extracting and uploading "+info.filename)
+                  with open(extracted_path, 'rb') as fileobj:
+                      if info.filename.endswith('bin'):
+                          Logger.log('i','bin files: '+info.filename)
+                          #change firmware filename to Duet2CombinedFirmware.bin
+                          if 'firmware' in info.filename.lower():
+                              Logger.log("i","Firm bin: "+info.filename)
+                              self._fileName = 'Duet2CombinedFirmware.bin'
+                              self.configData = fileobj.read()
+                              self.onSysDataReady()
+                              self.configData = None
+                          #change DWC filename to DuetWiFiServer.bin
+                          elif 'server' in info.filename.lower():
+                              Logger.log("i","dwc bin: "+info.filename)
+                              self._fileName = 'DuetWiFiServer.bin'
+                              self.configData = fileobj.read()
+                              self.onSysDataReady()
+                              self.configData = None
+                              #self._send('upload', [("name", "0:/sys/Duet2WiFiServer.bin"), self._timestamp()], self.onUpdateDone, fileobj) #write onUpdateDone
+                          else:
+                              Logger.log("i","uploading iap"+info.filename)
+                              self._fileName = info.filename
+                              self.configData = fileobj.read()
+                              self.onSysDataReady()
+                              self.configData = None
+
+                      elif info.filename.endswith('.g'):
+                          Logger.log('i','uploading gcode file: '+info.filename)
+                          self._fileName = info.filename
+                          self.configData = fileobj.read()
+                          self.onSysDataReady()
+                          self.configData = None
+
+                      elif info.filename.endswith('.gz') or info.filename.endswith('.json') or info.filename.startswith('css') or info.filename.startswith('json') or info.filename.startswith('fonts'):
+                          Logger.log('i','uploading www file: '+info.filename)
+                          self._fileName = info.filename
+                          self.configData = fileobj.read()
+                          self.onWwwDataReady()
+                          self.configData = None
+
+                      else:
+                          Logger.log('d', 'misc files: '+info.filename)
+      self.firmwareInstall()
+
+    def firmwareInstall(self):
+      self._stage = OutputStage.writing
+      #FIX THIS
+      self._send('gcode', [("gcode", 'M997 S0:1:2')])
+      sleep(.1)
+      self._stage = OutputStage.ready
+
+    def initFlag(self):
+      Logger.log('i','flag init')
+      self.updateFlag = 1
+
+
+    def onSysDataReady(self):
+      self._streamer = BytesIO()
+      self._stage = OutputStage.writing
+      self.writeStarted.emit(self)
+
+      try:
+          self._streamer.write(self.configData)
+      except:
+          Logger.log('e', 'bin write failed: ' +str(traceback.format_exc()))
+
+      Logger.log("d", self._name_id + " | Connecting...")
+      self._send('connect', [("password", self._duet_password), self._timestamp()], self.sysUpload())
+
+    def sysUpload(self):
+      self._streamer.seek(0)
+      self._posterData = QByteArray()
+      self._posterData.append(self._streamer.getvalue())
+      self._send('upload', [("name", "0:/sys/"+self._fileName), self._timestamp()], self.onMacUploadDone(), self._posterData) #write onUpdateDone
+      loop = QEventLoop()
+      self._reply.finished.connect(loop.quit)
+      loop.exec()
+      #copy config.json, .gz files, css/fonts/js directories to /www
+      #put .bins and everything not in /www in /sys
+      #send M997
+
+    def onWwwDataReady(self):
+      self._streamer = BytesIO()
+      self._stage = OutputStage.writing
+      self.writeStarted.emit(self)
+
+      try:
+          self._streamer.write(self.configData)
+      except:
+          Logger.log('e', 'www write failed: ' +str(traceback.format_exc()))
+
+      Logger.log("d", self._name_id + " | Connecting...")
+      self._send('connect', [("password", self._duet_password), self._timestamp()], self.wwwUpload())
+
+    def wwwUpload(self):
+      self._streamer.seek(0)
+      self._posterData = QByteArray()
+      self._posterData.append(self._streamer.getvalue())
+      self._send('upload', [("name", "0:/www/"+self._fileName), self._timestamp()], self.onMacUploadDone(), self._posterData) #write onUpdateDone
+      loop = QEventLoop()
+      self._reply.finished.connect(loop.quit)
+      loop.exec()
+
+    def onUpdateDone(self):
+      Logger.log('i',"update done")
+
+    def onMacroDeleted(self):
+      Logger.log('i',"macro deleted")
+
+    def onMacUploadDone(self):
+      Logger.log('i','cleaning up!')
+      #self._streamer.close()
+      #self.streamer = None
+      self._cleanupRequest()
+
+    def updateComplete(self):
+      self._message = Message(catalog.i18nc("@info:progress", "Update Complete! Printer restarting..."))
+      self._message.show()
+      self._warning.hide()
+      self._warning = None
+      self._progress.hide()
+      self._progress = None
+      #QTimer.singleShot(15000, self.updateCheck)
+
+    def updateError(self, errorCode):
+      Logger.log("e", "updateError: %s", repr(errorCode))
+      self._message = Message(catalog.i18nc("@info:status","There was an error updating {}").format(self._name))
+      self._message.show()
+    """
+    def updateCheck(self):
+      self.Nauti.checkGit()
+      self._send('download', [("name", "0:/private/firmware_version")])
+      loop = QEventLoop()
+      getTimer = QTimer()
+      self._reply.finished.connect(loop.quit)
+      getTimer.singleShot(8000, loop.quit)
+      loop.exec()
+      if self._reply:
+          reply_body = bytes(self._reply.readAll()).decode().strip()
+          if len(reply_body)>0:
+              newestVersion = CuraApplication.getInstance().getPreferences().getValue("Nautilus/configversion")
+              if StrictVersion(newestVersion)>StrictVersion(reply_body):
+                  #CuraApplication.getInstance().getPreferences().addPreference("Nautilus/uptodate","no")
+                  self._onUpdateRequired()
+                  NautilusUpdate.NautilusUpdate().thingsChanged()
+              #self._testmess = Message(catalog.i18nc("@info:status","{} has firmware version: {}").format(self._name,reply_body))
+              #self._testmess.show()
+              else:
+                  Logger.log('i', str(self._name) + " is up to date"+str(self.updateFlag))
+                  #CuraApplication.getInstance().getPreferences().addPreference("Nautilus/uptodate","yes")
+                  NautilusDuet.NautilusDuet().saveInstance(self._name, self._name, self._url, self._duet_password, self._http_user, self._http_password, reply_body)
+                  sleep(.5)
+                  NautilusUpdate.NautilusUpdate().thingsChanged()
+                  if self.updateFlag == 0:
+                      mess = Message(catalog.i18nc("@info:status",'Nautilus is up to date!'))
+                      mess.show()
+          else:
+              Logger.log('i','timeout error')
+              if self.updateFlag == 0:
+                  self._onTimeout()
+      else:
+          Logger.log('i','unknown error')
+    """

@@ -19,7 +19,7 @@
         },
         "supports_usb_connection": false,
         "supports_network_connection": false,
-        "supported_actions": ["NautilusConnections"]
+        "supported_actions": ["NautilusConnections", "NautilusUpdate"]
     },
     "settings":
     {

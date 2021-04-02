@@ -15,8 +15,8 @@ from UM.Extension import Extension
 from UM.PluginRegistry import PluginRegistry
 from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
 
-from . import NautilusOutputDevice
-from . import NautilusDuet
+from . import HRNetworkOutputDevice
+from . import HRNetworkPlugin
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
@@ -48,7 +48,7 @@ class NautilusUpdate(MachineAction, QObject):#, Extension, OutputDevicePlugin):
         #path = os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), "qml", "NautilusUpdate.qml")
         #Logger.log("i", "Creating Nautilus preferences UI ")
         #self._application.createQmlComponent(path, {"manager": self}).show()
-        NautilusDuet.NautilusDuet().thingsChanged()
+        HRNetworkPlugin.HRNetworkPlugin().thingsChanged()
 
     @pyqtSlot(str)
     def setUpdatePrinter(self, name):
@@ -58,7 +58,7 @@ class NautilusUpdate(MachineAction, QObject):#, Extension, OutputDevicePlugin):
     def updateConfirm(self):
         Logger.log('i','updateconfirm')
         if self.updatePrinter in self._instances.keys():
-            NautilusDuet.NautilusDuet().updateButton(self.updatePrinter)
+            HRNetworkPlugin.HRNetworkPlugin().updateButton(self.updatePrinter)
         else:
             mess = Message("@info","There was an error!")
             mess.show()
@@ -66,10 +66,10 @@ class NautilusUpdate(MachineAction, QObject):#, Extension, OutputDevicePlugin):
     @pyqtSlot()
     def firmwareCheck(self):
         for name in self._instances.keys():
-            NautilusDuet.NautilusDuet().updateFirmwareCheck(name)
+            HRNetworkPlugin.HRNetworkPlugin().updateFirmwareCheck(name)
         sleep(.5)
         self.firmwareListChanged.emit()
-        NautilusDuet.NautilusDuet().thingsChanged()
+        #HRNetworkPlugin.HRNetworkPlugin().thingsChanged()
 
     @pyqtSlot(str, result=str)
     def instanceUrl(self, name):
@@ -134,7 +134,7 @@ class NautilusUpdate(MachineAction, QObject):#, Extension, OutputDevicePlugin):
             name = self.data[0]
         Logger.log('d','were gettin '+str(name))
         try:
-            return NautilusDuet.NautilusDuet().statusCheck(name)
+            return HRNetworkPlugin.HRNetworkPlugin().statusCheck(name)
         except:
             return False
 
