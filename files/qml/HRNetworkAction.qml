@@ -26,13 +26,14 @@ Cura.MachineAction
 
     Component.onCompleted: {
         actionDialog.minimumWidth = screenScaleFactor * 550;
-        actionDialog.minimumHeight = screenScaleFactor * 255;
+        actionDialog.minimumHeight = screenScaleFactor * 380;
         actionDialog.maximumWidth = screenScaleFactor * 550;
-        actionDialog.maximumHeight = screenScaleFactor * 255;
+        actionDialog.maximumHeight = screenScaleFactor * 380;
     }
 
     Column {
         anchors.fill: parent;
+        spacing: 5
 
         Item { width: parent.width; }
         Label { text: catalog.i18nc("@label", "IP Address (URL)"); }
@@ -91,6 +92,7 @@ Cura.MachineAction
 
         Button {
             id: saveButton;
+            anchors.right: parent.right;
             text: catalog.i18nc("@action:button", "Save Config");
             width: screenScaleFactor * 100;
             onClicked: {
@@ -102,6 +104,7 @@ Cura.MachineAction
 
         Button {
             id: deleteButton;
+            anchors.right: parent.right;
             text: catalog.i18nc("@action:button", "Delete Config");
             width: screenScaleFactor * 100;
             onClicked: {

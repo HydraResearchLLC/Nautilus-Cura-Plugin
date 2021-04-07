@@ -39,8 +39,8 @@ class HRNetworkDeviceType(Enum):
 class HRNetworkConfigureOutputDevice(OutputDevice):
     def __init__(self) -> None:
         super().__init__("hrnetwork-configure")
-        self.setShortDescription("HRNetwork Plugin")
-        self.setDescription("Configure Hydra Research Printer...")
+        self.setShortDescription("How to Add")
+        self.setDescription("Add a Networked Printer")
         self.setPriority(0)
 
     def requestWrite(self, node, fileName=None, *args, **kwargs):
@@ -76,7 +76,7 @@ class HRNetworkOutputDevice(OutputDevice):
 
         self._device_type = device_type
         if device_type == HRNetworkDeviceType.upload:
-            description = catalog.i18nc("@action:button", "Upload to {0}").format(self._name)
+            description = catalog.i18nc("@action:button", "Send to {0}").format(self._name)
             Logger.log('i', 'upload button is for '+self._name)
             priority = 10
         else:

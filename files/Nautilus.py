@@ -74,7 +74,7 @@ class Nautilus(QObject, MeshWriter, Extension):
     # 1) here
     # 2) plugin.json
     # 3) package.json
-    version = "1.2.12"
+    version = "1.2.13"
 
     ##  Dictionary that defines how characters are escaped when embedded in
     #   g-code.
@@ -135,6 +135,8 @@ class Nautilus(QObject, MeshWriter, Extension):
 
         self._application.getPreferences().addPreference("Nautilus/uptodate","yes")
 
+        self._application.getPreferences().addPreference("Nautilus/curr_version", self.version)
+
         # if something got messed up, force installation
         if not self.isInstalled() and self._application.getPreferences().getValue("Nautilus/install_status") is "installed":
             self._application.getPreferences().setValue("Nautilus/install_status", "unknown")
@@ -165,7 +167,7 @@ class Nautilus(QObject, MeshWriter, Extension):
             #This is the signal for machines changing
         #self._application.globalContainerStackChanged.connect(self.updateMachineName)
         HRNetwork=HRNetworkPlugin.HRNetworkPlugin()
-        self.addMenuItem(catalog.i18nc("@item:inmenu","Nautilus Connections"), self.settingsHaveMoved)
+        #self.addMenuItem(catalog.i18nc("@item:inmenu","Nautilus Connections"), self.settingsHaveMoved)
         self.addMenuItem(catalog.i18nc("@item:inmenu", "Resources and Guides"), self.showGuides)
         self.addMenuItem(catalog.i18nc("@item:inmenu", "Preferences"), self.showPreferences)
 
@@ -304,7 +306,7 @@ class Nautilus(QObject, MeshWriter, Extension):
     # returns true if the versions match and false if they don't
     def versionsMatch(self):
         # get the currently installed plugin version number
-        self._application.getPreferences().addPreference("Nautilus/curr_version", "0.0.0")
+        #self._application.getPreferences().addPreference("Nautilus/curr_version", "0.0.0")
 
         installedVersion = self._application.getPreferences().getValue("Nautilus/curr_version")
 
@@ -314,6 +316,7 @@ class Nautilus(QObject, MeshWriter, Extension):
             return True
         else:
             Logger.log("i", "Nautilus Plugin installed version: " +installedVersion+ " doesn't match this version: "+Nautilus.version)
+            self._application.getPreferences().setValue("Nautilus/curr_version", Nautilus.version)
             return False
 
     # check to see if the plugin files are all installed

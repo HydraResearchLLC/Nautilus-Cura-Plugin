@@ -7,7 +7,7 @@
       <color>Generic</color>
       <label>PLA Extrafill</label>
     </name>
-    <GUID>506c9f0d-e3aa-4bd4-b2d2-23e242hr025</GUID>
+    <GUID>506c9f0d-e3aa-4bd4-b2d2-23e242hr026</GUID>
     <version>3</version>
     <color_code>#ffc924</color_code>
     <description>Fast, safe, and reliable printing. PLA is ideal for fast and reliable printing of parts and prototypes with a great surface quality.</description>
@@ -45,7 +45,7 @@
       </hotend>
     </machine>
     <setting key="print temperature">220</setting>
-    <setting key="heated bed temperature">50</setting>
+    <setting key="heated bed temperature">60</setting>
     <setting key="standby temperature">0</setting>
     <setting key="adhesion tendency">0</setting>
     <setting key="surface energy">100</setting>
