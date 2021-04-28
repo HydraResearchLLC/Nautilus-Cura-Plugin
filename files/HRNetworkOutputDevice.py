@@ -39,9 +39,9 @@ class HRNetworkDeviceType(Enum):
 class HRNetworkConfigureOutputDevice(OutputDevice):
     def __init__(self) -> None:
         super().__init__("hrnetwork-configure")
-        self.setShortDescription("How to Add")
+        self.setShortDescription("Send to Printer")
         self.setDescription("Add a Networked Printer")
-        self.setPriority(0)
+        self.setPriority(5)
 
     def requestWrite(self, node, fileName=None, *args, **kwargs):
         msg = (
@@ -50,6 +50,8 @@ class HRNetworkConfigureOutputDevice(OutputDevice):
             "→ Printers\n"
             "→ activate and select your printer\n"
             "→ click on 'Connect via Network'\n"
+            "→ enter printer connection information\n"
+            "→ click 'Save Config'\n"
         )
         message = Message(
             msg,

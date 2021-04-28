@@ -11,6 +11,7 @@ import shutil
 
 path = os.path.dirname(os.path.realpath(__file__))
 resourceContainer = os.path.join(path,'Nautilus.zip')
+releaseZip = os.path.join(path,'NautilusRelease.zip')
 pluginName = 'Nautilus'
 matContainer = 'nautilusmat'
 qualContainer = 'nautilusquals'
@@ -101,9 +102,11 @@ with tempfile.TemporaryDirectory() as configDirectory:
                 if res != '.DS_Store' and 'Icon' not in res:
                     zipper.write(os.path.join(configDirectory, res), os.path.relpath(res,configDirectory))
         zipper.close()
+        #!!change V line to call resource zip something different
         shutil.copy(resourceContainer, os.path.join(pluginDirectory,pluginPath))
         filer(ultimakerReleasePath)
         shutil.copy(resourceContainer, ultimakerReleasePath)
+
 
         # include the necessary files from the root path
         copy_tree(sourcePath, os.path.join(pluginDirectory,pluginPath))
@@ -122,3 +125,13 @@ with tempfile.TemporaryDirectory() as configDirectory:
                     shutil.copy(item,ultimakerReleasePath)
         zf.close()
         print("Update version numbers before release!")
+
+        #file for release zip
+        with zipfile.ZipFile(releaseZip,'w') as zippee:
+            releaseFiles = fileList(ultimakerReleasePath)
+            for item in releaseFiles:
+                if '.DS_Store' not in item:
+                    zippee.write(os.path.join(ultimakerReleasePath,item),os.path.relpath(item,ultimakerReleasePath))
+        zippee.close()
+
+        #shutil.rmtree(ultimakerReleasePath)
