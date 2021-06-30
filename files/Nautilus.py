@@ -52,6 +52,7 @@ from UM.Logger import Logger
 from UM.Preferences import Preferences
 from UM.Mesh.MeshWriter import MeshWriter
 from UM.Settings.InstanceContainer import InstanceContainer
+from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Qt.Duration import DurationFormat
 from UM.Qt.Bindings.Theme import Theme
 from UM.PluginRegistry import PluginRegistry
@@ -59,6 +60,7 @@ from UM.PluginRegistry import PluginRegistry
 from . import HRNetworkPlugin
 from . import Upgrader
 from cura.CuraApplication import CuraApplication
+from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
 
 from PyQt5.QtWidgets import QApplication, QFileDialog
 from PyQt5.QtGui import QPixmap, QScreen, QColor, qRgb, QImageReader, QImage, QDesktopServices
@@ -74,7 +76,7 @@ class Nautilus(QObject, MeshWriter, Extension):
     # 1) here
     # 2) plugin.json
     # 3) package.json
-    version = "1.3.2"
+    version = "1.3.3"
 
     ##  Dictionary that defines how characters are escaped when embedded in
     #   g-code.
@@ -129,13 +131,14 @@ class Nautilus(QObject, MeshWriter, Extension):
         if self._application.getPreferences().getValue("Nautilus/install_status") is None:
             self._ready = True
             self._application.getPreferences().addPreference("Nautilus/install_status", "unknown")
+            self._application.getPreferences().addPreference("Nautilus/curr_version", self.version)
             Logger.log("i","first install")
 
         self._application.getPreferences().addPreference("Nautilus/configversion","1.0.0")
 
         self._application.getPreferences().addPreference("Nautilus/uptodate","yes")
 
-        self._application.getPreferences().addPreference("Nautilus/curr_version", self.version)
+
 
         # if something got messed up, force installation
         if not self.isInstalled() and self._application.getPreferences().getValue("Nautilus/install_status") is "installed":
@@ -307,17 +310,21 @@ class Nautilus(QObject, MeshWriter, Extension):
     def versionsMatch(self):
         # get the currently installed plugin version number
         #self._application.getPreferences().addPreference("Nautilus/curr_version", "0.0.0")
+        try:
+            with open(os.path.join(self.local_intent_path, 'nautilusintent', 'hrn_generic_pla_X_400_fine_visual.inst.cfg'),'r') as stacks:
+                #installedVersion = self._application.getIntentManager().intentMetadatas("hydra_research_nautilus", "X_400", "hr_generic_pla")
+                fileLines = stacks.readlines()
 
-        installedVersion = self._application.getPreferences().getValue("Nautilus/curr_version")
+                oldVersion = int(str([line for line in fileLines if 'setting_version' in line])[-6:-4])
 
-        if StrictVersion(installedVersion) == StrictVersion(Nautilus.version):
-            # if the version numbers match, then return true
-            Logger.log("i", "Nautilus Plugin versions match: "+installedVersion+" matches "+Nautilus.version)
-            return True
-        else:
-            Logger.log("i", "Nautilus Plugin installed version: " +installedVersion+ " doesn't match this version: "+Nautilus.version)
-            self._application.getPreferences().setValue("Nautilus/curr_version", Nautilus.version)
+            newVersion = self._application.SettingVersion
+            if newVersion == oldVersion:
+                return True
+            if newVersion > oldVersion:
+                return False
+        except:
             return False
+
 
     # check to see if the plugin files are all installed
     def isInstalled(self):

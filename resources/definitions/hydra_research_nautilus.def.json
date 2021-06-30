@@ -169,7 +169,7 @@
 
 
 		"speed_slowdown_layers": { "default_value": 2 },
-    "speed_equalize_flow_enabled": {"value": "True"},
+    "speed_equalize_flow_enabled": {"value": "False"},
     "speed_equalize_flow_max": {"value": "math.ceil(speed_print * 2 if speed_print * 2 < 150 else 150)"},
 		"acceleration_enabled": { "value": "True"},
 		"acceleration_print": { "value": "2000" },
@@ -232,7 +232,7 @@
     "raft_surface_line_width": { "value": "support_interface_line_width" },
     "raft_surface_line_spacing": { "value": "support_roof_line_distance"},
 
-		"slicing_tolorance": { "value": "'middle'" },
+		"slicing_tolerance": { "value": "'middle'" },
 		"minimum_polygon_circumference": { "value": "machine_nozzle_size * 2 " },
 		"coasting_enable": { "value": "False" },
 		"coasting_volume": { "value": "(machine_nozzle_size ** 3) / 2" },

@@ -45,9 +45,9 @@
         "machine_max_feedrate_y": { "default_value": 200 },
         "machine_max_feedrate_z": { "default_value": 40},
         "machine_max_feedrate_e": { "default_value": 4000 },
-        "machine_max_acceleration_z": { "default_value": 800 },
+        "machine_max_acceleration_z": { "default_value": 2000 },
         "machine_acceleration": { "default_value": 1000},
-        "machine_max_jerk_xy": { "default_value": 8 },
+        "machine_max_jerk_xy": { "default_value": 10 },
         "machine_max_jerk_z": { "default_value": 0.4 },
         "machine_max_jerk_e": { "default_value": 1.5 },
         "machine_gcode_flavor": { "default_value": "RepRap (RepRap)" },
@@ -86,7 +86,7 @@
 		"skin_no_small_gaps_heuristic": { "value": "False" },
 
 		"zig_zaggify_infill": { "value": "gradual_infill_steps == 0" },
-		"infill_overlap": { "value": "10" },
+		"infill_overlap": { "value": "25" },
 		"skin_overlap": { "value": "5" },
 		"infill_before_walls": { "value": "False" },
 		"skin_preshrink": { "value": "line_width * 2.22" },
@@ -136,8 +136,8 @@
 		},
 		"speed_roofing": {
 			"maximum_value_warning": "205",
-			"default_value": 50,
-			"value": "math.ceil((speed_volumetric_min / (roofing_line_width * layer_height)) if 50 * speed_print_factor < (speed_volumetric_min / (roofing_line_width * layer_height)) else 50 * speed_print_factor if 50 * speed_print_factor < (speed_print_max if speed_print_max < (speed_volumetric_max / (roofing_line_width * layer_height)) else (speed_volumetric_max / (roofing_line_width * layer_height))) else speed_print_max if speed_print_max < (speed_volumetric_max / (roofing_line_width * layer_height)) else (speed_volumetric_max / (roofing_line_width * layer_height)))"
+			"default_value": 30,
+			"value": "math.ceil((speed_volumetric_min / (roofing_line_width * layer_height)) if speed_wall_0 * speed_print_factor < (speed_volumetric_min / (roofing_line_width * layer_height)) else speed_wall_0 * speed_print_factor if speed_wall_0 * speed_print_factor < (speed_print_max if speed_print_max < (speed_volumetric_max / (roofing_line_width * layer_height)) else (speed_volumetric_max / (roofing_line_width * layer_height))) else speed_print_max if speed_print_max < (speed_volumetric_max / (roofing_line_width * layer_height)) else (speed_volumetric_max / (roofing_line_width * layer_height)))"
 		},
 		"speed_topbottom": {
 			"maximum_value_warning": "205",
@@ -170,19 +170,19 @@
 
 
 		"speed_slowdown_layers": { "default_value": 2 },
-    "speed_equalize_flow_enabled": {"value": "True"},
+    "speed_equalize_flow_enabled": {"value": "False"},
     "speed_equalize_flow_max": {"value": "speed_print_max"},
 		"acceleration_enabled": { "value": "True"},
-		"acceleration_print": { "value": "1000" },
-		"acceleration_wall": { "value": "800" },
-		"acceleration_wall_0": { "value": "800" },
-		"acceleration_travel": { "value": "1000"},
-    "acceleration_layer_0": { "value": "acceleration_print"},
+		"acceleration_print": { "value": "1500" },
+		"acceleration_wall": { "value": "500" },
+		"acceleration_wall_0": { "value": "500" },
+		"acceleration_travel": { "value": "1500"},
+    "acceleration_layer_0": { "value": "acceleration_print/2"},
 		"jerk_enabled": { "value": "True" },
-		"jerk_print": { "value": "8" },
-		"jerk_wall": { "value": "8" },
-		"jerk_wall_0": { "value": "8" },
-		"jerk_travel": { "value": "8" },
+		"jerk_print": { "value": "10" },
+		"jerk_wall": { "value": "6" },
+		"jerk_wall_0": { "value": "6" },
+		"jerk_travel": { "value": "10" },
 
 
 		"retraction_combing": { "value": "'off'" },
@@ -233,7 +233,7 @@
     "raft_surface_line_width": { "value": "support_interface_line_width" },
     "raft_surface_line_spacing": { "value": "support_roof_line_distance"},
 
-		"slicing_tolorance": { "value": "'middle'" },
+		"slicing_tolerance": { "value": "'middle'" },
 		"minimum_polygon_circumference": { "value": "machine_nozzle_size * 2 " },
 		"coasting_enable": { "value": "False" },
 		"coasting_volume": { "value": "(machine_nozzle_size ** 3) / 2" },
