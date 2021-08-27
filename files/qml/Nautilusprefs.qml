@@ -143,6 +143,23 @@ UM.Dialog
                 onClicked: manager.showHelp()
                 //Layout.columnSpan:2
             }
+/*
+          CheckBox{
+            id: developermode
+            UM.I18nCatalog
+            {
+                id: catalog6
+                name: "cura"
+            }
+            anchors.top: helpButton.bottom
+            anchors.margins: 10
+            //Layout.topMargin:25
+            //topPadding: 5
+            anchors.horizontalCenter: parent.horizontalCenter
+            text: "Developer Mode"
+            checked: checkBooleanVals(manager.developerModeStatus)
+            onClicked: manager.setDeveloperMode()
+          }*/
         } // end RowLayout
 
     } // end ColumnLayout

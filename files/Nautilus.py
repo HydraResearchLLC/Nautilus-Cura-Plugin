@@ -76,7 +76,7 @@ class Nautilus(QObject, MeshWriter, Extension):
     # 1) here
     # 2) plugin.json
     # 3) package.json
-    version = "1.3.3"
+    version = "1.3.4"
 
     ##  Dictionary that defines how characters are escaped when embedded in
     #   g-code.
@@ -132,13 +132,20 @@ class Nautilus(QObject, MeshWriter, Extension):
             self._ready = True
             self._application.getPreferences().addPreference("Nautilus/install_status", "unknown")
             self._application.getPreferences().addPreference("Nautilus/curr_version", self.version)
+            self._application.getPreferences().addPreference("Nautilus/developermode", "false")
             Logger.log("i","first install")
 
         self._application.getPreferences().addPreference("Nautilus/configversion","1.0.0")
+        self._application.getPreferences().setValue("Nautilus/configversion","1.0.0")
 
         self._application.getPreferences().addPreference("Nautilus/uptodate","yes")
 
+        self._application.getPreferences().addPreference("Nautilus/developermode","false")
 
+
+        if self._application.getPreferences().getValue("Nautilus/developermode") is not "true" or self._application.getPreferences().getValue("Nautilus/developermode") is not "false":
+            self._application.getPreferences().addPreference("Nautilus/developermode","false")
+            self._application.getPreferences().setValue("Nautilus/developermode","false")
 
         # if something got messed up, force installation
         if not self.isInstalled() and self._application.getPreferences().getValue("Nautilus/install_status") is "installed":
@@ -151,10 +158,13 @@ class Nautilus(QObject, MeshWriter, Extension):
             Logger.log("i","weird error, config installed, preference incorrect")
 
         # if the version isn't the same, then force installation
-        if not self.versionsMatch() and self._application.getPreferences().getValue("Nautilus/install_status") is not "uninstalled":
+        if not self.versionsMatch():# and self._application.getPreferences().getValue("Nautilus/install_status") is not "uninstalled":
             self._application.getPreferences().setValue("Nautilus/install_status", "unknown")
             Logger.log("i","Version's don't match")
 
+        if self._application.getPreferences().getValue("Nautilus/developermode") != "true":
+            self._application.getPreferences().setValue("Nautilus/install_status", "unknown")
+            Logger.log("i","developer mode is off")
         # Check the preferences to see if the user uninstalled the files -
         # if so don't automatically install them
         if self._application.getPreferences().getValue("Nautilus/install_status") is "unknown":
@@ -234,6 +244,26 @@ class Nautilus(QObject, MeshWriter, Extension):
             message.show()
         return
 
+    @pyqtSlot()
+    def setDeveloperMode(self):
+        if self._application.getPreferences().getValue("Nautilus/developermode") == 'true':
+            Logger.log('d','falsing developer mode')
+            self._application.getPreferences().addPreference("Nautilus/developermode", "false")
+            self._application.getPreferences().setValue("Nautilus/developermode","false")
+        else:
+            self._application.getPreferences().addPreference("Nautilus/developermode", "true")
+            Logger.log('d','truing developer mode')
+            self._application.getPreferences().setValue("Nautilus/developermode","true")
+        return
+
+    @pyqtProperty(str)
+    def developerModeStatus(self):
+        stat = self._application.getPreferences().getValue("Nautilus/developermode")
+        Logger.log('d','developer mode status is '+stat)
+        if stat == 'true':
+            return 'Yes'
+        else:
+            return 'No'
 
     @pyqtSlot()
     def reportIssue(self):
@@ -314,8 +344,11 @@ class Nautilus(QObject, MeshWriter, Extension):
             with open(os.path.join(self.local_intent_path, 'nautilusintent', 'hrn_generic_pla_X_400_fine_visual.inst.cfg'),'r') as stacks:
                 #installedVersion = self._application.getIntentManager().intentMetadatas("hydra_research_nautilus", "X_400", "hr_generic_pla")
                 fileLines = stacks.readlines()
-
-                oldVersion = int(str([line for line in fileLines if 'setting_version' in line])[-6:-4])
+                try:
+                    oldVersion = int(str([line for line in fileLines if 'setting_version' in line])[-6:-4])
+                    Logger.log('d','old version is '+str(oldVersion))
+                except:
+                    oldVersion = 2
 
             newVersion = self._application.SettingVersion
             if newVersion == oldVersion:

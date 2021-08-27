@@ -7,7 +7,7 @@
       <color>Generic</color>
       <label>PLA</label>
     </name>
-    <GUID>506c9f0d-e3aa-4bd4-b2d2-23e242hr027</GUID>
+    <GUID>506c9f0d-e3aa-4bd4-b2d2-23e242hr031</GUID>
     <version>3</version>
     <color_code>#ffc924</color_code>
     <description>Fast, safe, and reliable printing. PLA is ideal for fast and reliable printing of parts and prototypes with a great surface quality. The data in this file may not be correct for your specific filament.</description>
@@ -43,6 +43,12 @@
         <cura:setting key="pressure_advance_value">0.025</cura:setting>
         <cura:setting key="speed_volumetric_max">15</cura:setting>
       </hotend>
+      <machine_identifier manufacturer="Hydra Research" product="Hydra Research Minnow" />
+      <hotend id="0.40mm">
+        <setting key="hardware compatible">yes</setting>
+        <cura:setting key="pressure_advance_value">0.025</cura:setting>
+        <cura:setting key="speed_volumetric_max">15</cura:setting>
+      </hotend>
     </machine>
     <setting key="print temperature">220</setting>
     <setting key="heated bed temperature">60</setting>
@@ -52,10 +58,10 @@
     <setting key="print cooling">100</setting>
     <setting key="retraction amount">1</setting>
     <cura:setting key="material_flow">100</cura:setting>
-    <cura:setting key="material_name">PLA - Generic</cura:setting>
+    <cura:setting key="material_name">PLA</cura:setting>
     <cura:setting key="material_print_surface">PEI</cura:setting>
     <cura:setting key="pressure_advance_value">0.05</cura:setting>
-    <cura:setting key="speed_volumetric_max">15</cura:setting>
+    <cura:setting key="speed_volumetric_max">12</cura:setting>
     <cura:setting key="speed_volumetric_min">0.01</cura:setting>
     <cura:setting key="brim_width">3</cura:setting>
     <cura:setting key="support_z_distance_ratio">25</cura:setting>

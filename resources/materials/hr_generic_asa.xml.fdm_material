@@ -7,7 +7,7 @@
       <color>Generic</color>
       <label>ASA</label>
     </name>
-    <GUID>506c9f0d-e3aa-4bd4-b2d2-23e242hr002</GUID>
+    <GUID>506c9f0d-e3aa-4bd4-b2d2-23e242hr003</GUID>
     <version>3</version>
     <color_code>#8cb219</color_code>
     <description>Tough and durable. ASA is good for mechanical parts that require UV resistance. It is impact resistant, dimensionally stable, and can handle temperatures up to 85ºC. The data in this file may not be correct for your specific filament.</description>
@@ -16,8 +16,8 @@
   <properties>
     <density>1.07</density>
     <diameter>1.75</diameter>
-    <cost>35.00</cost>
-    <weight>750</weight>
+    <cost>42.00</cost>
+    <weight>1000</weight>
   </properties>
   <settings>
     <machine>
@@ -42,6 +42,12 @@
         <cura:setting key="pressure_advance_value">0.02</cura:setting>
         <cura:setting key="speed_volumetric_max">11</cura:setting>
       </hotend>
+      <machine_identifier manufacturer="Hydra Research" product="Hydra Research Minnow" />
+      <hotend id="0.40mm">
+        <setting key="hardware compatible">no</setting>
+        <cura:setting key="pressure_advance_value">0.02</cura:setting>
+        <cura:setting key="speed_volumetric_max">11</cura:setting>
+      </hotend>
     </machine>
     <setting key="print temperature">250</setting>
     <setting key="heated bed temperature">100</setting>
@@ -51,7 +57,7 @@
     <setting key="print cooling">15</setting>
     <setting key="retraction amount">1</setting>
     <cura:setting key="material_flow">100</cura:setting>
-    <cura:setting key="material_name">ASA - Generic</cura:setting>
+    <cura:setting key="material_name">ASA</cura:setting>
     <cura:setting key="material_print_surface">Phenolic w Magigoo</cura:setting>
     <cura:setting key="material_door_status">;</cura:setting>
     <cura:setting key="pressure_advance_value">0.04</cura:setting>

@@ -7,7 +7,7 @@
       <color>Generic</color>
       <label>NinjaFlex 85A</label>
     </name>
-    <GUID>506c9f0d-e3aa-4bd4-b2d2-23e242hr017</GUID>
+    <GUID>506c9f0d-e3aa-4bd4-b2d2-23e242hr021</GUID>
     <version>3</version>
     <color_code>#b22744</color_code>
     <description>Flexible materials are wear and abrasion resistant and have exceptional inter-layer adhesion. Common applications include grips, anti-slip parts, vibration dampening, wheels, and much more. Flexible filaments are rated on the Shore A-type Hardness scale; the higher the rating, the stiffer the filament</description>
@@ -45,6 +45,13 @@
         <cura:setting key="pressure_advance_value">0.025</cura:setting>
         <cura:setting key="speed_volumetric_max">2.5</cura:setting>
       </hotend>
+      <machine_identifier manufacturer="Hydra Research" product="Hydra Research Minnow" />
+      <hotend id="0.40mm">
+        <setting key="hardware compatible">yes</setting>
+        <cura:setting key="line_width">0.4</cura:setting>
+        <cura:setting key="pressure_advance_value">0.025</cura:setting>
+        <cura:setting key="speed_volumetric_max">2.5</cura:setting>
+      </hotend>
     </machine>
     <setting key="print temperature">240</setting>
     <setting key="heated bed temperature">50</setting>
@@ -54,7 +61,7 @@
     <setting key="print cooling">30</setting>
     <setting key="retraction amount">0.8</setting>
     <cura:setting key="material_flow">115</cura:setting>
-    <cura:setting key="material_name">NinjaFlex 85A - NinjaTek</cura:setting>
+    <cura:setting key="material_name">NinjaFlex 85A</cura:setting>
     <cura:setting key="material_print_surface">Use Magigoo</cura:setting>
     <cura:setting key="material_door_status">;</cura:setting>
     <cura:setting key="pressure_advance_value">0.2</cura:setting>

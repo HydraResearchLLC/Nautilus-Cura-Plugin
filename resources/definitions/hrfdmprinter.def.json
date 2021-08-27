@@ -7,8 +7,8 @@
         "author": "Ultimaker & Hydra Research",
         "category": "Other",
         "manufacturer": "Unknown",
-        "setting_version": 16,
-        "file_formats": "text/x-gcode;application/x-stl-ascii;application/x-stl-binary;application/x-wavefront-obj;application/x3g",
+        "setting_version": 17,
+        "file_formats": "text/x-gcode;model/stl;application/x-wavefront-obj;application/x3g",
         "visible": false,
         "has_materials": true,
         "preferred_material": "generic_pla",
@@ -28,7 +28,7 @@
             "label": "Machine",
             "type": "category",
             "description": "Machine specific settings",
-            "icon": "category_machine",
+            "icon": "Printer",
             "children":
             {
                 "machine_name":
@@ -704,7 +704,7 @@
                 "machine_steps_per_mm_e":
                 {
                     "label": "Steps per Millimeter (E)",
-                    "description": "How many steps of the stepper motors will result in one millimeter of extrusion.",
+                    "description": "How many steps of the stepper motors will result in moving the feeder wheel by one millimeter around its circumference.",
                     "type": "float",
                     "default_value": 1600,
                     "minimum_value": "0.0000001",
@@ -765,7 +765,7 @@
         {
             "label": "Quality",
             "type": "category",
-            "icon": "category_layer_height",
+            "icon": "PrintQuality",
             "description": "All settings that influence the resolution of the print. These settings have a large impact on the quality (and print time)",
             "children":
             {
@@ -983,8 +983,8 @@
                             "type": "float",
                             "unit": "mm",
                             "enabled": "resolveOrValue('prime_tower_enable')",
-                            "default_value": 0.4,
-                            "value": "line_width",
+                            "default_value": "machine_nozzle_size",
+                            "value": "machine_nozzle_size * 0.875",
                             "minimum_value": "0.001",
                             "minimum_value_warning": "0.1 + 0.4 * machine_nozzle_size",
                             "maximum_value_warning": "2 * machine_nozzle_size",
@@ -1010,7 +1010,7 @@
         "shell":
         {
             "label": "Walls",
-            "icon": "category_shell",
+            "icon": "PrintShell",
             "description": "Shell",
             "type": "category",
             "children":
@@ -1355,7 +1355,7 @@
         "top_bottom":
         {
             "label": "Top/Bottom",
-            "icon": "category_topbottom",
+            "icon": "PrintTopBottom",
             "description": "Top/Bottom",
             "type": "category",
             "children":
@@ -1528,6 +1528,16 @@
                     "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true
                 },
+                "skin_monotonic":
+                {
+                    "label": "Monotonic Top/Bottom Order",
+                    "description": "Print top/bottom lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent.",
+                    "type": "bool",
+                    "default_value": true,
+                    "enabled": "(top_layers > 0 or bottom_layers > 0) and (top_bottom_pattern != 'concentric' or top_bottom_pattern_0 != 'concentric')",
+                    "limit_to_extruder": "top_bottom_extruder_nr",
+                    "settable_per_mesh": true
+                },
                 "skin_angles":
                 {
                     "label": "Top/Bottom Line Directions",
@@ -1552,8 +1562,8 @@
                 {
                     "label": "Extra Skin Wall Count",
                     "description": "Replaces the outermost part of the top/bottom pattern with a number of concentric lines. Using one or two lines improves roofs that start on infill material.",
-                    "value": "0 if top_bottom_pattern == 'concentric' and top_bottom_pattern_0 == 'concentric' and roofing_layer_count <= 0 else 1",
-                    "default_value": 1,
+                    "value": "0 if top_bottom_pattern == 'concentric' and top_bottom_pattern_0 == 'concentric' and roofing_layer_count <= 0 else 0",
+                    "default_value": 0,
                     "minimum_value": "0",
                     "maximum_value_warning": "10",
                     "type": "int",
@@ -1592,6 +1602,16 @@
                     },
                     "default_value": "zigzag",
                     "enabled": "ironing_enabled",
+                    "limit_to_extruder": "top_bottom_extruder_nr",
+                    "settable_per_mesh": true
+                },
+                "ironing_monotonic":
+                {
+                    "label": "Monotonic Ironing Order",
+                    "description": "Print ironing lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "ironing_enabled and ironing_pattern != 'concentric'",
                     "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -1685,10 +1705,10 @@
                     "description": "Adjust the amount of overlap between the walls and (the endpoints of) the skin-centerlines, as a percentage of the line widths of the skin lines and the innermost wall. A slight overlap allows the walls to connect firmly to the skin. Note that, given an equal skin and wall line-width, any percentage over 50% may already cause any skin to go past the wall, because at that point the position of the nozzle of the skin-extruder may already reach past the middle of the wall.",
                     "unit": "%",
                     "type": "float",
-                    "default_value": 5,
+                    "default_value": 10,
                     "minimum_value_warning": "-50",
                     "maximum_value_warning": "100",
-                    "value": "5 if top_bottom_pattern != 'concentric' else 0",
+                    "value": "10 if top_bottom_pattern != 'concentric' else 0",
                     "enabled": "(top_layers > 0 or bottom_layers > 0) and top_bottom_pattern != 'concentric'",
                     "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true,
@@ -1831,7 +1851,7 @@
         "infill":
         {
             "label": "Infill",
-            "icon": "category_infill",
+            "icon": "Infill1",
             "description": "Infill",
             "type": "category",
             "children":
@@ -2203,7 +2223,7 @@
         "material":
         {
             "label": "Material",
-            "icon": "category_material",
+            "icon": "Spool",
             "description": "Material",
             "type": "category",
             "children":
@@ -2931,7 +2951,7 @@
         "speed":
         {
             "label": "Speed",
-            "icon": "category_speed",
+            "icon": "SpeedOMeter",
             "description": "Speed",
             "type": "category",
             "children":
@@ -3172,7 +3192,7 @@
                             "unit": "mm/s",
                             "enabled": "resolveOrValue('prime_tower_enable')",
                             "default_value": 60,
-                            "value": "speed_print",
+                            "value": "speed_wall_0",
                             "minimum_value": "0.1",
                             "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
                             "maximum_value_warning": "150",
@@ -3201,6 +3221,7 @@
                     "description": "The speed for the initial layer. A lower value is advised to improve adhesion to the build plate. Does not affect the build plate adhesion structures themselves, like brim and raft.",
                     "unit": "mm/s",
                     "type": "float",
+                    "enabled": "speed_slowdown_layers > 0",
                     "default_value": 30,
                     "value": "speed_print * 30 / 60",
                     "minimum_value": "0.1",
@@ -3215,6 +3236,7 @@
                             "description": "The speed of printing for the initial layer. A lower value is advised to improve adhesion to the build plate.",
                             "unit": "mm/s",
                             "type": "float",
+                            "enabled": "speed_slowdown_layers > 0",
                             "default_value": 30,
                             "value": "speed_layer_0",
                             "minimum_value": "0.1",
@@ -3228,6 +3250,7 @@
                             "description": "The speed of travel moves in the initial layer. A lower value is advised to prevent pulling previously printed parts away from the build plate. The value of this setting can automatically be calculated from the ratio between the Travel Speed and the Print Speed.",
                             "unit": "mm/s",
                             "type": "float",
+                            "enabled": "speed_slowdown_layers > 0",
                             "default_value": 60,
                             "value": "speed_layer_0 * speed_travel / speed_print",
                             "minimum_value": "0.1",
@@ -3263,7 +3286,6 @@
                     "default_value": 10,
                     "minimum_value": "0",
                     "maximum_value": "machine_max_feedrate_z",
-                    "enabled": "retraction_enable and retraction_hop_enabled",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -3875,7 +3897,7 @@
         "travel":
         {
             "label": "Travel",
-            "icon": "category_travel",
+            "icon": "PrintTravel",
             "description": "travel",
             "type": "category",
             "children":
@@ -4044,7 +4066,7 @@
                 "retraction_combing_max_distance":
                 {
                     "label": "Max Comb Distance With No Retract",
-                    "description": "When non-zero, combing travel moves that are longer than this distance will use retraction.",
+                    "description": "When greater than zero, combing travel moves that are longer than this distance will use retraction. If set to zero, there is no maximum and combing moves will not use retraction.",
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0,
@@ -4180,7 +4202,7 @@
         "cooling":
         {
             "label": "Cooling",
-            "icon": "category_cool",
+            "icon": "Fan",
             "description": "Cooling",
             "type": "category",
             "children":
@@ -4331,7 +4353,7 @@
         {
             "label": "Support",
             "type": "category",
-            "icon": "category_support",
+            "icon": "Support",
             "description": "Support",
             "children":
             {
@@ -5393,7 +5415,7 @@
         {
             "label": "Build Plate Adhesion",
             "type": "category",
-            "icon": "category_adhesion",
+            "icon": "Adhesion",
             "description": "Adhesion",
             "children":
             {
@@ -6047,7 +6069,7 @@
         {
             "label": "Dual Extrusion",
             "type": "category",
-            "icon": "category_dual",
+            "icon": "DualExtrusion",
             "description": "Settings used for printing with multiple extruders.",
             "children":
             {
@@ -6069,7 +6091,7 @@
                     "type": "float",
                     "unit": "mm",
                     "enabled": "resolveOrValue('prime_tower_enable')",
-                    "default_value": 20,
+                    "default_value": 15,
                     "resolve": "max(extruderValues('prime_tower_size'))",
                     "minimum_value": "0",
                     "maximum_value": "min(0.5 * machine_width, 0.5 * machine_depth)",
@@ -6085,6 +6107,7 @@
                     "unit": "mm³",
                     "type": "float",
                     "default_value": 6,
+                    "value": "(2 * 3.14 * (prime_tower_size - (2 * prime_tower_line_width)) * prime_tower_line_width * layer_height) if (2 * 3.14 * (prime_tower_size - (2 * prime_tower_line_width)) * prime_tower_line_width * layer_height) > 6 else 6 ",
                     "minimum_value": "0",
                     "maximum_value_warning": "(resolveOrValue('prime_tower_size') * 0.5) ** 2 * 3.14159 * resolveOrValue('layer_height') - sum(extruderValues('prime_tower_min_volume')) + prime_tower_min_volume",
                     "enabled": "resolveOrValue('prime_tower_enable')",
@@ -6201,6 +6224,7 @@
                     "unit": "mm/s",
                     "enabled": "retraction_enable and extruders_enabled_count > 1",
                     "default_value": 20,
+                    "value": "retraction_speed",
                     "minimum_value": "0.1",
                     "minimum_value_warning": "1",
                     "maximum_value": "machine_max_feedrate_e if retraction_enable else float('inf')",
@@ -6250,6 +6274,7 @@
                     "type": "float",
                     "unit": "mm³",
                     "default_value": 0,
+                    "value": "0.5",
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "100",
                     "enabled": "retraction_enable and extruders_enabled_count > 1",
@@ -6262,7 +6287,7 @@
         {
             "label": "Mesh Fixes",
             "type": "category",
-            "icon": "category_fixes",
+            "icon": "Bandage",
             "description": "Make the meshes more suited for 3D printing.",
             "children":
             {
@@ -6388,7 +6413,7 @@
         {
             "label": "Special Modes",
             "type": "category",
-            "icon": "category_blackmagic",
+            "icon": "BlackMagic",
             "description": "Non-traditional ways to print your models.",
             "children":
             {
@@ -6561,7 +6586,7 @@
         {
             "label": "Experimental",
             "type": "category",
-            "icon": "category_experimental",
+            "icon": "Experiment",
             "description": "Features that haven't completely been fleshed out yet.",
             "children":
             {
@@ -6610,6 +6635,17 @@
                     "limit_to_extruder": "roofing_extruder_nr",
                     "settable_per_mesh": true,
                     "enabled": "roofing_layer_count > 0 and top_layers > 0"
+                },
+                "roofing_monotonic":
+                {
+                    "label": "Monotonic Top Surface Order",
+                    "description": "Print top surface lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent.",
+                    "type": "bool",
+                    "default_value": false,
+                    "value": "skin_monotonic",
+                    "enabled": "roofing_layer_count > 0 and top_layers > 0 and roofing_pattern != 'concentric'",
+                    "limit_to_extruder": "roofing_extruder_nr",
+                    "settable_per_mesh": true
                 },
                 "roofing_angles":
                 {

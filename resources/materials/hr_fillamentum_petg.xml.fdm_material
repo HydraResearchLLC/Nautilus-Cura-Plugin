@@ -7,10 +7,10 @@
       <color>Generic</color>
       <label>PETG</label>
     </name>
-    <GUID>506c9f0d-e3aa-4bd4-b2d2-23e242hr011</GUID>
+    <GUID>506c9f0d-e3aa-4bd4-b2d2-23e242hr013</GUID>
     <version>3</version>
     <color_code>#f3a112</color_code>
-    <description>Generic PETG profile. The data in this file may not be correct for your specific filament.</description>
+    <description>PETG is quite tough with good temperature resistance. It exhibits relatively low warping and are an excellent choice for end-use parts.</description>
     <adhesion_info>Phenolic</adhesion_info>
   </metadata>
   <properties>
@@ -42,6 +42,12 @@
         <cura:setting key="pressure_advance_value">0.025</cura:setting>
         <cura:setting key="speed_volumetric_max">8</cura:setting>
       </hotend>
+      <machine_identifier manufacturer="Hydra Research" product="Hydra Research Minnow" />
+      <hotend id="0.40mm">
+        <setting key="hardware compatible">yes</setting>
+        <cura:setting key="pressure_advance_value">0.025</cura:setting>
+        <cura:setting key="speed_volumetric_max">8</cura:setting>
+      </hotend>
     </machine>
     <setting key="print temperature">245</setting>
     <setting key="heated bed temperature">80</setting>
@@ -49,7 +55,7 @@
     <setting key="print cooling">40</setting>
     <setting key="retraction amount">1.4</setting>
     <cura:setting key="material_flow">100</cura:setting>
-    <cura:setting key="material_name">PETG - Fillamentum</cura:setting>
+    <cura:setting key="material_name">PETG</cura:setting>
     <cura:setting key="material_print_surface">Phenolic</cura:setting>
     <cura:setting key="material_door_status">;</cura:setting>
     <cura:setting key="material_print_temperature_layer_0">240</cura:setting>
