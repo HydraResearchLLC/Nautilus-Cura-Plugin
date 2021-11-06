@@ -56,7 +56,7 @@ UM.Dialog
         width: usermanual.width - userimg.width - 60
         wrapMode: Label.WordWrap
         leftPadding: 20
-        text: "Resources for the Nautilus 3D printer. Here you will find the Nautilus user manual, printer firmware and configuration, as well as source files for the Nautilus."
+        text: "Resources and documentation for Hydra Research 3D printers."
         font: UM.Theme.getFont("default")
       }
       Cura.PrimaryButton {

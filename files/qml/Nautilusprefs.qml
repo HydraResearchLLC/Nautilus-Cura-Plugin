@@ -15,7 +15,7 @@ UM.Dialog
     property string installStatusText
 
     minimumWidth: 400 * screenScaleFactor
-    minimumHeight: 350 * screenScaleFactor
+    minimumHeight: 450 * screenScaleFactor
     title: catalog.i18nc("@label", "Nautilus Plugin Preferences")
 
     function checkBooleanVals(val) {
@@ -143,7 +143,7 @@ UM.Dialog
                 onClicked: manager.showHelp()
                 //Layout.columnSpan:2
             }
-/*
+
           CheckBox{
             id: developermode
             UM.I18nCatalog
@@ -159,7 +159,7 @@ UM.Dialog
             text: "Developer Mode"
             checked: checkBooleanVals(manager.developerModeStatus)
             onClicked: manager.setDeveloperMode()
-          }*/
+          }
         } // end RowLayout
 
     } // end ColumnLayout

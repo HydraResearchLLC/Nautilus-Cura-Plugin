@@ -1,7 +1,7 @@
 {
     "version": 2,
     "name": "Nautilus",
-    "inherits": "hydra_research_excluded_materials",
+    "inherits": "hydra_research_nautilus_excluded_materials",
     "metadata": {
         "visible": true,
         "author": "Hydra Research",
@@ -169,7 +169,6 @@
 
 
 		"speed_slowdown_layers": { "default_value": 2 },
-    "speed_equalize_flow_enabled": {"value": "False"},
     "speed_equalize_flow_max": {"value": "math.ceil(speed_print * 2 if speed_print * 2 < 150 else 150)"},
 		"acceleration_enabled": { "value": "True"},
 		"acceleration_print": { "value": "2000" },
@@ -221,7 +220,6 @@
     "support_bottom_stair_step_height": {"value": "0.3"},
     "support_brim_enable": { "value": "True" },
 		"brim_width": { "default_value": 5 },
-		"skirt_gap":{ "value": "line_width * 3" },
 		"support_fan_enable": { "value": "cool_fan_enabled" },
 		"support_supported_skin_fan_speed": { "value": "0 if cool_fan_enabled == False else cool_fan_speed_max" },
 

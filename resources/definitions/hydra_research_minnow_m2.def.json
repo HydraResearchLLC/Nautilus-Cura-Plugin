@@ -1,0 +1,295 @@
+{
+    "version": 2,
+    "name": "Minnow M2",
+    "inherits": "hydra_research_minnow_m2_excluded_materials",
+    "metadata": {
+        "visible": true,
+        "author": "Hydra Research",
+        "manufacturer": "Hydra Research",
+        "category": "Hydra Research",
+        "file_formats": "text/x-gcode",
+        "icon": "icon_ultimaker2",
+        "platform": "hydra_research_minnow_platform.stl",
+        "has_machine_quality": true,
+        "has_materials": true,
+        "has_machine_materials": true,
+        "has_variant_materials": true,
+        "has_variants": true,
+        "variants_name": "Nozzle",
+        "preferred_material": "hr_fillamentum_pla_extrafill",
+        "preferred_variant_name": "0.40mm",
+        "preferred_quality_type": "normal",
+        "machine_extruder_trains":
+        {
+            "0": "hydra_research_minnow_m2_extruder0",
+            "1": "hydra_research_minnow_m2_extruder1"
+        }
+    },
+
+    "overrides": {
+        "machine_name": { "default_value": "Minnow M2" },
+        "machine_heated_bed": { "default_value": true },
+        "machine_width": { "default_value": 250 },
+        "machine_height": { "default_value": 195 },
+        "machine_depth": { "default_value": 210 },
+        "machine_center_is_zero": { "default_value": false },
+		    "machine_nozzle_temp_enabled": { "value": true },
+        "material_bed_temperature": { "default_value": 50 },
+        "retraction_amount": { "default_value": 1 },
+        "retraction_speed": { "default_value": 25 },
+        "retraction_retract_speed": { "default_value": 25 },
+        "retraction_prime_speed": { "default_value": 25 },
+        "adhesion_type": { "default_value": "brim" },
+        "machine_head_with_fans_polygon": { "default_value": [[-43,81],[43,81],[43,-81],[-43,-81]] },
+        "gantry_height": { "default_value": 52 },
+        "machine_max_feedrate_x": { "default_value": 200 },
+        "machine_max_feedrate_y": { "default_value": 200 },
+        "machine_max_feedrate_z": { "default_value": 40},
+        "machine_max_feedrate_e": { "default_value": 4000 },
+        "machine_max_acceleration_z": { "default_value": 2000 },
+        "machine_acceleration": { "default_value": 1000},
+        "machine_max_jerk_xy": { "default_value": 10 },
+        "machine_max_jerk_z": { "default_value": 0.4 },
+        "machine_max_jerk_e": { "default_value": 1.5 },
+        "machine_gcode_flavor": { "default_value": "RepRap (RepRap)" },
+        "machine_extruder_count": { "default_value": 2 },
+        "machine_start_gcode": {
+            "default_value": ""
+			},
+        "machine_end_gcode": {
+            "default_value": "M0"
+			},
+
+    "prime_blob_enable": { "enabled": true, "default_value": false },
+    "layer_height_0": { "value": "0.2" },
+		"line_width": { "value": "round(machine_nozzle_size * 1.25, 2)" },
+    "wall_line_width": {"value": "round(machine_nozzle_size * .75, 2) if layer_height < machine_nozzle_size/1.9 else machine_nozzle_size"},
+		"wall_line_width_0": { "value": "wall_line_width" },
+		"wall_line_width_x": { "value": "((machine_nozzle_size * 3) - wall_line_width_0) / 2" },
+		"infill_line_width": { "value": "round(line_width, 2)" },
+		"roofing_line_width": { "value": "wall_line_width_0" },
+		"initial_layer_line_width_factor": { "value": "machine_nozzle_size / line_width * 100" },
+    "wall_min_flow": {"value": "50"},
+
+		"wall_0_wipe_dist": { "value": "machine_nozzle_size / 2"},
+		"infill_wipe_dist": { "value": "machine_nozzle_size * .75"},
+		"wall_thickness": { "value": "wall_line_width_0 + wall_line_width_x"},
+		"roofing_layer_count": { "value": "1"},
+		"top_bottom_thickness": { "value": "wall_thickness" },
+		"top_thickness": { "value": "top_bottom_thickness + (layer_height * 2) if infill_sparse_density < 15 else top_bottom_thickness + layer_height" },
+		"optimize_wall_printing_order": { "value": "True" },
+		"travel_compensate_overlapping_walls_enabled": { "value": "True" },
+		"fill_perimeter_gaps": { "value": "'everywhere'" },
+		"filter_out_tiny_gaps": { "value": "True" },
+		"fill_outline_gaps": { "value": "True" },
+		"z_seam_type": { "value": "'sharpest_corner'"},
+		"z_seam_corner": { "value": "'z_seam_corner_weighted'"},
+		"skin_no_small_gaps_heuristic": { "value": "False" },
+
+		"zig_zaggify_infill": { "value": "gradual_infill_steps == 0" },
+		"infill_overlap": { "value": "25" },
+		"skin_overlap": { "value": "5" },
+		"infill_before_walls": { "value": "False" },
+		"skin_preshrink": { "value": "line_width * 2.22" },
+
+    "material_print_temperature": {
+      "maximum_value_warning": "300"
+    },
+    "material_print_temperature_layer_0": {
+      "maximum_value_warning": "300"
+    },
+    "material_standby_temperature": { "value": "0" },
+		"material_bed_temperature_layer_0": {
+		    "minimum_value_warning": "25",
+		     "value": "default_material_bed_temperature - 5"
+		},
+		"retraction_enable": { "value": "True" },
+		"retract_at_layer_change": { "value": "True" },
+		"retraction_min_travel": { "value": "machine_nozzle_size * 4" },
+		"retraction_count_max": { "value": "25" },
+		"retraction_extrusion_window": { "value": "1"},
+		"retraction_extra_prime_amount": { "value": "0 if not coasting_enable else coasting_volume" },
+
+    "speed_print": {
+			"maximum_value_warning": "205",
+			"default_value": 125,
+			"value": "math.ceil((speed_volumetric_min / (line_width * layer_height)) if 125 * speed_print_factor < (speed_volumetric_min / (line_width * layer_height)) else 125 * speed_print_factor if 125 * speed_print_factor < (speed_print_max if speed_print_max < (speed_volumetric_max / (line_width * layer_height)) else (speed_volumetric_max / (line_width * layer_height))) else speed_print_max if speed_print_max < (speed_volumetric_max / (line_width * layer_height)) else (speed_volumetric_max / (line_width * layer_height)))"
+		},
+		"speed_infill": {
+			"maximum_value_warning": "205",
+			"default_value": 125,
+			"value": "math.ceil((speed_volumetric_min / (infill_line_width * infill_sparse_thickness)) if 125 * speed_print_factor < (speed_volumetric_min / (infill_line_width * infill_sparse_thickness)) else 125 * speed_print_factor if 125 * speed_print_factor < (speed_print_max if speed_print_max < (speed_volumetric_max / (infill_line_width * infill_sparse_thickness)) else (speed_volumetric_max / (infill_line_width * infill_sparse_thickness))) else speed_print_max if speed_print_max < (speed_volumetric_max / (infill_line_width * infill_sparse_thickness)) else (speed_volumetric_max / (infill_line_width * infill_sparse_thickness)))"
+		},
+		"speed_wall": {
+			"maximum_value_warning": "205",
+			"default_value": 30,
+			"value": "math.ceil((speed_volumetric_min / (wall_line_width * layer_height)) if 30 * speed_perimeter_factor < (speed_volumetric_min / (wall_line_width * layer_height)) else 30 * speed_perimeter_factor if 30 * speed_perimeter_factor < (speed_print_max if speed_print_max < (speed_volumetric_max / (wall_line_width * layer_height)) else (speed_volumetric_max / (wall_line_width * layer_height))) else speed_print_max if speed_print_max < (speed_volumetric_max / (wall_line_width * layer_height)) else (speed_volumetric_max / (wall_line_width * layer_height)))"
+		},
+		"speed_wall_0": {
+			"maximum_value_warning": "205",
+			"default_value": 30,
+			"value": "math.ceil((speed_volumetric_min / (wall_line_width_0 * layer_height)) if speed_wall < (speed_volumetric_min / (wall_line_width_0 * layer_height)) else speed_wall if speed_wall < (speed_print_max if speed_print_max < (speed_volumetric_max / (wall_line_width_0 * layer_height)) else (speed_volumetric_max / (wall_line_width_0 * layer_height))) else speed_print_max if speed_print_max < (speed_volumetric_max / (wall_line_width_0 * layer_height)) else (speed_volumetric_max / (wall_line_width_0 * layer_height)))"
+		},
+		"speed_wall_x": {
+			"maximum_value_warning": "205",
+			"default_value": 50,
+			"value": "math.ceil((speed_volumetric_min / (wall_line_width_x * layer_height)) if (speed_wall * 1.66) < (speed_volumetric_min / (wall_line_width_x * layer_height)) else (speed_wall * 1.66) if (speed_wall * 1.66) < (speed_print_max if speed_print_max < (speed_volumetric_max / (wall_line_width_x * layer_height)) else (speed_volumetric_max / (wall_line_width_x * layer_height))) else speed_print_max if speed_print_max < (speed_volumetric_max / (wall_line_width_x * layer_height)) else (speed_volumetric_max / (wall_line_width_x * layer_height)))"
+		},
+		"speed_roofing": {
+			"maximum_value_warning": "205",
+			"default_value": 30,
+			"value": "math.ceil((speed_volumetric_min / (roofing_line_width * layer_height)) if speed_wall_0 * speed_print_factor < (speed_volumetric_min / (roofing_line_width * layer_height)) else speed_wall_0 * speed_print_factor if speed_wall_0 * speed_print_factor < (speed_print_max if speed_print_max < (speed_volumetric_max / (roofing_line_width * layer_height)) else (speed_volumetric_max / (roofing_line_width * layer_height))) else speed_print_max if speed_print_max < (speed_volumetric_max / (roofing_line_width * layer_height)) else (speed_volumetric_max / (roofing_line_width * layer_height)))"
+		},
+		"speed_topbottom": {
+			"maximum_value_warning": "205",
+			"default_value": 125,
+			"value": "math.ceil((speed_volumetric_min / (skin_line_width * layer_height)) if 125 * speed_print_factor < (speed_volumetric_min / (skin_line_width * layer_height)) else 125 * speed_print_factor if 125 * speed_print_factor < (speed_print_max if speed_print_max < (speed_volumetric_max / (skin_line_width * layer_height)) else (speed_volumetric_max / (skin_line_width * layer_height))) else speed_print_max if speed_print_max < (speed_volumetric_max / (skin_line_width * layer_height)) else (speed_volumetric_max / (skin_line_width * layer_height)))"
+		},
+		"speed_support": {
+			"maximum_value_warning": "205",
+			"default_value": 80,
+			"value": "math.ceil((speed_volumetric_min / (support_line_width * support_infill_sparse_thickness)) if 80 * speed_print_factor < (speed_volumetric_min / (support_line_width * support_infill_sparse_thickness)) else 80 * speed_print_factor if 80 * speed_print_factor < (speed_print_max if speed_print_max < (speed_volumetric_max / (support_line_width * support_infill_sparse_thickness)) else (speed_volumetric_max / (support_line_width * support_infill_sparse_thickness))) else speed_print_max if speed_print_max < (speed_volumetric_max / (support_line_width * support_infill_sparse_thickness)) else (speed_volumetric_max / (support_line_width * support_infill_sparse_thickness)))"
+		},
+    "speed_support_interface": {
+      "value": "math.ceil((speed_volumetric_min / (support_interface_line_width * layer_height)) if 30 * speed_print_factor < (speed_volumetric_min / (support_interface_line_width * layer_height)) else 30 * speed_print_factor if 30 * speed_print_factor < (speed_print_max if speed_print_max < (speed_volumetric_max / (support_interface_line_width * layer_height)) else (speed_volumetric_max / (support_interface_line_width * layer_height))) else speed_print_max if speed_print_max < (speed_volumetric_max / (support_interface_line_width * layer_height)) else (speed_volumetric_max / (support_interface_line_width * layer_height)))"
+    },
+		"speed_travel": {
+			"maximum_value_warning": "305",
+			"default_value": 180,
+			"value": "180"
+		},
+		"speed_layer_0": {
+			"maximum_value_warning": "205",
+			"default_value": 25,
+			"value": "math.ceil((speed_volumetric_min / (line_width * initial_layer_line_width_factor * 0.01 * layer_height_0)) if 25 < (speed_volumetric_min / (line_width * initial_layer_line_width_factor * 0.01 * layer_height_0)) else 25 if 25 < (speed_print_max if speed_print_max < (speed_volumetric_max / (line_width * initial_layer_line_width_factor * 0.01 * layer_height_0)) else (speed_volumetric_max / (line_width * initial_layer_line_width_factor * 0.01 * layer_height_0))) else speed_print_max if speed_print_max < (speed_volumetric_max / (line_width * initial_layer_line_width_factor * 0.01 * layer_height_0)) else (speed_volumetric_max / (line_width * initial_layer_line_width_factor * 0.01 * layer_height_0)))"
+		},
+		"speed_travel_layer_0": {
+			"maximum_value_warning": "305",
+			"default_value": 200,
+			"value": "180"
+		},
+
+
+		"speed_slowdown_layers": { "default_value": 2 },
+    "speed_equalize_flow_enabled": {"value": "False"},
+    "speed_equalize_flow_max": {"value": "speed_print_max"},
+		"acceleration_enabled": { "value": "True"},
+		"acceleration_print": { "value": "1500" },
+		"acceleration_wall": { "value": "500" },
+		"acceleration_wall_0": { "value": "500" },
+		"acceleration_travel": { "value": "1500"},
+    "acceleration_layer_0": { "value": "acceleration_print/2"},
+		"jerk_enabled": { "value": "True" },
+		"jerk_print": { "value": "10" },
+		"jerk_wall": { "value": "6" },
+		"jerk_wall_0": { "value": "6" },
+		"jerk_travel": { "value": "10" },
+
+
+		"retraction_combing": { "value": "'off'" },
+		"retraction_combing_max_distance": { "value": "1" },
+		"travel_retract_before_outer_wall": { "value": "False" },
+		"travel_avoid_distance": { "value": "machine_nozzle_size * 4" },
+		"layer_start_x": {"value": "205" },
+		"layer_start_y": {"value": "205" },
+		"retraction_hop_enabled": { "value": "True" },
+		"retraction_hop_only_when_collides": { "value": "False" },
+		"travel_avoid_other_parts": { "value": "True" },
+    "travel_avoid_supports": { "value": "True" },
+		"retraction_hop": { "default_value": 0.4 },
+
+  	"cool_fan_full_at_height": { "value": "layer_height_0 + 2 * layer_height" },
+		"cool_fan_speed_0": { "value": "0"},
+		"cool_fan_speed_min": { "value": "cool_fan_speed" },
+    "cool_fan_speed": { "value": "50" },
+    "cool_min_speed": { "value": "5" },
+    "cool_min_layer_time_fan_speed_max": {"value": "4"},
+    "cool_min_speed": {"value": "math.ceil((speed_volumetric_min / (line_width * layer_height)) if (speed_volumetric_min / (line_width * layer_height)) > 15 else speed_print if speed_print < 15 else 15)"},
+
+    "support_conical_enabled": { "value": "True" },
+    "support_conical_angle": {"default_value": 35},
+    "support_conical_min_width": { "default_value": 15 },
+    "support_angle": { "value": "60" },
+    "support_pattern": { "value": "'zigzag'" },
+		"support_line_width": { "value": "machine_nozzle_size *.875" },
+		"support_interface_line_width": { "value": "machine_nozzle_size * 0.875" },
+		"support_interface_pattern": { "value": "'zigzag'" },
+    "support_use_towers": { "value": "False" },
+		"support_interface_enable": { "value": "True" },
+    "support_interface_angles": { "value": "[90]" },
+    "support_roof_angles": { "value": "support_interface_angles" },
+    "support_bottom_angles": { "value": "support_interface_angles" },
+		"support_fan_enable": { "value": "True" },
+    "support_bottom_stair_step_height": {"value": "0.3"},
+    "support_brim_enable": { "value": "True" },
+		"brim_width": { "default_value": 8 },
+		"support_fan_enable": { "value": "cool_fan_enabled" },
+		"support_supported_skin_fan_speed": { "value": "0 if cool_fan_enabled == False else cool_fan_speed_max" },
+
+    "raft_margin":{ "value": "2"},
+    "raft_smoothing": { "value": "2" },
+    "raft_airgap": {"value": "0.2" },
+    "raft_surface_layers": { "value": "1" },
+    "raft_surface_line_width": { "value": "support_interface_line_width" },
+    "raft_surface_line_spacing": { "value": "support_roof_line_distance"},
+
+		"slicing_tolerance": { "value": "'middle'" },
+		"minimum_polygon_circumference": { "value": "machine_nozzle_size * 2 " },
+		"coasting_enable": { "value": "False" },
+		"coasting_volume": { "value": "(machine_nozzle_size ** 3) / 2" },
+		"coasting_min_volume": { "value": "(machine_nozzle_size ** 3) * 2" },
+		"coasting_speed": { "value": "speed_wall_0" },
+		"bridge_wall_speed": { "value": "speed_print if speed_print < 30 else cool_min_speed if cool_min_speed > 30 else 30" },
+    "bridge_skin_speed": { "value": "speed_print if speed_print < 30 else cool_min_speed if cool_min_speed > 30 else 30" },
+		"bridge_fan_speed": { "value": "0 if cool_fan_enabled == False else cool_fan_speed_max" },
+		"bridge_fan_speed_2": { "value": "0 if cool_fan_enabled == False else cool_fan_speed" },
+    "bridge_skin_speed_2": { "value": "speed_print if speed_print < 45 else 45"},
+		"bridge_fan_speed_3": { "value": "0 if cool_fan_enabled == False else cool_fan_speed" },
+    "bridge_skin_speed_3": { "value": "speed_print"},
+    "small_hole_max_size": { "value": "12" },
+    "small_feature_speed_factor": { "value": "100 if (speed_volumetric_min / (line_width * layer_height)) > speed_wall_0 * 0.7 else 70" },
+    "small_feature_speed_factor_0": { "value": "100 if (speed_volumetric_min / (line_width * layer_height)) > speed_layer_0 * 0.7 else 70" }
+    },
+
+    "settings":
+      {
+  		"resolution":
+          {
+  			       "children":
+  			          {
+      				      "variant_name":
+                      {
+                          "label": "Tool Cartridge",
+                          "description": "Name of Tool Cartridge, used for G-code output metadata",
+                          "type": "enum",
+                          "options":
+                          {
+                              "0.40mm": "0.40mm",
+                              "Unkown": "Unknown"
+                          },
+                          "default_value": "Unknown",
+                          "settable_per_mesh": false
+  				            }
+  			         }
+		 },
+		"material":
+		{
+			"children":
+			{
+        "material_door_status":
+                {
+                    "label": "Material Door Status",
+                    "description": "Should the door be open or closed for printing this material. This only effects the popup message at the begining of a print job",
+                    "type": "enum",
+                    "options":
+                    {
+                        " ": "Open",
+                        ";": "Closed"
+                    },
+                    "default_value": ";",
+                    "settable_per_mesh": false
+  		 }
+  	}
+  }
+	}
+}

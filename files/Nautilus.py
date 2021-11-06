@@ -76,7 +76,7 @@ class Nautilus(QObject, MeshWriter, Extension):
     # 1) here
     # 2) plugin.json
     # 3) package.json
-    version = "1.3.4"
+    version = "1.3.9"
 
     ##  Dictionary that defines how characters are escaped when embedded in
     #   g-code.
@@ -130,22 +130,18 @@ class Nautilus(QObject, MeshWriter, Extension):
         # if the plugin was never installed, then force installation
         if self._application.getPreferences().getValue("Nautilus/install_status") is None:
             self._ready = True
-            self._application.getPreferences().addPreference("Nautilus/install_status", "unknown")
-            self._application.getPreferences().addPreference("Nautilus/curr_version", self.version)
-            self._application.getPreferences().addPreference("Nautilus/developermode", "false")
             Logger.log("i","first install")
 
+        self._application.getPreferences().addPreference("Nautilus/install_status", "unknown")
+        self._application.getPreferences().addPreference("Nautilus/curr_version", self.version)
         self._application.getPreferences().addPreference("Nautilus/configversion","1.0.0")
-        self._application.getPreferences().setValue("Nautilus/configversion","1.0.0")
-
         self._application.getPreferences().addPreference("Nautilus/uptodate","yes")
+        self._application.getPreferences().addPreference("Nautilus/developermode","unknown")
 
-        self._application.getPreferences().addPreference("Nautilus/developermode","false")
+        if self._application.getPreferences().getValue("Nautilus/developermode") is "unknown":
+            Logger.log('d', 'setting up developer mode')
+            self._application.getPreferences().setValue("Nautilus/developermode",'false')
 
-
-        if self._application.getPreferences().getValue("Nautilus/developermode") is not "true" or self._application.getPreferences().getValue("Nautilus/developermode") is not "false":
-            self._application.getPreferences().addPreference("Nautilus/developermode","false")
-            self._application.getPreferences().setValue("Nautilus/developermode","false")
 
         # if something got messed up, force installation
         if not self.isInstalled() and self._application.getPreferences().getValue("Nautilus/install_status") is "installed":
@@ -221,7 +217,7 @@ class Nautilus(QObject, MeshWriter, Extension):
 
     def setFirmVers(self, versno):
         self.firmwareVersion = str(versno)
-        self._application.getPreferences().addPreference("Nautilus/configversion",self.firmwareVersion)
+        self._application.getPreferences().setValue("Nautilus/configversion",self.firmwareVersion)
 
     # function so that the preferences menu can open website the version
     @pyqtSlot()
@@ -248,10 +244,8 @@ class Nautilus(QObject, MeshWriter, Extension):
     def setDeveloperMode(self):
         if self._application.getPreferences().getValue("Nautilus/developermode") == 'true':
             Logger.log('d','falsing developer mode')
-            self._application.getPreferences().addPreference("Nautilus/developermode", "false")
             self._application.getPreferences().setValue("Nautilus/developermode","false")
         else:
-            self._application.getPreferences().addPreference("Nautilus/developermode", "true")
             Logger.log('d','truing developer mode')
             self._application.getPreferences().setValue("Nautilus/developermode","true")
         return
@@ -311,7 +305,7 @@ class Nautilus(QObject, MeshWriter, Extension):
 
     @pyqtSlot()
     def openUserManual(self):
-        url = QUrl('https://hydraresearch3d.dozuki.com/c/Nautilus', QUrl.TolerantMode)
+        url = QUrl('https://hydraresearch3d.dozuki.com/', QUrl.TolerantMode)
         if not QDesktopServices.openUrl(url):
             message = Message(catalog.i18nc("@info:status", "Nautilus plugin could not navigate to https://www.hydraresearch3d.com/nautilus-resources"))
             message.show()
@@ -436,11 +430,12 @@ class Nautilus(QObject, MeshWriter, Extension):
                     Logger.log("i", "Nautilus Plugin: found in zipfile: " + info.filename )
                     folder = None
                     flag = False
-                    defs = ["hydra_research_nautilus.def.json", "hrfdmprinter.def.json", "hrfdmextruder.def.json", "hydra_research_minnow.def.json"]
-                    exts = ["hydra_research_nautilus_extruder.def.json", "hydra_research_minnow_extruder.def.json"]
+                    defs = ["hydra_research_nautilus.def.json", "hrfdmprinter.def.json", "hrfdmextruder.def.json", "hydra_research_minnow.def.json", "hydra_research_minnow_m2.def.json"]
+                    exts = ["hydra_research_nautilus_extruder.def.json", "hydra_research_minnow_extruder.def.json", "hydra_research_minnow_m2_extruder0.def.json", "hydra_research_minnow_m2_extruder1.def.json"]
                     if info.filename in defs:
                         folder = self.local_printer_def_path
-                    elif info.filename == "hydra_research_excluded_materials.json":
+                    elif info.filename.endswith("excluded_materials.def.json"):
+                        Logger.log('d','excluded material!')
                         folder = self.local_printer_def_path
                         flag = True
                     elif info.filename in exts:
@@ -475,10 +470,10 @@ class Nautilus(QObject, MeshWriter, Extension):
                         with zip_ref.open(info,'r') as f:
                             data = f.read()
                             obj=json.loads(data.decode('utf-8'))
-                            entry = {}
-                            obj['metadata']['exclude_materials'] = str(materiallist)
+                            entry = obj['metadata']['exclude_materials'].replace('\'','').strip('][').split(', ')
+                            obj['metadata']['exclude_materials'] = str(materiallist+entry)
                             Logger.log("i", "Nautilus Plugin installing excluded materials to " + folder)
-                            with open(os.path.join(folder,'hydra_research_excluded_materials.def.json'),'w') as g:
+                            with open(os.path.join(folder,info.filename),'w') as g:
                                 g.write(json.dumps(obj,indent=4))
                                 g.close()
                             f.close()

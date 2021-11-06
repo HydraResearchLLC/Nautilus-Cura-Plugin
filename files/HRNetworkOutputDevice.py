@@ -163,9 +163,9 @@ class HRNetworkOutputDevice(OutputDevice):
 
         if fileName:
             Logger.log('d', 'given fn is '+fileName)
-            fileName = self.nameMaker() + '.gcode'
+            fileName = self.nameMaker()
         else:
-            fileName = "%s.gcode" % Application.getInstance().getPrintInformation().jobName
+            fileName = "%s" % Application.getInstance().getPrintInformation().jobName
         self._fileName = fileName
 
         path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'qml', 'UploadFilename.qml')
@@ -174,18 +174,31 @@ class HRNetworkOutputDevice(OutputDevice):
         self._dialog.accepted.connect(self.onFilenameAccepted)
         self._dialog.show()
         self._dialog.findChild(QObject, "nameField").setProperty('text', self._fileName)
-        self._dialog.findChild(QObject, "nameField").select(0, len(self._fileName) - 6)
+        self._dialog.findChild(QObject, "nameField").select(0, self.nameLen)
         self._dialog.findChild(QObject, "nameField").setProperty('focus', True)
 
     def nameMaker(self):
         base = Application.getInstance().getPrintInformation().baseName
         Logger.log('d','base is '+ base)
+        try:
+            mat1 = Application.getInstance().getExtruderManager().getActiveExtruderStacks()[0].getProperty("material_name","value")
+            mat2 = Application.getInstance().getExtruderManager().getActiveExtruderStacks()[1].getProperty("material_name","value")
+            mat = mat1+"+"+mat2
+        except:
+            mat = Application.getInstance().getExtruderManager().getActiveExtruderStacks()[0].getProperty("material_name","value")
 
-        mat = str(Application.getInstance().getPrintInformation().materialNames)[2:-2]
-
-        noz = Application.getInstance().getExtruderManager().getActiveExtruderStacks()[0].variant.getName()
-        layerheight = str(int(Application.getInstance().getMachineManager().activeMachine.getProperty("layer_height", "value")*1000)) + 'um'
-        fileName = base[0:14] + " - " +  mat + " - " + noz + " - " + layerheight
+        noz = str(Application.getInstance().getExtruderManager().getActiveExtruderStacks()[0].getProperty("machine_nozzle_size","value"))
+        suffix = "-" +  mat + "-" + noz
+        #layerheight = Application.getInstance().getExtruderManager().getActiveExtruderStacks()[0].getProperty("material_name","value")#str(Application.getInstance().getMachineManager().activeMachine.getProperty("material_name", "value"))
+        forbidden_characters = "\"'´`<>()[]?*\,;:&%#$!"
+        for forbidden_character in forbidden_characters:
+            if forbidden_character in suffix:
+                suffix.replace(forbidden_character,"")
+            if forbidden_character in base:
+                base.replace(forbidden_character,"")
+        self.nameLen = 25-(len(mat)+len(noz)+2)
+        fileName = base[0:self.nameLen] + suffix
+        Logger.log('d',"fn is "+str(len(fileName))+" characters long")
         return fileName
 
     def onFilenameChanged(self):
@@ -208,7 +221,7 @@ class HRNetworkOutputDevice(OutputDevice):
 
     def onFilenameAccepted(self):
         self._fileName = self._dialog.findChild(QObject, "nameField").property('text').strip()
-        if not self._fileName.endswith('.gcode') and '.' not in self._fileName:
+        if not self._fileName.endswith('gcode'):
             self._fileName += '.gcode'
         Logger.log("d", "Filename set to: " + self._fileName)
 
@@ -494,7 +507,7 @@ class HRNetworkOutputDevice(OutputDevice):
         if reply:
             errorString = reply.errorString()
 
-        message = Message(catalog.i18nc("@info:status", "There was a network error: {} {}").format(error, errorString), 0, False)
+        message = Message(catalog.i18nc("@info:status", "Network error {} on {}: {}").format(error, self._name, errorString), 0, False)
         message.show()
 
         self.writeError.emit(self)

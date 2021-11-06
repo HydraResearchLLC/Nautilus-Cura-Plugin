@@ -1,0 +1,12 @@
+{
+    "version": 2,
+    "name": "Hydra Research Excluded Materials",
+    "inherits": "hrfdmprinter",
+    "metadata": {
+        "author": "Hydra Research",
+        "manufacturer": "Hydra Research",
+        "category": "Hydra Research",
+        "visible": false,
+        "exclude_materials": "['hr__support.xml.fdm_material', 'hr_experimental_pla.xml.fdm_material']"
+    }
+}

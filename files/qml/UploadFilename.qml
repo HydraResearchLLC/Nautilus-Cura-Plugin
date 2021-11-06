@@ -37,7 +37,7 @@ UM.Dialog
             id: nameField;
             width: parent.width;
             text: base.object;
-            maximumLength: 100;
+            maximumLength: 41;
             onTextChanged: base.textChanged(text);
             Keys.onReturnPressed: { if (base.validName) base.accept(); }
             Keys.onEnterPressed: { if (base.validName) base.accept(); }

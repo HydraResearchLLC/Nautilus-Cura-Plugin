@@ -24,27 +24,31 @@
       <machine_identifier manufacturer="Hydra Research" product="Hydra Research Nautilus" />
       <hotend id="X 400">
         <setting key="hardware compatible">yes</setting>
+        <setting key="print temperature">265</setting>
         <cura:setting key="pressure_advance_value">0.05</cura:setting>
       </hotend>
       <hotend id="X 800">
         <setting key="hardware compatible">yes</setting>
+        <setting key="print temperature">265</setting>
         <cura:setting key="pressure_advance_value">0.05</cura:setting>
       </hotend>
       <hotend id="B 250">
         <setting key="hardware compatible">yes</setting>
+        <setting key="print temperature">265</setting>
         <cura:setting key="pressure_advance_value">0.05</cura:setting>
+      </hotend>
+      <machine_identifier manufacturer="Hydra Research" product="Hydra Research Minnow M2" />
+      <hotend id="0.40mm">
+        <setting key="hardware compatible">no</setting>
+        <setting key="print temperature">265</setting>
+        <cura:setting key="speed_volumetric_max">8</cura:setting>
       </hotend>
     </machine>
     <machine>
       <machine_identifier manufacturer="Hydra Research" product="Hydra Research Minnow" />
       <hotend id="0.40mm">
         <setting key="hardware compatible">no</setting>
-        <cura:setting key="pressure_advance_value">0.025</cura:setting>
-        <cura:setting key="speed_volumetric_max">8</cura:setting>
-      </hotend>
-      <machine_identifier manufacturer="Hydra Research" product="Hydra Research Minnow" />
-      <hotend id="0.40mm">
-        <setting key="hardware compatible">no</setting>
+        <setting key="print temperature">265</setting>
         <cura:setting key="pressure_advance_value">0.025</cura:setting>
         <cura:setting key="speed_volumetric_max">8</cura:setting>
       </hotend>

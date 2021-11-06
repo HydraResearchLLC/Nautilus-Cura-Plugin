@@ -24,33 +24,37 @@
       <machine_identifier manufacturer="Hydra Research" product="Hydra Research Nautilus" />
       <hotend id="X 400">
         <setting key="hardware compatible">yes</setting>
+        <setting key="print temperature">240</setting>
         <cura:setting key="line_width">0.4</cura:setting>
         <cura:setting key="pressure_advance_value">0.1</cura:setting>
       </hotend>
       <hotend id="X 800">
         <setting key="hardware compatible">yes</setting>
+        <setting key="print temperature">240</setting>
         <cura:setting key="line_width">0.8</cura:setting>
         <cura:setting key="pressure_advance_value">0.1</cura:setting>
       </hotend>
       <hotend id="B 250">
         <setting key="hardware compatible">no</setting>
+        <setting key="print temperature">240</setting>
         <cura:setting key="pressure_advance_value">0.1</cura:setting>
+      </hotend>
+      <machine_identifier manufacturer="Hydra Research" product="Hydra Research Minnow M2" />
+      <hotend id="0.40mm">
+        <setting key="hardware compatible">yes</setting>
+        <setting key="print temperature">240</setting>
+        <cura:setting key="line_width">0.4</cura:setting>
+        <cura:setting key="speed_volumetric_max">3</cura:setting>
       </hotend>
     </machine>
     <machine>
       <machine_identifier manufacturer="Hydra Research" product="Hydra Research Minnow" />
       <hotend id="0.40mm">
         <setting key="hardware compatible">yes</setting>
+        <setting key="print temperature">240</setting>
         <cura:setting key="line_width">0.4</cura:setting>
         <cura:setting key="pressure_advance_value">0.02</cura:setting>
-        <cura:setting key="speed_volumetric_max">2</cura:setting>
-      </hotend>
-      <machine_identifier manufacturer="Hydra Research" product="Hydra Research Minnow" />
-      <hotend id="0.40mm">
-        <setting key="hardware compatible">yes</setting>
-        <cura:setting key="line_width">0.4</cura:setting>
-        <cura:setting key="pressure_advance_value">0.02</cura:setting>
-        <cura:setting key="speed_volumetric_max">2</cura:setting>
+        <cura:setting key="speed_volumetric_max">3</cura:setting>
       </hotend>
     </machine>
     <setting key="print temperature">240</setting>
@@ -61,7 +65,7 @@
     <setting key="print cooling">30</setting>
     <setting key="retraction amount">0.8</setting>
     <cura:setting key="material_flow">115</cura:setting>
-    <cura:setting key="material_name">Flex 85-90A</cura:setting>
+    <cura:setting key="material_name">FLEX</cura:setting>
     <cura:setting key="material_print_surface">Use Magigoo</cura:setting>
     <cura:setting key="material_door_status">;</cura:setting>
     <cura:setting key="pressure_advance_value">0.1</cura:setting>

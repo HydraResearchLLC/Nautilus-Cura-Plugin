@@ -144,7 +144,7 @@ class NautilusOutputDevice(OutputDevice):
 
         noz = Application.getInstance().getExtruderManager().getActiveExtruderStacks()[0].variant.getName()
         layerheight = str(int(Application.getInstance().getMachineManager().activeMachine.getProperty("layer_height", "value")*1000)) + 'um'
-        fileName = base + " - " +  mat + " - " + noz + " - " + layerheight
+        fileName = base + "-" +  mat + "-" + noz
         return fileName
 
     def requestWrite(self, node, fileName=None, *args, **kwargs):
@@ -694,7 +694,7 @@ class NautilusOutputDevice(OutputDevice):
                 self._notFound()
         else:
             Logger.log('e',"unknown error! code: "+str(errorCode)+"mess: "+str(errorString))
-            message = Message(catalog.i18nc("@info:status", "There was a network error: {} {}").format(errorCode, errorString), 0, False)
+            message = Message(catalog.i18nc("@info:status", "There was a network error: {} {}").format(errorCode, errorString), 0, False) #Network error {error code} on {Printer Name}: {errorString}
             message.show()
 
         self.writeError.emit(self)
