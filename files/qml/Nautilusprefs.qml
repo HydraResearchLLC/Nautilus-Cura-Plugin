@@ -16,7 +16,7 @@ UM.Dialog
 
     minimumWidth: 400 * screenScaleFactor
     minimumHeight: 450 * screenScaleFactor
-    title: catalog.i18nc("@label", "Nautilus Plugin Preferences")
+    title: catalog.i18nc("@label", "Hydra Research Plugin Preferences")
 
     function checkBooleanVals(val) {
         if(val == "Yes") {
@@ -60,14 +60,21 @@ UM.Dialog
           Label{
             id: versionNO
             anchors.horizontalCenter: parent.horizontalCenter
-            text: "Nautilus Plugin Version "+ manager.getVersion
+            text: "Hydra Research Plugin"
             font.bold: true
             font.pointSize: 18
             //Layout.columnSpan: 2
           }
+          Label{
+            id: versionNO2
+            anchors.horizontalCenter: parent.horizontalCenter
+            text: "v" + manager.getVersion
+            font.bold: true
+            font.pointSize: 18
+          }
           MenuSeparator {
             id: sep2
-            ////anchors.top: versionNO.bottom
+            ////anchors.top: versionNO2.bottom
             anchors.horizontalCenter: parent.horizontalCenter
             implicitWidth: 300
           }

@@ -102,15 +102,5 @@ Cura.MachineAction
             enabled: base.validUrl;
         }
 
-        Button {
-            id: deleteButton;
-            anchors.right: parent.right;
-            text: catalog.i18nc("@action:button", "Delete Config");
-            width: screenScaleFactor * 100;
-            onClicked: {
-                manager.deleteConfig();
-                actionDialog.reject();
-            }
-        }
     }
 }

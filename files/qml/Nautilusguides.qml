@@ -15,9 +15,9 @@ UM.Dialog
     //property int recwidth: Math.floor(360*screenScaleFactor)
     width: 780 //Math.floor(780 * screenScaleFactor)
     minimumWidth: width
-    maximumWidth: width
+    //maximumWidth: width
     minimumHeight: 550 //Math.floor(550 * screenScaleFactor)
-    maximumHeight: minimumHeight
+    //maximumHeight: minimumHeight
     title: catalog.i18nc("@label", "Hydra Research Resources & Guides")
     Rectangle {
       id: usermanual

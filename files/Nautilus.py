@@ -76,7 +76,7 @@ class Nautilus(QObject, MeshWriter, Extension):
     # 1) here
     # 2) plugin.json
     # 3) package.json
-    version = "1.3.9"
+    version = "1.3.11"
 
     ##  Dictionary that defines how characters are escaped when embedded in
     #   g-code.
@@ -137,6 +137,8 @@ class Nautilus(QObject, MeshWriter, Extension):
         self._application.getPreferences().addPreference("Nautilus/configversion","1.0.0")
         self._application.getPreferences().addPreference("Nautilus/uptodate","yes")
         self._application.getPreferences().addPreference("Nautilus/developermode","unknown")
+        self._application.getPreferences().addPreference("cura/material_settings","")
+        self._application.getPreferences().addPreference("cura/currency","$")
 
         if self._application.getPreferences().getValue("Nautilus/developermode") is "unknown":
             Logger.log('d', 'setting up developer mode')
@@ -322,9 +324,7 @@ class Nautilus(QObject, MeshWriter, Extension):
         Logger.log("i","Setting Material costs and currency!")
         matCosts = open(os.path.join(self.this_plugin_path,"matCosts.txt"),'r').read()
         matCosts = matCosts.replace("[","").replace("]","")
-        self._application.getPreferences().addPreference("cura/material_settings",matCosts)
         self._application.getPreferences().setValue("cura/material_settings",matCosts)
-        self._application.getPreferences().addPreference("cura/currency","$")
         self._application.getPreferences().setValue("cura/currency","$")
 
     def _onStartup(self):

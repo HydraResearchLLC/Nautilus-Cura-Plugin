@@ -63,15 +63,7 @@
          "limit_to_extruder":"top_bottom_extruder_nr",
          "settable_per_mesh":true
       },
-      "skin_monotonic":{
-         "label":"Monotonic Top/Bottom Order",
-         "description":"Print top/bottom lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent.",
-         "type":"bool",
-         "default_value":false,
-         "enabled":"(top_layers > 0 or bottom_layers > 0) and (top_bottom_pattern != 'concentric' or top_bottom_pattern_0 != 'concentric')",
-         "limit_to_extruder":"top_bottom_extruder_nr",
-         "settable_per_mesh":true
-      },
+      "skin_monotonic":{ "default_value":true},
       "skin_outline_count":{
          "label":"Extra Skin Wall Count",
          "description":"Replaces the outermost part of the top/bottom pattern with a number of concentric lines. Using one or two lines improves roofs that start on infill material.",
@@ -92,7 +84,7 @@
          "default_value":20,
          "minimum_value_warning":"-50",
          "maximum_value_warning":"100",
-         "value":"10 if top_bottom_pattern != 'concentric' else 0",
+         "value":"20 if top_bottom_pattern != 'concentric' else 0",
          "enabled":"(top_layers > 0 or bottom_layers > 0) and top_bottom_pattern != 'concentric'",
          "limit_to_extruder":"top_bottom_extruder_nr",
          "settable_per_mesh":true
@@ -122,6 +114,7 @@
          "limit_to_extruder":"infill_extruder_nr",
          "settable_per_mesh":true
       },
+      "infill_overlap": { "value": "25" },
       "infill_sparse_thickness":{
          "label":"Infill Layer Thickness",
          "description":"The thickness per layer of infill material. This value should always be a multiple of the layer height and is otherwise rounded.",
@@ -136,6 +129,7 @@
          "limit_to_extruder":"infill_extruder_nr",
          "settable_per_mesh":true
       },
+      "material_print_temperature":  {"value": "default_material_print_temperature + tool_material_print_temperature_offset"},
       "roofing_material_flow":{
          "label":"Top Surface Skin Flow",
          "description":"Flow compensation on lines of the areas at the top of the print.",
@@ -286,18 +280,6 @@
          "value":"(2 * layer_height) if (layer_height/machine_nozzle_size < (support_z_distance_ratio/100)) else layer_height",
          "limit_to_extruder":"support_interface_extruder_nr if support_interface_enable else support_infill_extruder_nr",
          "enabled":"support_enable or support_meshes_present",
-         "settable_per_mesh":true
-      },
-      "support_z_distance_ratio":{
-         "label":"Support Z Distance Ratio",
-         "description":"The ratio between layer height and nozzle diameter expressed as a percentage below which the support z distance will be increased to double the layer height rather than just the layer height",
-         "unit":"%",
-         "minimum_value":"0",
-         "maximum_value_warning":"100",
-         "default_value":37,
-         "type":"float",
-         "enabled":"support_enable or support_meshes_present",
-         "limit_to_extruder":"support_roof_extruder_nr if support_roof_enable else support_infill_extruder_nr",
          "settable_per_mesh":true
       },
       "support_xy_distance":{
@@ -715,46 +697,22 @@
             }
          }
       },
-      "speed":{
-         "children":{
-            "speed_print_max":{
-               "label":"Maximum Print Speed",
-               "description":"Maximum allowed print speed. This is overriden if Maximum Volumetric Speed is lower than the Maximum Print Speed.",
-               "unit":"mm/s",
-               "type":"float",
-               "minimum_value":"0.1",
-               "maximum_value_warning":"205",
-               "default_value":125,
-               "settable_per_mesh":false
-            },
-            "speed_print_factor":{
-               "label":"Print Speed Factor",
-               "description":"This factor adjusts the defualt print speed (all speeds except perimeter speeds). 1 = default speeds. ",
-               "unit":"",
-               "type":"float",
-               "minimum_value":"0.5",
-               "minimum_value_warning":"0.6",
-               "maximum_value":"1.5",
-               "maximum_value_warning":"1.4",
-               "default_value":1,
-               "settable_per_mesh":false
-            },
-            "speed_perimeter_factor":{
-               "label":"Perimeter Speed Factor",
-               "description":"This factor adjusts the defualt perimeter print speed. 1 = default speeds. ",
-               "unit":"",
-               "type":"float",
-               "minimum_value":"0.5",
-               "minimum_value_warning":"0.6",
-               "maximum_value":"1.5",
-               "maximum_value_warning":"1.4",
-               "default_value":1,
-               "settable_per_mesh":false
-            }
-         }
-      },
       "material":{
          "children":{
+           "tool_material_print_temperature_offset":{
+               "label": "Tool Printing Temperature Offset",
+               "description": "The printing tmeperature offset from the defualt printing tempertaure to compensate for the nozzle material of the tool",
+               "unit": "°C",
+               "type": "float",
+               "default_value": 0,
+               "minimum_value_warning": "-15",
+               "maximum_value_warning": "15",
+               "minimum_value": "-20",
+               "maximum_value": "20",
+               "enabled": true,
+               "settable_per_extruder": true,
+               "settable_per_mesh": false
+           },
             "material_bed_probe_temperature":{
                "label":"Heat Bed Probing Temperature",
                "description":"A temperature close to the bed temperature during printing to account for thermal expansion of the bed when probing.",
@@ -866,6 +824,64 @@
                "settable_per_mesh":false
             }
          }
-      }
+      },
+      "speed":{
+         "children":{
+            "speed_print_max":{
+               "label":"Maximum Print Speed",
+               "description":"Maximum allowed print speed. This is overriden if Maximum Volumetric Speed is lower than the Maximum Print Speed.",
+               "unit":"mm/s",
+               "type":"float",
+               "minimum_value":"0.1",
+               "maximum_value_warning":"205",
+               "default_value":125,
+               "settable_per_mesh":false
+            },
+            "speed_print_factor":{
+               "label":"Print Speed Factor",
+               "description":"This factor adjusts the defualt print speed (all speeds except perimeter speeds). 1 = default speeds. ",
+               "unit":"",
+               "type":"float",
+               "minimum_value":"0.5",
+               "minimum_value_warning":"0.6",
+               "maximum_value":"1.5",
+               "maximum_value_warning":"1.4",
+               "default_value":1,
+               "settable_per_mesh":false
+            },
+            "speed_perimeter_factor":{
+               "label":"Perimeter Speed Factor",
+               "description":"This factor adjusts the defualt perimeter print speed. 1 = default speeds. ",
+               "unit":"",
+               "type":"float",
+               "minimum_value":"0.5",
+               "minimum_value_warning":"0.6",
+               "maximum_value":"1.5",
+               "maximum_value_warning":"1.4",
+               "default_value":1,
+               "settable_per_mesh":false
+            }
+         }
+      },
+      "support":{
+          "children":{
+            "support_z_distance":{
+              "children":{
+                "support_z_distance_ratio":{
+                   "label":"Support Z Distance Ratio",
+                   "description":"The ratio between layer height and nozzle diameter expressed as a percentage below which the support z distance will be increased to double the layer height rather than just the layer height",
+                   "unit":"%",
+                   "minimum_value":"0",
+                   "maximum_value_warning":"100",
+                   "default_value":37,
+                   "type":"float",
+                   "enabled":"support_enable or support_meshes_present",
+                   "limit_to_extruder":"support_roof_extruder_nr if support_roof_enable else support_infill_extruder_nr",
+                   "settable_per_mesh":true
+                }
+              }
+            }
+         }
+       }
    }
 }

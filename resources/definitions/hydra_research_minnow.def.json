@@ -60,7 +60,7 @@
 			},
 
     "prime_blob_enable": { "enabled": true, "default_value": false },
-    "layer_height_0": { "value": "0.5" },
+    "layer_height_0": { "value": "0.2" },
 		"line_width": { "value": "round(machine_nozzle_size * 1.25, 2)" },
     "wall_line_width": {"value": "round(machine_nozzle_size * .875, 2) if layer_height < machine_nozzle_size/1.9 else machine_nozzle_size"},
 		"wall_line_width_0": { "value": "wall_line_width" },
@@ -86,7 +86,6 @@
 		"skin_no_small_gaps_heuristic": { "value": "False" },
 
 		"zig_zaggify_infill": { "value": "gradual_infill_steps == 0" },
-		"infill_overlap": { "value": "25" },
 		"infill_before_walls": { "value": "False" },
 		"skin_preshrink": { "value": "line_width * 2.22" },
 
