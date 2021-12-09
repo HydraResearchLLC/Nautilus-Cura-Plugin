@@ -196,7 +196,7 @@ class HRNetworkOutputDevice(OutputDevice):
                 suffix.replace(forbidden_character,"")
             if forbidden_character in base:
                 base.replace(forbidden_character,"")
-        self.nameLen = 25-(len(mat)+len(noz)+2)
+        self.nameLen = len(base) if len(base)<25-(len(mat)+len(noz)+2) else 25-(len(mat)+len(noz)+2)
         fileName = base[0:self.nameLen] + suffix
         Logger.log('d',"fn is "+str(len(fileName))+" characters long")
         return fileName
