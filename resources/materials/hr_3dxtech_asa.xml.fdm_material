@@ -47,7 +47,7 @@
         <cura:setting key="speed_volumetric_max">11</cura:setting>
       </hotend>
     </machine>
-    <setting key="print temperature">260</setting>
+    <setting key="print temperature">255</setting>
     <setting key="heated bed temperature">110</setting>
     <setting key="standby temperature">0</setting>
     <setting key="adhesion tendency">0</setting>
@@ -58,7 +58,7 @@
     <cura:setting key="material_name">ASA</cura:setting>
     <cura:setting key="material_print_surface">Phenolic w Magigoo</cura:setting>
     <cura:setting key="material_door_status">;</cura:setting>
-    <cura:setting key="material_print_temperature_layer_0">265</cura:setting>
+    <cura:setting key="material_print_temperature_layer_0">F33=C19+5</cura:setting>
     <cura:setting key="pressure_advance_value">0.04</cura:setting>
     <cura:setting key="speed_volumetric_max">11</cura:setting>
     <cura:setting key="speed_volumetric_min">0.01</cura:setting>

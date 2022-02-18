@@ -7,7 +7,7 @@
       <color>Generic</color>
       <label>Aquatek PVA</label>
     </name>
-    <GUID>506c9f0d-e3aa-4bd4-b2d2-23e242hr040</GUID>
+    <GUID>506c9f0d-e3aa-4bd4-b2d2-23e242hr043</GUID>
     <version>3</version>
     <color_code>#d5d8dc</color_code>
     <description>AquaTek™ PVA [Polyvinyl Alcohol] is a water-soluble support filament based on a new generation of PVA. This filament is ideal for printing complex parts using PLA, PVB, Nylon, and TPU.</description>
@@ -47,7 +47,7 @@
         <cura:setting key="speed_volumetric_max">8</cura:setting>
       </hotend>
     </machine>
-    <setting key="print temperature">205</setting>
+    <setting key="print temperature">215</setting>
     <setting key="heated bed temperature">30</setting>
     <setting key="standby temperature">0</setting>
     <setting key="adhesion tendency">0</setting>

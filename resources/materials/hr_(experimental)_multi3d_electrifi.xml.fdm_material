@@ -7,9 +7,9 @@
       <color>Generic</color>
       <label>Multi3D Electrifi</label>
     </name>
-    <GUID>506c9f0d-e3aa-4bd4-b2d2-23e242hr042</GUID>
+    <GUID>506c9f0d-e3aa-4bd4-b2d2-23e242hr046</GUID>
     <version>3</version>
-    <color_code>#ffc924</color_code>
+    <color_code>#b08d57</color_code>
     <description>With a resistivity of 0.006 Ω cm, Electrifi is the one of the most electrically conductive 3D printing materials available. Printing with Electrifi can bbe very chanllenging and is only recommnded for advanced users. </description>
     <adhesion_info>PEI</adhesion_info>
   </metadata>

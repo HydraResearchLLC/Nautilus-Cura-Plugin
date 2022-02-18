@@ -29,9 +29,9 @@ UM.Dialog
     }
     function checkInstallStatus(prefVal) {
         if(prefVal == "installed") {
-            return "Nautilus profiles ARE installed"
+            return "Hydra Research profiles ARE installed"
         } else  {
-            return "Nautilus profiles are NOT installed"
+            return "Hydra Research profiles are NOT installed"
         }
     }
 

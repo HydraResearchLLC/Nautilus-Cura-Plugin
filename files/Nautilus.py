@@ -76,7 +76,7 @@ class Nautilus(QObject, MeshWriter, Extension):
     # 1) here
     # 2) plugin.json
     # 3) package.json
-    version = "1.3.11"
+    version = "1.3.12"
 
     ##  Dictionary that defines how characters are escaped when embedded in
     #   g-code.
@@ -466,7 +466,7 @@ class Nautilus(QObject, MeshWriter, Extension):
                         except:
                             Logger.log("i","unable to exclude materials")
                             materiallist = ''
-                        #print(materiallist)
+                        print(materiallist)
                         with zip_ref.open(info,'r') as f:
                             data = f.read()
                             obj=json.loads(data.decode('utf-8'))
@@ -503,8 +503,8 @@ class Nautilus(QObject, MeshWriter, Extension):
                 Logger.log("i", "Nautilus Plugin is now installed - Please restart ")
 
         except: # Installing a new plugin should never crash the application.
-            Logger.logException("d", "An exception occurred in Nautilus Plugin while installing the files")
-            message = Message(catalog.i18nc("@info:status", "Nautilus Plugin experienced an error installing the files"))
+            Logger.logException("d", "An exception occurred in Hydra Research Plugin while installing the files")
+            message = Message(catalog.i18nc("@info:status", "Hydra Research Plugin experienced an error installing the files"))
             message.show()
 
 

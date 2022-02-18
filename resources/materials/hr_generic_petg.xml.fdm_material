@@ -47,7 +47,7 @@
         <cura:setting key="speed_volumetric_max">8</cura:setting>
       </hotend>
     </machine>
-    <setting key="print temperature">245</setting>
+    <setting key="print temperature">240</setting>
     <setting key="heated bed temperature">80</setting>
     <setting key="standby temperature">0</setting>
     <setting key="print cooling">40</setting>

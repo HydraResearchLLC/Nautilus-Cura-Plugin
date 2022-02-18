@@ -1,7 +1,7 @@
 {
     "version": 2,
     "name": "Minnow M2",
-    "inherits": "hydra_research_minnow_m2_excluded_materials",
+    "inherits": "hydra_research_excluded_materials",
     "metadata": {
         "visible": true,
         "author": "Hydra Research",

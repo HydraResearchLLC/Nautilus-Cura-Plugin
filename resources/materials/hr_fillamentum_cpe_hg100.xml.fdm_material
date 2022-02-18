@@ -47,7 +47,7 @@
         <cura:setting key="speed_volumetric_max">8</cura:setting>
       </hotend>
     </machine>
-    <setting key="print temperature">265</setting>
+    <setting key="print temperature">255</setting>
     <setting key="heated bed temperature">85</setting>
     <setting key="standby temperature">0</setting>
     <setting key="print cooling">20</setting>
@@ -56,7 +56,7 @@
     <cura:setting key="material_name">CPE</cura:setting>
     <cura:setting key="material_print_surface">Phenolic</cura:setting>
     <cura:setting key="material_door_status">;</cura:setting>
-    <cura:setting key="material_print_temperature_layer_0">270</cura:setting>
+    <cura:setting key="material_print_temperature_layer_0">260</cura:setting>
     <cura:setting key="pressure_advance_value">0.05</cura:setting>
     <cura:setting key="speed_volumetric_max">8</cura:setting>
     <cura:setting key="speed_volumetric_min">0.01</cura:setting>

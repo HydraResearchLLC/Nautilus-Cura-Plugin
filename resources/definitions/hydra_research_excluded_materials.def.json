@@ -7,6 +7,6 @@
         "manufacturer": "Hydra Research",
         "category": "Hydra Research",
         "visible": false,
-        "exclude_materials": "['hr__support.xml.fdm_material', 'hr_experimental_pla.xml.fdm_material']"
+        "exclude_materials": ""
     }
 }
