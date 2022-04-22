@@ -62,7 +62,7 @@ UM.Dialog
             anchors.horizontalCenter: parent.horizontalCenter
             text: "Hydra Research Plugin"
             font.bold: true
-            font.pointSize: 18
+            font.pointSize: 16
             //Layout.columnSpan: 2
           }
           Label{
